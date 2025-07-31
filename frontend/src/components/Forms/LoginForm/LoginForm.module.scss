@@ -1,0 +1,25 @@
+@import '../../../styles/variables.scss';
+
+.loginForm {
+  .formTitle {
+    font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
+    color: $color-text-dark;
+    margin-bottom: 10px;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-h4;
+    }
+  }
+
+  .formDescription {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    margin-bottom: 25px;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-sm;
+      margin-bottom: 20px;
+    }
+  }
+}

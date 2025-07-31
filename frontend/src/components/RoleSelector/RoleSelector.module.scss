@@ -1,0 +1,101 @@
+@import '../../styles/variables';
+
+.roleSelection {
+  margin-bottom: 30px;
+
+  @media (max-width: $breakpoint-sm) {
+    margin-bottom: 20px;
+  }
+
+  .label {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    margin-bottom: 8px;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.roleOption {
+  display: flex;
+  align-items: center;
+  background-color: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.selected {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+
+    .radioCustom {
+      border-color: $color-primary;
+      &::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background-color: $color-primary;
+        border-radius: 50%;
+        display: block;
+      }
+    }
+  }
+
+  .radioCustom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid $color-border;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+    transition: border-color 0.3s;
+  }
+
+  .roleIcon {
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .roleInfo {
+    flex-grow: 1;
+
+    .roleTitle {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $color-text-dark;
+      margin-bottom: 4px;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: $font-size-md;
+      }
+    }
+
+    .roleDescription {
+      font-size: $font-size-sm;
+      color: $color-text-light;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+}

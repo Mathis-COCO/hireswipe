@@ -1,0 +1,83 @@
+@import '../../../styles/variables';
+
+.formGroup {
+  margin-bottom: 20px;
+
+  .label {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    margin-bottom: 8px;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-sm;
+    }
+  }
+
+  .inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid $color-border-light;
+    border-radius: $border-radius-md;
+    font-size: $font-size-md;
+    color: $color-text-input;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding-right: 45px;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+
+    &.inputError {
+      border-color: $color-error;
+      
+      &:focus {
+        border-color: $color-error;
+        box-shadow: 0 0 0 2px rgba($color-error, 0.2);
+      }
+    }
+
+    &::placeholder {
+      color: $color-placeholder;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 10px 12px;
+      font-size: $font-size-sm;
+      padding-right: 40px;
+    }
+  }
+
+  .passwordToggleButton {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-text-secondary;
+
+    &:hover {
+      color: $color-text-dark;
+    }
+
+    svg {
+      display: block;
+    }
+  }
+}

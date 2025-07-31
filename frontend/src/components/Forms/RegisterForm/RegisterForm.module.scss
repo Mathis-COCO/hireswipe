@@ -1,0 +1,83 @@
+@import '../../../styles/variables.scss';
+
+.registerForm {
+    .fullName {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+
+        & > div {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            flex-direction: column;
+            gap: 0;
+            
+            & > div {
+                margin-bottom: 20px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .passwordFields {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+
+        & > div {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            flex-direction: column;
+            gap: 0;
+            
+            & > div {
+                margin-bottom: 20px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .formTitle {
+        font-size: $font-size-h3;
+        font-weight: $font-weight-bold;
+        color: $color-text-dark;
+        margin-bottom: 10px;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-h4;
+        }
+    }
+
+    .formDescription {
+        font-size: $font-size-md;
+        color: $color-text-secondary;
+        margin-bottom: 25px;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-sm;
+            margin-bottom: 20px;
+        }
+    }
+
+    .passwordMismatchWarning {
+        color: $color-error;
+        font-size: $font-size-sm;
+        margin-top: 10px;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-xs;
+        }
+    }
+}
