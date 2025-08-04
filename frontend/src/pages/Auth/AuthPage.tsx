@@ -4,18 +4,34 @@ import RegisterForm from '../../components/Forms/RegisterForm/RegisterForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import TabButton from '../../components/Buttons/TabButton/TabButton';
 import { HeartHandshake } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
+import { RegisterData, LoginData } from '../../types/auth';
 
 const AuthForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register');
+  const { register, login, error, clearError } = useAuth();
 
-  const handleRegisterSubmit = (data: { firstName: string; email: string; password: string; role: 'candidat' | 'entreprise' }) => {
-    console.log('Données d\'inscription soumises :', data);
-    alert('Inscription soumise (voir console pour les données) !');
+  const handleRegisterSubmit = async (data: RegisterData) => {
+    clearError();
+    const result = await register(data);
+    
+    if (result.success) {
+      alert('Inscription réussie ! Vous êtes maintenant connecté.');
+    }
   };
 
-  const handleLoginSubmit = (data: { email: string; password: string }) => {
-    console.log('Données de connexion soumises :', data);
-    alert('Connexion soumise (voir console pour les données) !');
+  const handleLoginSubmit = async (data: LoginData) => {
+    clearError();
+    const result = await login(data);
+    
+    if (result.success) {
+      alert('Connexion réussie !');
+    }
+  };
+
+  const handleTabChange = (tab: 'register' | 'login') => {
+    setActiveTab(tab);
+    clearError();
   };
 
   return (
@@ -33,14 +49,20 @@ const AuthForm: React.FC = () => {
             <TabButton
             label="Inscription"
             isActive={activeTab === 'register'}
-            onClick={() => setActiveTab('register')}
+            onClick={() => handleTabChange('register')}
             />
             <TabButton
             label="Connexion"
             isActive={activeTab === 'login'}
-            onClick={() => setActiveTab('login')}
+            onClick={() => handleTabChange('login')}
             />
         </div>
+
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
 
         <div className={styles.formSection}>
             <div className={styles.formWrapper}>
