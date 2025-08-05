@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 export class ApiError extends Error {
   status: number;
@@ -16,6 +16,8 @@ export const apiRequest = async <T>(
   const url = `${API_BASE_URL}${endpoint}`;
   
   const config: RequestInit = {
+    mode: 'cors',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,

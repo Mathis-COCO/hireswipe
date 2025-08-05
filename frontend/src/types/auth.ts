@@ -1,5 +1,4 @@
 export interface RegisterData {
-  firstName: string;
   email: string;
   password: string;
   role: 'candidat' | 'entreprise';

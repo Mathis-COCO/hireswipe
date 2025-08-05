@@ -11,7 +11,7 @@ const AuthForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register');
   const { register, login, error, clearError } = useAuth();
 
-  const handleRegisterSubmit = async (data: RegisterData) => {
+  const handleRegisterSubmit = async (data: { email: string; password: string; role: 'candidat' | 'entreprise' }) => {
     clearError();
     const result = await register(data);
     
