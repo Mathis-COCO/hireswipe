@@ -7,12 +7,10 @@ import PasswordStrengthIndicator from '../../PasswordStrengthIndicator/PasswordS
 import { isPasswordStrong } from '../../../utils/passwordValidation';
 
 interface RegisterFormProps {
-  onSubmit: (data: { firstName: string; email: string; password: string; role: 'candidat' | 'entreprise' }) => void;
+  onSubmit: (data: { email: string; password: string; role: 'candidat' | 'entreprise' }) => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVerification, setPasswordVerification] = useState('');
@@ -33,32 +31,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
     }
 
     setShowPasswordMismatch(false);
-    onSubmit({ firstName, email, password, role });
+    onSubmit({ email, password, role });
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.registerForm}>
       <h2 className={styles.formTitle}>Créer un compte</h2>
       <p className={styles.formDescription}>Rejoignez HireSwipe et trouvez votre match professionnel</p>
-
-      <div className={styles.fullName}>
-        <InputFieldAuth
-          label="Prénom"
-          type="text"
-          placeholder="Votre prénom"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        <InputFieldAuth
-          label="Nom"
-          type="text"
-          placeholder="Votre nom"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-      </div>
 
       <InputFieldAuth
         label="Email"
