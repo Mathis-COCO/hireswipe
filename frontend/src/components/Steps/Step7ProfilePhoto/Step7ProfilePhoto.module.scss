@@ -1,0 +1,75 @@
+@import '../../../styles/variables.scss';
+
+.stepHeader {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.iconContainer {
+    color: $primary-color;
+    margin-bottom: 10px;
+    
+    svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+.uploadSection {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.uploadBox {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: $secondary-text-color;
+}
+
+.uploadIcon {
+    svg {
+        color: $primary-color;
+    }
+}
+
+.uploadButton {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: $text-color;
+    transition: background-color 0.2s;
+    
+    &:hover {
+        background-color: darken(#e0e0e0, 10%);
+    }
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    resize: vertical;
+    
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+}

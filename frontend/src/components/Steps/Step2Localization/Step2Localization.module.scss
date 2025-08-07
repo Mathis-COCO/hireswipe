@@ -1,0 +1,122 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixin.scss';
+
+.stepHeader {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.iconContainer {
+    color: $primary-color;
+    margin-bottom: 10px;
+    
+    svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+.formGroup {
+    margin-bottom: 20px;
+    
+    &.row {
+        display: flex;
+        gap: 20px;
+        
+        @include respond-to(mobile) {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+}
+
+.formField {
+    flex: 1;
+    
+    &:not(:last-child) {
+        @include respond-to(mobile) {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.toggleGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 28px;
+    
+    &::before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+}
+
+input:checked + .slider {
+    background-color: $primary-color;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.licenseSection {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Custom scrollbar for the step */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.6);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.8);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(59, 130, 246, 1);
+}
