@@ -75,7 +75,7 @@ const StepSummary: React.FC<StepProps> = ({ icon: Icon, data }) => {
     );
 
     return (
-        <>
+        <div className={styles.stepContainer}>
             <div className={styles.stepHeader}>
                 <div className={styles.iconContainer}><Icon /></div>
                 <h3>Récapitulatif</h3>
@@ -83,7 +83,7 @@ const StepSummary: React.FC<StepProps> = ({ icon: Icon, data }) => {
             </div>
             
             {isCompany ? renderCompanySummary() : renderCandidateSummary()}
-        </>
+        </div>
     );
 };
 

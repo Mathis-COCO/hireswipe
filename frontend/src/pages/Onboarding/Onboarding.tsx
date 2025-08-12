@@ -14,18 +14,18 @@ import Step8Summary from '../../components/Steps/Shared/Summary/StepSummary';
 import CompanyInfo from '../../components/Steps/Enterprise/CompanyInfo/StepCompanyInfo';
 import CompanyDetails from '../../components/Steps/Enterprise/CompanyDetails/StepCompanyDetails';
 import CompanyLocalization from '../../components/Steps/Enterprise/CompanyLocalization/StepCompanyLocalization';
+import StepCompanyPitch from '../../components/Steps/Enterprise/CompanyPitch/StepCompanyPitch';
 
 const Onboarding: React.FC = () => {
     const [step, setStep] = useState<number>(1);
     const [profileData, setProfileData] = useState<any>({});
     const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
     const [animationDirection, setAnimationDirection] = useState<'left' | 'right'>('right');
+    const [accountType, setAccountType] = useState<'candidate' | 'company' | null>(null);
     const navigate = useNavigate();
 
     const candidateSteps: number = 8;
-    const companySteps: number = 5;
-
-    const accountType = profileData.accountType || 'candidate';
+    const companySteps: number = 6; // Updated to 6 steps
 
     const totalSteps = accountType === 'company' ? companySteps : candidateSteps;
 
@@ -36,21 +36,36 @@ const Onboarding: React.FC = () => {
             return;
         }
 
+        // Check if onboarding is completed
         const isCompleted = localStorage.getItem('onboardingCompleted');
         if (isCompleted === 'true') {
             navigate('/');
             return;
         }
 
+        // Get account type from localStorage
+        const storedAccountType = localStorage.getItem('accountType') as 'candidate' | 'company' | null;
+        if (!storedAccountType) {
+            // If no account type found, redirect to auth
+            navigate('/auth');
+            return;
+        }
+        
+        setAccountType(storedAccountType);
+
+        // Load saved progress
         const savedProgress = localStorage.getItem('onboardingProgress');
         if (savedProgress) {
             try {
                 const { step: savedStep, data } = JSON.parse(savedProgress);
                 setStep(savedStep || 1);
-                setProfileData(data || {});
+                setProfileData({ ...data, accountType: storedAccountType });
             } catch (error) {
                 console.error('Erreur lors du chargement de la progression:', error);
+                setProfileData({ accountType: storedAccountType });
             }
+        } else {
+            setProfileData({ accountType: storedAccountType });
         }
     }, [navigate]);
 
@@ -94,7 +109,7 @@ const Onboarding: React.FC = () => {
     };
 
     const updateProfileData = (stepData: any) => {
-        const newData = { ...profileData, ...stepData };
+        const newData = { ...profileData, ...stepData, accountType };
         setProfileData(newData);
         saveProgress(step, newData);
     };
@@ -103,6 +118,7 @@ const Onboarding: React.FC = () => {
         try {
             console.log('Données du profil à sauvegarder:', profileData);
             
+            // Mark onboarding as completed for this account type
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
             
@@ -113,6 +129,8 @@ const Onboarding: React.FC = () => {
     };
 
     const renderStep = (): React.ReactElement | null => {
+        if (!accountType) return null;
+
         if (accountType === 'company') {
             switch (step) {
                 case 1:
@@ -122,8 +140,10 @@ const Onboarding: React.FC = () => {
                 case 3:
                     return <CompanyLocalization icon={MapPin} data={profileData} updateData={updateProfileData} />;
                 case 4:
-                    return <Step7ProfilePhoto icon={Camera} data={profileData} updateData={updateProfileData} />;
+                    return <StepCompanyPitch icon={Globe} data={profileData} updateData={updateProfileData} />;
                 case 5:
+                    return <Step7ProfilePhoto icon={Camera} data={profileData} updateData={updateProfileData} />;
+                case 6:
                     return <Step8Summary icon={Check} data={profileData} />;
                 default:
                     return null;
@@ -158,6 +178,7 @@ const Onboarding: React.FC = () => {
                 'Informations entreprise',
                 'Détails',
                 'Localisation',
+                'Présentation entreprise',
                 'Logo entreprise',
                 'Résumé'
             ];
@@ -175,6 +196,19 @@ const Onboarding: React.FC = () => {
         }
     };
 
+    // Show loading while determining account type
+    if (!accountType) {
+        return (
+            <div className={styles.onboardingWrapper}>
+                <div className={styles.onboardingContainer}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                        <p>Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.onboardingWrapper}>
             <ProgressIndicator
@@ -186,15 +220,7 @@ const Onboarding: React.FC = () => {
                 <main className={styles.onboardingMain}>
                     <div className={styles.formCard}>
                         <div className={`${styles.stepContent} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}>
-                            {accountType === undefined ? (
-                                <div className={styles.accountTypeSelector}>
-                                    <h3>Je suis :</h3>
-                                    <button onClick={() => updateProfileData({ accountType: 'candidate' })}>Candidat</button>
-                                    <button onClick={() => updateProfileData({ accountType: 'company' })}>Entreprise</button>
-                                </div>
-                            ) : (
-                                renderStep()
-                            )}
+                            {renderStep()}
                         </div>
                     </div>
                 </main>

@@ -1,107 +1,159 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './StepProfilePhoto.module.scss';
-import { LucideProps } from 'lucide-react';
-import { Upload, Camera, Trash2 } from 'lucide-react';
+import { Upload, Camera, X, Building2, User } from 'lucide-react';
 
-interface StepProps {
-    icon: React.ElementType<LucideProps>;
-    data: any;
-    updateData: (newData: any) => void;
+interface StepProfilePhotoProps {
+  icon: React.ComponentType;
+  data: any;
+  updateData: (data: any) => void;
 }
 
-const StepProfilePhoto: React.FC<StepProps> = ({ icon: Icon, data, updateData }) => {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, updateData }) => {
+  const [dragActive, setDragActive] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(data.profilePhoto || data.companyLogo || null);
+
+  const isCompany = data.accountType === 'company';
+  
+  const title = isCompany ? 'Logo de votre entreprise' : 'Votre photo de profil';
+  const subtitle = isCompany 
+    ? 'Ajoutez le logo de votre entreprise pour vous démarquer auprès des candidats'
+    : 'Ajoutez une photo pour personnaliser votre profil et augmenter vos chances de match';
+  
+  const fieldName = isCompany ? 'companyLogo' : 'profilePhoto';
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
     
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const imageUrl = reader.result as string;
-                updateData({ profilePhotoUrl: imageUrl });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    
-    const handleRemovePhoto = () => {
-        updateData({ profilePhotoUrl: null });
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleFile(e.target.files[0]);
+    }
+  };
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const file = e.dataTransfer.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const imageUrl = reader.result as string;
-                updateData({ profilePhotoUrl: imageUrl });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+  const handleFile = (file: File) => {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        setPreviewImage(imageUrl);
+        updateData({ [fieldName]: imageUrl });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-    return (
-        <>
-            <div className={styles.stepHeader}>
-                <div className={styles.iconContainer}><Icon /></div>
-                <h3>Photo de profil</h3>
-                <p>Ajoutez votre photo (optionnel)</p>
+  const removeImage = () => {
+    setPreviewImage(null);
+    updateData({ [fieldName]: null });
+  };
+
+  const handleSkip = () => {
+    updateData({ [fieldName]: null });
+  };
+
+  return (
+    <div className={styles.stepContainer}>
+      <div className={styles.icon}>
+        {isCompany ? <Building2 /> : <User />}
+      </div>
+      
+      <h2>{title}</h2>
+      <p>{subtitle}</p>
+
+      <div className={styles.uploadSection}>
+        {previewImage ? (
+          <div className={styles.previewContainer}>
+            <div className={`${styles.imagePreview} ${isCompany ? styles.logoPreview : ''}`}>
+              <img src={previewImage} alt={isCompany ? "Logo entreprise" : "Aperçu"} />
+              <button 
+                type="button" 
+                className={styles.removeButton} 
+                onClick={removeImage}
+              >
+                <X size={20} />
+              </button>
             </div>
-
-            <div className={styles.uploadSection}>
-                <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    style={{ display: 'none' }}
-                />
-
-                {data.profilePhotoUrl ? (
-                    <div className={styles.previewBox}>
-                        <img src={data.profilePhotoUrl} alt="Profil" />
-                        <button type="button" className={styles.removeButton} onClick={handleRemovePhoto}>
-                            <Trash2 size={20} />
-                        </button>
-                    </div>
-                ) : (
-                    <div
-                        className={styles.uploadBox}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <div className={styles.uploadIcon}><Upload size={48} /></div>
-                        <span>Glissez votre photo ici</span>
-                        <small>Format recommandé : JPG, PNG (max. 5MB)</small>
-                        <button type="button" className={styles.uploadButton}>
-                            Choisir une photo
-                        </button>
-                    </div>
-                )}
+            <p className={styles.previewText}>
+              {isCompany ? 'Logo ajouté avec succès' : 'Photo ajoutée avec succès'}
+            </p>
+          </div>
+        ) : (
+          <div 
+            className={`${styles.uploadZone} ${dragActive ? styles.dragActive : ''}`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            <input
+              type="file"
+              id="fileInput"
+              className={styles.fileInput}
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            
+            <div className={styles.uploadContent}>
+              <div className={styles.uploadIcon}>
+                {isCompany ? <Building2 size={48} /> : <Camera size={48} />}
+              </div>
+              
+              <h3>
+                {isCompany ? 'Ajoutez votre logo' : 'Ajoutez votre photo'}
+              </h3>
+              
+              <p>
+                {isCompany 
+                  ? 'Glissez-déposez votre logo ici ou cliquez pour parcourir'
+                  : 'Glissez-déposez votre photo ici ou cliquez pour parcourir'
+                }
+              </p>
+              
+              <label htmlFor="fileInput" className={styles.uploadButton}>
+                <Upload size={20} />
+                {isCompany ? 'Choisir un logo' : 'Choisir une photo'}
+              </label>
             </div>
+          </div>
+        )}
+      </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="bio">Bio (optionnel)</label>
-                <textarea
-                    id="bio"
-                    placeholder="Décrivez-vous en quelques mots..."
-                    defaultValue={data.bio || ''}
-                    onChange={(e) => updateData({ bio: e.target.value })}
-                ></textarea>
-            </div>
-        </>
-    );
+      <div className={styles.formatInfo}>
+        <h4>Formats acceptés</h4>
+        <p>JPG, PNG, GIF - Maximum 5MB</p>
+        {isCompany && (
+          <p className={styles.logoTip}>
+            💡 Utilisez un logo carré ou rectangulaire pour un meilleur rendu
+          </p>
+        )}
+      </div>
+
+      <button 
+        type="button" 
+        className={styles.skipButton}
+        onClick={handleSkip}
+      >
+        {isCompany ? 'Ajouter le logo plus tard' : 'Ajouter la photo plus tard'}
+      </button>
+    </div>
+  );
 };
 
 export default StepProfilePhoto;

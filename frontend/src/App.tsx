@@ -4,6 +4,22 @@ import AuthPage from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
 import ProtectedOnboarding from './components/ProtectedRoute/ProtectedRoute';
 
+// Protected home component
+const ProtectedHome: React.FC = () => {
+    const token = localStorage.getItem('authToken');
+    const isCompleted = localStorage.getItem('onboardingCompleted');
+    
+    if (!token) {
+        return <Navigate to="/auth" replace />;
+    }
+    
+    if (isCompleted !== 'true') {
+        return <Navigate to="/onboarding" replace />;
+    }
+    
+    return <div>Page d'accueil - onboarding terminé</div>;
+};
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -17,7 +33,8 @@ const App: React.FC = () => {
             </ProtectedOnboarding>
           } 
         />
-        <Route path="/" element={<div>Page d'accueil - onboarding terminé</div>} />
+        <Route path="/" element={<ProtectedHome />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
