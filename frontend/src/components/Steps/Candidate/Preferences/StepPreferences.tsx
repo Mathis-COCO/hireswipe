@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import styles from './Step6Preferences.module.scss';
+import React from 'react';
+import styles from './StepPreferences.module.scss';
 import { LucideProps } from 'lucide-react';
 
 interface StepProps {
     icon: React.ElementType<LucideProps>;
+    data: any;
+    updateData: (newData: any) => void;
 }
 
-const Step6Preferences: React.FC<StepProps> = ({ icon: Icon }) => {
-    const [selectedContracts, setSelectedContracts] = useState<string[]>(['CDI']);
-    const [selectedWorkModes, setSelectedWorkModes] = useState<string[]>(['Télétravail']);
-
+const StepPreferences: React.FC<StepProps> = ({ icon: Icon, data, updateData }) => {
     const handleContractToggle = (contract: string) => {
-        setSelectedContracts(prev =>
-            prev.includes(contract) ? prev.filter(c => c !== contract) : [...prev, contract]
-        );
+        const currentContracts = data.contractTypes || [];
+        const updatedContracts = currentContracts.includes(contract)
+            ? currentContracts.filter((contractType: string) => contractType !== contract)
+            : [...currentContracts, contract];
+        updateData({ contractTypes: updatedContracts });
     };
 
     const handleWorkModeToggle = (mode: string) => {
-        setSelectedWorkModes(prev =>
-            prev.includes(mode) ? prev.filter(m => m !== mode) : [...prev, mode]
-        );
+        const currentWorkModes = data.workModes || [];
+        const updatedWorkModes = currentWorkModes.includes(mode)
+            ? currentWorkModes.filter((workMode: string) => workMode !== mode)
+            : [...currentWorkModes, mode];
+        updateData({ workModes: updatedWorkModes });
     };
 
     const contracts = ['CDI', 'CDD', 'Stage', 'Freelance', 'Alternance'];
@@ -35,7 +38,13 @@ const Step6Preferences: React.FC<StepProps> = ({ icon: Icon }) => {
             <form>
                 <div className={styles.formGroup}>
                     <label htmlFor="salary">Prétentions salariales (€/an)</label>
-                    <input id="salary" type="number" placeholder="45000" defaultValue="45000" />
+                    <input
+                        id="salary"
+                        type="number"
+                        placeholder="45000"
+                        defaultValue={data.salary || ''}
+                        onChange={(e) => updateData({ salary: parseInt(e.target.value) || '' })}
+                    />
                 </div>
                 <div className={styles.formGroup}>
                     <label>Types de contrats souhaités</label>
@@ -45,7 +54,7 @@ const Step6Preferences: React.FC<StepProps> = ({ icon: Icon }) => {
                                 type="button"
                                 key={contract}
                                 onClick={() => handleContractToggle(contract)}
-                                className={`${styles.toggleOption} ${selectedContracts.includes(contract) ? styles.active : ''}`}
+                                className={`${styles.toggleOption} ${data.contractTypes?.includes(contract) ? styles.active : ''}`}
                             >
                                 {contract}
                             </button>
@@ -60,7 +69,7 @@ const Step6Preferences: React.FC<StepProps> = ({ icon: Icon }) => {
                                 type="button"
                                 key={mode}
                                 onClick={() => handleWorkModeToggle(mode)}
-                                className={`${styles.toggleOption} ${selectedWorkModes.includes(mode) ? styles.active : ''}`}
+                                className={`${styles.toggleOption} ${data.workModes?.includes(mode) ? styles.active : ''}`}
                             >
                                 {mode}
                             </button>
@@ -72,4 +81,4 @@ const Step6Preferences: React.FC<StepProps> = ({ icon: Icon }) => {
     );
 };
 
-export default Step6Preferences;
+export default StepPreferences;

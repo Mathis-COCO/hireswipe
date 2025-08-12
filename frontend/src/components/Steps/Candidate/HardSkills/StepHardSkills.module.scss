@@ -1,4 +1,5 @@
-@import '../../../styles/variables.scss';
+@import '../../../../styles/variables.scss';
+@import '../../Steps.module.scss';
 
 .stepHeader {
     text-align: center;
@@ -36,25 +37,6 @@
             border-color: $primary-color;
             box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
         }
-    }
-}
-
-.addButton {
-    background-color: $primary-color;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-    
-    &:hover {
-        background-color: darken($primary-color, 10%);
     }
 }
 

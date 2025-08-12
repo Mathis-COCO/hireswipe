@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Onboarding.module.scss';
-import { User, MapPin, Briefcase, Code, HeartHandshake, Car, DollarSign, Camera, Check } from 'lucide-react';
-import Step1Personal from '../../components/Steps/Step1Personal/Step1Personal';
-import Step2Localization from '../../components/Steps/Step2Localization/Step2Localization';
-import Step3Experience from '../../components/Steps/Step3Experience/Step3Experience';
-import Step4TechSkills from '../../components/Steps/Step4HardSkills/Step4HardSkills';
-import Step5SoftSkills from '../../components/Steps/Step5SoftSkills/Step5SoftSkills';
-import Step6Preferences from '../../components/Steps/Step6Preferences/Step6Preferences';
-import Step7ProfilePhoto from '../../components/Steps/Step7ProfilePhoto/Step7ProfilePhoto';
-import Step8Summary from '../../components/Steps/Step8Summary/Step8Summary';
+import { User, MapPin, Briefcase, Code, HeartHandshake, DollarSign, Camera, Check, Building2, Globe } from 'lucide-react';
 import ProgressIndicator from '../../components/ProgressIndicator/ProgressIndicator';
+import Step1Personal from '../../components/Steps/Candidate/Personal/StepPersonal';
+import Step2Localization from '../../components/Steps/Candidate/Localization/StepLocalization';
+import Step3Experience from '../../components/Steps/Candidate/Experience/StepExperience';
+import Step4HardSkills from '../../components/Steps/Candidate/HardSkills/StepHardSkills';
+import Step5SoftSkills from '../../components/Steps/Candidate/SoftSkills/StepSoftSkills';
+import Step6Preferences from '../../components/Steps/Candidate/Preferences/StepPreferences';
+import Step7ProfilePhoto from '../../components/Steps/Shared/ProfilePhoto/StepProfilePhoto';
+import Step8Summary from '../../components/Steps/Shared/Summary/StepSummary';
+import CompanyInfo from '../../components/Steps/Enterprise/CompanyInfo/StepCompanyInfo';
+import CompanyDetails from '../../components/Steps/Enterprise/CompanyDetails/StepCompanyDetails';
+import CompanyLocalization from '../../components/Steps/Enterprise/CompanyLocalization/StepCompanyLocalization';
 
 const Onboarding: React.FC = () => {
     const [step, setStep] = useState<number>(1);
     const [profileData, setProfileData] = useState<any>({});
     const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
     const [animationDirection, setAnimationDirection] = useState<'left' | 'right'>('right');
-    const totalSteps: number = 8;
     const navigate = useNavigate();
+
+    const candidateSteps: number = 8;
+    const companySteps: number = 5;
+
+    const accountType = profileData.accountType || 'candidate';
+
+    const totalSteps = accountType === 'company' ? companySteps : candidateSteps;
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -103,60 +112,97 @@ const Onboarding: React.FC = () => {
         }
     };
 
-    const stepTitles = [
-        'Informations personnelles',
-        'Localisation & Mobilité',
-        'Expérience professionnelle',
-        'Compétences techniques',
-        'Compétences humaines',
-        'Préférences',
-        'Photo de profil',
-        'Résumé'
-    ];
-
     const renderStep = (): React.ReactElement | null => {
-        switch (step) {
-            case 1:
-                return <Step1Personal icon={User} />;
-            case 2:
-                return <Step2Localization icon={MapPin} />;
-            case 3:
-                return <Step3Experience icon={Briefcase} />;
-            case 4:
-                return <Step4TechSkills icon={Code} />;
-            case 5:
-                return <Step5SoftSkills icon={HeartHandshake} />;
-            case 6:
-                return <Step6Preferences icon={DollarSign} />;
-            case 7:
-                return <Step7ProfilePhoto icon={Camera} />;
-            case 8:
-                return <Step8Summary icon={Check} />;
-            default:
-                return null;
+        if (accountType === 'company') {
+            switch (step) {
+                case 1:
+                    return <CompanyInfo icon={Building2} data={profileData} updateData={updateProfileData} />;
+                case 2:
+                    return <CompanyDetails icon={Briefcase} data={profileData} updateData={updateProfileData} />;
+                case 3:
+                    return <CompanyLocalization icon={MapPin} data={profileData} updateData={updateProfileData} />;
+                case 4:
+                    return <Step7ProfilePhoto icon={Camera} data={profileData} updateData={updateProfileData} />;
+                case 5:
+                    return <Step8Summary icon={Check} data={profileData} />;
+                default:
+                    return null;
+            }
+        } else {
+            switch (step) {
+                case 1:
+                    return <Step1Personal icon={User} data={profileData} updateData={updateProfileData} />;
+                case 2:
+                    return <Step2Localization icon={MapPin} data={profileData} updateData={updateProfileData} />;
+                case 3:
+                    return <Step3Experience icon={Briefcase} data={profileData} updateData={updateProfileData} />;
+                case 4:
+                    return <Step4HardSkills icon={Code} data={profileData} updateData={updateProfileData} />;
+                case 5:
+                    return <Step5SoftSkills icon={HeartHandshake} data={profileData} updateData={updateProfileData} />;
+                case 6:
+                    return <Step6Preferences icon={DollarSign} data={profileData} updateData={updateProfileData} />;
+                case 7:
+                    return <Step7ProfilePhoto icon={Camera} data={profileData} updateData={updateProfileData} />;
+                case 8:
+                    return <Step8Summary icon={Check} data={profileData} />;
+                default:
+                    return null;
+            }
+        }
+    };
+
+    const getStepTitles = (): string[] => {
+        if (accountType === 'company') {
+            return [
+                'Informations entreprise',
+                'Détails',
+                'Localisation',
+                'Logo entreprise',
+                'Résumé'
+            ];
+        } else {
+            return [
+                'Informations personnelles',
+                'Localisation & Mobilité',
+                'Expérience professionnelle',
+                'Compétences techniques',
+                'Compétences humaines',
+                'Préférences',
+                'Photo de profil',
+                'Résumé'
+            ];
         }
     };
 
     return (
         <div className={styles.onboardingWrapper}>
-            <ProgressIndicator 
-                currentStep={step} 
-                totalSteps={totalSteps} 
-                stepTitles={stepTitles}
+            <ProgressIndicator
+                currentStep={step}
+                totalSteps={totalSteps}
+                stepTitles={getStepTitles()}
             />
             <div className={styles.onboardingContainer}>
                 <main className={styles.onboardingMain}>
                     <div className={styles.formCard}>
                         <div className={`${styles.stepContent} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}>
-                            {renderStep()}
+                            {accountType === undefined ? (
+                                <div className={styles.accountTypeSelector}>
+                                    <h3>Je suis :</h3>
+                                    <button onClick={() => updateProfileData({ accountType: 'candidate' })}>Candidat</button>
+                                    <button onClick={() => updateProfileData({ accountType: 'company' })}>Entreprise</button>
+                                </div>
+                            ) : (
+                                renderStep()
+                            )}
                         </div>
                     </div>
                 </main>
 
                 <footer className={styles.onboardingFooter}>
                     {step > 1 && (
-                        <button 
-                            onClick={prevStep} 
+                        <button
+                            onClick={prevStep}
                             className={`${styles.navButton} ${styles.prev}`}
                             disabled={isTransitioning}
                         >
@@ -164,8 +210,8 @@ const Onboarding: React.FC = () => {
                         </button>
                     )}
                     {step < totalSteps && (
-                        <button 
-                            onClick={nextStep} 
+                        <button
+                            onClick={nextStep}
                             className={`${styles.navButton} ${styles.next}`}
                             disabled={isTransitioning}
                         >
@@ -173,8 +219,8 @@ const Onboarding: React.FC = () => {
                         </button>
                     )}
                     {step === totalSteps && (
-                        <button 
-                            onClick={completeOnboarding} 
+                        <button
+                            onClick={completeOnboarding}
                             className={`${styles.navButton} ${styles.finish}`}
                             disabled={isTransitioning}
                         >
