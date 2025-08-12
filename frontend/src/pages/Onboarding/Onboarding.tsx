@@ -79,6 +79,16 @@ const Onboarding: React.FC = () => {
     };
 
     const nextStep = (): void => {
+        // Check if current step data is valid
+        const isCurrentStepValid = validateCurrentStep();
+        if (!isCurrentStepValid) {
+            // Trigger validation error display in current step component
+            if (profileData._onValidationError) {
+                profileData._onValidationError();
+            }
+            return; // Don't proceed if validation fails
+        }
+
         if (step < totalSteps && !isTransitioning) {
             setIsTransitioning(true);
             setAnimationDirection('right');
@@ -91,6 +101,56 @@ const Onboarding: React.FC = () => {
                 }, 100);
             }, 300);
         }
+    };
+
+    const handleNextButtonClick = (): void => {
+        const isCurrentStepValid = validateCurrentStep();
+        if (!isCurrentStepValid) {
+            // Trigger validation error display in current step component
+            if (profileData._onValidationError) {
+                profileData._onValidationError();
+            }
+            return;
+        }
+        nextStep();
+    };
+
+    const validateCurrentStep = (): boolean => {
+        if (accountType === 'company') {
+            switch (step) {
+                case 1: // CompanyInfo
+                    return !!(profileData.companyName?.trim() && profileData.companySize);
+                case 2: // CompanyDetails
+                    return !!(profileData.sector);
+                case 3: // CompanyLocalization
+                    return !!(profileData.companyAddress);
+                case 4: // CompanyPitch
+                    return !!(profileData.pitch?.trim());
+                default:
+                    return true;
+            }
+        } else { // candidate
+            switch (step) {
+                case 1: // Personal
+                    return !!(profileData.firstName?.trim() && profileData.lastName?.trim() && profileData.jobTitle?.trim());
+                case 2: // Localization
+                    return !!(profileData.candidateLocationAddress);
+                case 3: // Experience
+                    return !!(profileData.workExperiences?.trim());
+                case 4: // HardSkills
+                    return !!(profileData.hardSkills && profileData.hardSkills.length > 0);
+                case 5: // SoftSkills
+                    return !!(profileData.softSkills && profileData.softSkills.length > 0);
+                case 6: // Preferences
+                    return !!(profileData.salary && profileData.contractTypes && profileData.contractTypes.length > 0);
+                default:
+                    return true;
+            }
+        }
+    };
+
+    const isNextButtonDisabled = (): boolean => {
+        return isTransitioning || !validateCurrentStep();
     };
 
     const prevStep = (): void => {
@@ -237,9 +297,9 @@ const Onboarding: React.FC = () => {
                     )}
                     {step < totalSteps && (
                         <button
-                            onClick={nextStep}
-                            className={`${styles.navButton} ${styles.next}`}
-                            disabled={isTransitioning}
+                            onClick={handleNextButtonClick}
+                            className={`${styles.navButton} ${styles.next} ${isNextButtonDisabled() ? styles.disabled : ''}`}
+                            disabled={false} // Never really disabled, just styled differently
                         >
                             Suivant →
                         </button>

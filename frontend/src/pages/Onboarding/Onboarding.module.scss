@@ -462,24 +462,21 @@
         &.next, &.finish {
           background: linear-gradient(135deg, #3b82f6, #1d4ed8);
           color: white;
+          cursor: pointer;
           
-          &:hover:not(:disabled) {
+          &:hover:not(.disabled) {
             background: linear-gradient(135deg, #2563eb, #1e40af);
           }
           
-          &:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-          }
-          
-          &:hover:not(:disabled):before {
-            left: 100%;
+          &.disabled {
+            background: #94a3b8;
+            cursor: pointer; // Still clickable to trigger validation
+            
+            &:hover {
+              background: #94a3b8;
+              transform: none;
+              box-shadow: none;
+            }
           }
         }
       }
