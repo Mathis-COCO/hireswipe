@@ -12,14 +12,8 @@ export interface LoginData {
 export interface AuthResponse {
   token: string;
   user: {
-    id: string;
-    firstName: string;
+    id: number;
     email: string;
-    role: 'candidat' | 'entreprise';
+    role: string;
   };
-}
-
-export interface ApiError {
-  message: string;
-  status: number;
 }

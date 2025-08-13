@@ -15,6 +15,7 @@ import CompanyInfo from '../../components/Steps/Enterprise/CompanyInfo/StepCompa
 import CompanyDetails from '../../components/Steps/Enterprise/CompanyDetails/StepCompanyDetails';
 import CompanyLocalization from '../../components/Steps/Enterprise/CompanyLocalization/StepCompanyLocalization';
 import StepCompanyPitch from '../../components/Steps/Enterprise/CompanyPitch/StepCompanyPitch';
+import { authService } from '../../services/authService';
 
 const Onboarding: React.FC = () => {
     const [step, setStep] = useState<number>(1);
@@ -177,8 +178,7 @@ const Onboarding: React.FC = () => {
     const completeOnboarding = async () => {
         try {
             console.log('Données du profil à sauvegarder:', profileData);
-            
-            // Mark onboarding as completed for this account type
+            await authService.updateProfile(profileData);
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
             
@@ -256,7 +256,6 @@ const Onboarding: React.FC = () => {
         }
     };
 
-    // Show loading while determining account type
     if (!accountType) {
         return (
             <div className={styles.onboardingWrapper}>
@@ -299,7 +298,7 @@ const Onboarding: React.FC = () => {
                         <button
                             onClick={handleNextButtonClick}
                             className={`${styles.navButton} ${styles.next} ${isNextButtonDisabled() ? styles.disabled : ''}`}
-                            disabled={false} // Never really disabled, just styled differently
+                            disabled={false}
                         >
                             Suivant →
                         </button>

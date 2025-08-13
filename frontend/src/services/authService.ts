@@ -1,37 +1,71 @@
 import { apiRequest } from './api';
-import { RegisterData, LoginData, AuthResponse } from '../types/auth';
 
-export const authService = {
-  register: async (data: RegisterData): Promise<AuthResponse> => {
-    return apiRequest<AuthResponse>('/auth/register', {
+interface AuthResponse {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+    role: string;
+  };
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  role: 'candidat' | 'entreprise';
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+class AuthService {
+  async register(data: RegisterData): Promise<AuthResponse> {
+    const response = await apiRequest<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
-  },
+    return response;
+  }
 
-  login: async (data: LoginData): Promise<AuthResponse> => {
-    return apiRequest<AuthResponse>('/auth/login', {
+  async login(data: LoginData): Promise<AuthResponse> {
+    const response = await apiRequest<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
     });
-  },
+    return response;
+  }
 
-  logout: () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-  },
+  async updateProfile(profileData: any): Promise<any> {
+    const response = await apiRequest('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+    return response;
+  }
 
-  saveAuthData: (authResponse: AuthResponse) => {
-    localStorage.setItem('authToken', authResponse.token);
-    localStorage.setItem('user', JSON.stringify(authResponse.user));
-  },
+  saveAuthData(authData: AuthResponse): void {
+    localStorage.setItem('authToken', authData.token);
+    localStorage.setItem('userData', JSON.stringify(authData.user));
+  }
 
-  getStoredUser: () => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  },
-
-  isAuthenticated: (): boolean => {
+  isAuthenticated(): boolean {
     return !!localStorage.getItem('authToken');
-  },
-};
+  }
+
+  logout(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('accountType');
+    localStorage.removeItem('onboardingCompleted');
+    localStorage.removeItem('onboardingProgress');
+  }
+
+  getCurrentUser(): any {
+    const userData = localStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
+  }
+}
+
+export const authService = new AuthService();
