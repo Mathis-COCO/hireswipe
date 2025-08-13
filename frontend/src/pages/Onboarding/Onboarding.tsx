@@ -22,13 +22,13 @@ const Onboarding: React.FC = () => {
     const [profileData, setProfileData] = useState<any>({});
     const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
     const [animationDirection, setAnimationDirection] = useState<'left' | 'right'>('right');
-    const [accountType, setAccountType] = useState<'candidate' | 'company' | null>(null);
+    const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
     const navigate = useNavigate();
 
     const candidateSteps: number = 8;
-    const companySteps: number = 6; // Updated to 6 steps
+    const companySteps: number = 6;
 
-    const totalSteps = accountType === 'company' ? companySteps : candidateSteps;
+    const totalSteps = accountType === 'entreprise' ? companySteps : candidateSteps;
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -45,7 +45,7 @@ const Onboarding: React.FC = () => {
         }
 
         // Get account type from localStorage
-        const storedAccountType = localStorage.getItem('accountType') as 'candidate' | 'company' | null;
+        const storedAccountType = localStorage.getItem('accountType') as 'candidat' | 'entreprise' | null;
         if (!storedAccountType) {
             // If no account type found, redirect to auth
             navigate('/auth');
@@ -117,7 +117,7 @@ const Onboarding: React.FC = () => {
     };
 
     const validateCurrentStep = (): boolean => {
-        if (accountType === 'company') {
+        if (accountType === 'entreprise') {
             switch (step) {
                 case 1: // CompanyInfo
                     return !!(profileData.companyName?.trim() && profileData.companySize);
@@ -191,7 +191,7 @@ const Onboarding: React.FC = () => {
     const renderStep = (): React.ReactElement | null => {
         if (!accountType) return null;
 
-        if (accountType === 'company') {
+        if (accountType === 'entreprise') {
             switch (step) {
                 case 1:
                     return <CompanyInfo icon={Building2} data={profileData} updateData={updateProfileData} />;
@@ -233,7 +233,7 @@ const Onboarding: React.FC = () => {
     };
 
     const getStepTitles = (): string[] => {
-        if (accountType === 'company') {
+        if (accountType === 'entreprise') {
             return [
                 'Informations entreprise',
                 'Détails',

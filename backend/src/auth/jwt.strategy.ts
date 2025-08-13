@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/user.entity';
 
 interface JwtPayload {
   sub: number;
@@ -9,15 +11,12 @@ interface JwtPayload {
   role: string;
 }
 
-interface ValidatedUser {
-  id: number;
-  email: string;
-  role: string;
-}
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private usersService: UsersService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -25,11 +24,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: JwtPayload): ValidatedUser {
-    return {
-      id: payload.sub,
-      email: payload.email,
-      role: payload.role,
-    };
+  async validate(payload: JwtPayload): Promise<User> {
+    const user = await this.usersService.findById(payload.sub);
+
+    if (!user) {
+      throw new UnauthorizedException('Utilisateur non trouvé');
+    }
+
+    return user;
   }
 }

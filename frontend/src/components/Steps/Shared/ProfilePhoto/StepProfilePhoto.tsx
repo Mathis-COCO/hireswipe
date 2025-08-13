@@ -12,7 +12,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(data.profilePhoto || data.companyLogo || null);
 
-  const isCompany = data.accountType === 'company';
+  const isCompany = data.accountType === 'entreprise';
   
   const title = isCompany ? 'Logo de votre entreprise' : 'Votre photo de profil';
   const subtitle = isCompany 

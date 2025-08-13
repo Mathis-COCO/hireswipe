@@ -8,7 +8,7 @@ interface StepProps {
 }
 
 const StepSummary: React.FC<StepProps> = ({ icon: Icon, data }) => {
-    const isCompany = data.accountType === 'company';
+    const isCompany = data.accountType === 'entreprise';
     
     const formatList = (items: string[]) => {
         return items && items.length > 0 ? items.join(', ') : 'Non renseigné';

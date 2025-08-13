@@ -14,9 +14,8 @@ export const useAuth = () => {
       const response = await authService.register(data);
       authService.saveAuthData(response);
       
-      // Store account type for onboarding
-      localStorage.setItem('accountType', data.role === 'candidat' ? 'candidate' : 'company');
-      
+      localStorage.setItem('accountType', data.role === 'candidat' ? 'candidat' : 'entreprise');
+
       return { success: true, data: response };
     } catch (err: any) {
       const errorMessage = err.message || 'Erreur lors de l\'inscription';
@@ -37,7 +36,7 @@ export const useAuth = () => {
       
       // Store account type from response if available
       if (response.user?.role) {
-        const accountType = response.user.role === 'candidat' ? 'candidate' : 'company';
+        const accountType = response.user.role === 'candidat' ? 'candidat' : 'entreprise';
         localStorage.setItem('accountType', accountType);
       }
       

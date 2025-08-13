@@ -41,6 +41,9 @@ class AuthService {
     const response = await apiRequest('/auth/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
     });
     return response;
   }
