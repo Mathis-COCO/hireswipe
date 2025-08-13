@@ -52,14 +52,14 @@ export class AuthService {
     userRole: string,
     dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
   ) {
-    if (userRole === 'candidate') {
+    if (userRole === 'candidat') {
       const candidateDto = dto as UpdateCandidateOnboardingDto;
       return this.usersService.updateUser(userId, candidateDto);
-    } else if (userRole === 'recruiter') {
+    } else if (userRole === 'entreprise') {
       const recruiterDto = dto as UpdateRecruiterOnboardingDto;
       return this.usersService.updateUser(userId, recruiterDto);
     }
 
-    throw new BadRequestException('Role utilisateur non pris en charge');
+    throw new BadRequestException('Rôle utilisateur non pris en charge');
   }
 }
