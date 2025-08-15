@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -40,7 +38,7 @@ export class AuthService {
     return user;
   }
 
-  login(user: any) {
+  login(user: { id: number; email: string; role: string }) {
     const payload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),

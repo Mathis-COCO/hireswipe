@@ -37,24 +37,20 @@ const Onboarding: React.FC = () => {
             return;
         }
 
-        // Check if onboarding is completed
         const isCompleted = localStorage.getItem('onboardingCompleted');
         if (isCompleted === 'true') {
             navigate('/');
             return;
         }
 
-        // Get account type from localStorage
         const storedAccountType = localStorage.getItem('accountType') as 'candidat' | 'entreprise' | null;
         if (!storedAccountType) {
-            // If no account type found, redirect to auth
             navigate('/auth');
             return;
         }
         
         setAccountType(storedAccountType);
 
-        // Load saved progress
         const savedProgress = localStorage.getItem('onboardingProgress');
         if (savedProgress) {
             try {
@@ -62,7 +58,6 @@ const Onboarding: React.FC = () => {
                 setStep(savedStep || 1);
                 setProfileData({ ...data, accountType: storedAccountType });
             } catch (error) {
-                console.error('Erreur lors du chargement de la progression:', error);
                 setProfileData({ accountType: storedAccountType });
             }
         } else {
@@ -80,14 +75,12 @@ const Onboarding: React.FC = () => {
     };
 
     const nextStep = (): void => {
-        // Check if current step data is valid
         const isCurrentStepValid = validateCurrentStep();
         if (!isCurrentStepValid) {
-            // Trigger validation error display in current step component
             if (profileData._onValidationError) {
                 profileData._onValidationError();
             }
-            return; // Don't proceed if validation fails
+            return;
         }
 
         if (step < totalSteps && !isTransitioning) {
@@ -107,7 +100,6 @@ const Onboarding: React.FC = () => {
     const handleNextButtonClick = (): void => {
         const isCurrentStepValid = validateCurrentStep();
         if (!isCurrentStepValid) {
-            // Trigger validation error display in current step component
             if (profileData._onValidationError) {
                 profileData._onValidationError();
             }
@@ -119,30 +111,30 @@ const Onboarding: React.FC = () => {
     const validateCurrentStep = (): boolean => {
         if (accountType === 'entreprise') {
             switch (step) {
-                case 1: // CompanyInfo
+                case 1:
                     return !!(profileData.companyName?.trim() && profileData.companySize);
-                case 2: // CompanyDetails
+                case 2:
                     return !!(profileData.sector);
-                case 3: // CompanyLocalization
+                case 3:
                     return !!(profileData.companyAddress);
-                case 4: // CompanyPitch
+                case 4:
                     return !!(profileData.pitch?.trim());
                 default:
                     return true;
             }
-        } else { // candidate
+        } else {
             switch (step) {
-                case 1: // Personal
+                case 1:
                     return !!(profileData.firstName?.trim() && profileData.lastName?.trim() && profileData.jobTitle?.trim());
-                case 2: // Localization
+                case 2:
                     return !!(profileData.candidateLocationAddress);
-                case 3: // Experience
+                case 3:
                     return !!(profileData.workExperiences?.trim());
-                case 4: // HardSkills
+                case 4:
                     return !!(profileData.hardSkills && profileData.hardSkills.length > 0);
-                case 5: // SoftSkills
+                case 5:
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
-                case 6: // Preferences
+                case 6:
                     return !!(profileData.salary && profileData.contractTypes && profileData.contractTypes.length > 0);
                 default:
                     return true;
@@ -177,7 +169,6 @@ const Onboarding: React.FC = () => {
 
     const completeOnboarding = async () => {
         try {
-            console.log('Données du profil à sauvegarder:', profileData);
             await authService.updateProfile(profileData);
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');

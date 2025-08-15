@@ -42,6 +42,7 @@ class AuthService {
       method: 'PUT',
       body: JSON.stringify(profileData),
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
