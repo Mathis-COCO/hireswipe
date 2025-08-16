@@ -46,13 +46,13 @@
   border-radius: 12px;
   padding: 0.5rem 1.1rem;
   box-shadow: 0 1px 8px rgba(59,130,246,0.05);
-  margin-bottom: 0; // retire la marge pour l'alignement horizontal
+  margin-bottom: 0;
 }
 
 .pageTitle {
   font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 0; // retire la marge pour l'alignement horizontal
+  margin-bottom: 0;
 }
 
 .formCard {
@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  max-width: 1100px; // largeur du bloc blanc augmentée
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -249,7 +249,7 @@ textarea {
   font-weight: 400;
 }
 
-.actions {
+.actionsRow {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
