@@ -26,6 +26,7 @@ interface InteractiveMapProps {
     initialLatitude?: number;
     initialLongitude?: number;
     onLocationChange: (location: { address: string; lat: number; lng: number }) => void;
+    showDefaultMarker?: boolean; // Ajoute une prop pour contrôler le marker
 }
 
 const CenterMap: React.FC<{ lat: number; lng: number }> = ({ lat, lng }) => {
@@ -39,7 +40,8 @@ const CenterMap: React.FC<{ lat: number; lng: number }> = ({ lat, lng }) => {
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ 
     initialLatitude = 48.8566,
     initialLongitude = 2.3522, 
-    onLocationChange 
+    onLocationChange,
+    showDefaultMarker = false
 }) => {
     const [searchAddress, setSearchAddress] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +50,21 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         lng: initialLongitude || 2.3522 
     });
     const [selectedAddress, setSelectedAddress] = useState('');
+    const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
+
+    useEffect(() => {
+        // Affiche le marker si les coordonnées sont définies
+        if (
+          typeof initialLatitude === 'number' &&
+          typeof initialLongitude === 'number' &&
+          initialLatitude !== null &&
+          initialLongitude !== null
+        ) {
+          setMarkerPosition({ lat: initialLatitude, lng: initialLongitude });
+        } else {
+          setMarkerPosition(null);
+        }
+      }, [initialLatitude, initialLongitude]);
 
     const handleAddressSearch = async () => {
         if (!searchAddress) return;
@@ -123,12 +140,22 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
             </div>
             
             <div className={styles.mapContainer}>
-                <MapContainer center={[mapCenter.lat, mapCenter.lng]} zoom={13} style={{ height: '100%', width: '100%' }}>
+                <MapContainer
+                    center={[
+                        markerPosition ? markerPosition.lat : 48.8566,
+                        markerPosition ? markerPosition.lng : 2.3522
+                    ]}
+                    zoom={13}
+                    style={{ height: '100%', width: '100%' }}
+                >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <Marker position={[mapCenter.lat, mapCenter.lng]} />
+                    {markerPosition && (
+                        <Marker position={[markerPosition.lat, markerPosition.lng]}>
+                        </Marker>
+                    )}
                     <CenterMap lat={mapCenter.lat} lng={mapCenter.lng} />
                 </MapContainer>
             </div>
