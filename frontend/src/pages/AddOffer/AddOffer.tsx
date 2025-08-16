@@ -3,6 +3,7 @@ import styles from './AddOffer.module.scss';
 import InteractiveMap from '../../components/InteractiveMap/InteractiveMap';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { categories } from '../../constants/categories';
+import { authService } from '../../services/authService';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
@@ -24,6 +25,10 @@ const AddOffer: React.FC = () => {
     longitude: number | null;
     category: string | null;
     imageUrl: string | null;
+    recruiterId: string | null;
+    candidates: string[];
+    isActive: boolean;
+    offerDate: Date;
   }>({
     title: null,
     location: null,
@@ -40,7 +45,21 @@ const AddOffer: React.FC = () => {
     longitude: null,
     category: null,
     imageUrl: null,
+    recruiterId: null,
+    candidates: [],
+    isActive: true,
+    offerDate: new Date(),
   });
+
+  React.useEffect(() => {
+    (async () => {
+      const user = await authService.getCurrentUser();
+      setForm(prev => ({
+        ...prev,
+        recruiterId: user?.id ?? null,
+      }));
+    })();
+  }, []);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
