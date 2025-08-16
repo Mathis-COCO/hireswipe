@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './AppNavigation.module.scss';
-import { Home, MessageCircle, Heart, User, PlusSquare, Briefcase } from 'lucide-react';
+import { Home, MessageCircle, Heart, User, PlusSquare, Briefcase, ClipboardList } from 'lucide-react';
 
 const candidateNav = [
   { label: 'Accueil', icon: Home, path: '/' },
@@ -13,7 +13,8 @@ const candidateNav = [
 const recruiterNav = [
   { label: 'Accueil', icon: Home, path: '/' },
   { label: 'Messagerie', icon: MessageCircle, path: '/messages' },
-  { label: 'Ajouter annonce', icon: PlusSquare, path: '/mes-offres' },
+  { label: 'Ajouter offre', icon: PlusSquare, path: '/ajouter-offre' },
+  { label: 'Mes offres', icon: ClipboardList, path: '/mes-offres' },
   { label: 'Profil', icon: Briefcase, path: '/profile' },
 ];
 

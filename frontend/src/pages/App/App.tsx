@@ -5,7 +5,7 @@ import AppNavigation from '../../components/AppNavigation/AppNavigation';
 import Messages from '../Messages/Messages';
 import Likes from '../Likes/Likes';
 import Profile from '../Profile/Profile';
-import AddOffer from '../AddOffer/AddOffer';
+import MyOffers from '../MyOffers/MyOffers';
 import { authService } from '../../services/authService';
 
 const App: React.FC = () => {
@@ -31,7 +31,7 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <Likes /> : <Navigate to="/" replace />;
       break;
     case '/mes-offres':
-      content = accountType === 'entreprise' ? <AddOffer /> : <Navigate to="/" replace />;
+      content = accountType === 'entreprise' ? <MyOffers /> : <Navigate to="/" replace />;
       break;
     case '/profile':
       content = <Profile />;

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import OfferList from '../../components/OfferList/OfferList';
 import OfferForm from '../../components/Forms/OfferForm/OfferForm';
-import styles from './AddAnnonce.module.scss';
+import styles from './MyOffers.module.scss';
 
 const initialOffers = [
   {
@@ -35,10 +34,9 @@ const initialOffers = [
   }
 ];
 
-const AddAnnonce: React.FC<{ showFormInitial?: boolean }> = ({ showFormInitial = false }) => {
-  const location = useLocation();
+const MyOffers: React.FC = () => {
   const [offers, setOffers] = useState(initialOffers);
-  const [showForm, setShowForm] = useState(showFormInitial);
+  const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
 
   const handleNew = () => {
@@ -103,4 +101,4 @@ const AddAnnonce: React.FC<{ showFormInitial?: boolean }> = ({ showFormInitial =
   );
 };
 
-export default AddAnnonce;
+export default MyOffers;
