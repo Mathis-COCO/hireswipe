@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './InteractiveMap.module.scss';
 import { Search, MapPin, LocateFixed } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix Leaflet marker icon issue
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+const DefaultIcon = L.icon({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 interface InteractiveMapProps {
     initialLatitude?: number;
     initialLongitude?: number;
     onLocationChange: (location: { address: string; lat: number; lng: number }) => void;
 }
+
+const CenterMap: React.FC<{ lat: number; lng: number }> = ({ lat, lng }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng], map.getZoom(), { animate: true });
+  }, [lat, lng, map]);
+  return null;
+};
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ 
     initialLatitude = 48.8566,
@@ -27,16 +53,26 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         if (!searchAddress) return;
         setIsLoading(true);
 
-        const mockAddressResult = {
-            address: searchAddress,
-            lat: 48.8566,
-            lng: 2.3522,
-        };
-
-        if (mockAddressResult) {
-            setMapCenter({ lat: mockAddressResult.lat, lng: mockAddressResult.lng });
-            setSelectedAddress(mockAddressResult.address);
-            onLocationChange(mockAddressResult);
+        // Géocodage réel avec Nominatim
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}`
+            );
+            const results = await response.json();
+            if (results && results.length > 0) {
+                const found = results[0];
+                const lat = parseFloat(found.lat);
+                const lng = parseFloat(found.lon);
+                setMapCenter({ lat, lng });
+                setSelectedAddress(found.display_name);
+                onLocationChange({
+                    address: found.display_name,
+                    lat,
+                    lng
+                });
+            }
+        } catch (err) {
+            // Optionnel: gestion d'erreur
         }
         setIsLoading(false);
     };
@@ -93,6 +129,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <Marker position={[mapCenter.lat, mapCenter.lng]} />
+                    <CenterMap lat={mapCenter.lat} lng={mapCenter.lng} />
                 </MapContainer>
             </div>
             
