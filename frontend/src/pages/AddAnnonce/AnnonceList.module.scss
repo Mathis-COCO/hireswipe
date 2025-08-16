@@ -1,0 +1,281 @@
+@import '../../styles/variables.scss';
+
+.listWrapper {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  h2 {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin: 0;
+    color: $color-primary-dark;
+  }
+  p {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+}
+
+.newBtn {
+  margin-left: auto;
+  background: $color-primary-dark;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  padding: 0.7rem 1.2rem;
+  transition: background 0.2s;
+  &:hover {
+    background: $color-primary;
+  }
+}
+
+.annonces {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.annonceCard {
+  background: #fff;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-sm;
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.annonceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.annonceTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text-dark;
+}
+
+.annonceMeta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.3rem;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  align-items: center;
+}
+
+.inlineMeta {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
+.teletravailTag {
+  background: $color-primary;
+  color: #fff;
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.annonceActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: $border-radius-sm;
+  transition: background 0.2s;
+  &:hover {
+    background: $color-light-gray;
+  }
+}
+
+.annonceDesc {
+  color: $color-text-dark;
+  font-size: $font-size-md;
+  margin: 0.5rem 0;
+}
+
+.annonceFooter {
+  display: flex;
+  gap: 1.2rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.annonceFooterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.annonceFooterInfos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.tagsRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.1rem 0 0.2rem 0;
+}
+
+.tag {
+  background: $color-light-gray;
+  border-radius: 16px;
+  padding: 5px 14px;
+  font-size: $font-size-xs;
+  color: $color-text-dark;
+  font-weight: 500;
+}
+
+.candidatesBtn {
+  margin-top: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: $font-size-md;
+  font-weight: $font-weight-regular;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.2px;
+  min-width: 0;
+  width: auto;
+  align-self: unset;
+  margin-top: 0;
+
+  &:hover {
+    background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+    box-shadow: 0 4px 16px rgba(59,130,246,0.12);
+  }
+
+  svg {
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}
+
+.published {
+  font-weight: $font-weight-medium;
+}
+
+.candidates {
+  font-weight: $font-weight-semibold;
+}
+
+.contract {
+  font-weight: $font-weight-medium;
+}
+
+@media (max-width: 900px) {
+  .listWrapper {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  .annonceCard {
+    padding: 1rem;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    h2 {
+      font-size: $font-size-h3;
+    }
+    p {
+      font-size: $font-size-xs;
+    }
+    .newBtn {
+      margin-left: 0;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+  .annonceHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .annonceMeta {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: $font-size-xs;
+  }
+  .inlineMeta {
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    font-size: $font-size-xs;
+  }
+  .annonceFooterRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .candidatesBtn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  .tagsRow {
+    gap: 0.3rem;
+    font-size: $font-size-xs;
+  }
+}
+
+// Pour les très petits écrans
+@media (max-width: 600px) {
+  .annonceCard {
+    padding: 0.7rem;
+  }
+  .header h2 {
+    font-size: 1.1rem;
+  }
+  .annonceTitle {
+    font-size: 1rem;
+  }
+  .annonceDesc {
+    font-size: 0.95rem;
+  }
+  .tag {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+}
