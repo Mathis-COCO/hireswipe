@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AnnonceForm.module.scss';
-import InteractiveMap from '../../components/InteractiveMap/InteractiveMap';
-import ImageUpload from '../../components/ImageUpload/ImageUpload';
-import { categories } from '../../constants/categories';
+import InteractiveMap from '../../../components/InteractiveMap/InteractiveMap';
+import ImageUpload from '../../ImageUpload/ImageUpload';
+import { categories } from '../../../constants/categories';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];

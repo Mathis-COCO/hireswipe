@@ -9,8 +9,10 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
   margin-bottom: 4rem;
+  width: 100%;
   h2 {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
@@ -116,7 +118,7 @@
 .annonceDesc {
   color: $color-text-dark;
   font-size: $font-size-md;
-  margin: 0.5rem 0;
+  margin: 1.5rem 0;
 }
 
 .annonceFooter {

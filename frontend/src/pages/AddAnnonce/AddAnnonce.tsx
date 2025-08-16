@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AnnonceList from './AnnonceList';
-import AnnonceForm from './AnnonceForm';
+import AnnonceList from '../../components/AnnonceList/AnnonceList';
+import AnnonceForm from '../../components/Forms/AnnonceForm/AnnonceForm';
 import styles from './AddAnnonce.module.scss';
 
 const initialAnnonces = [
@@ -77,7 +77,6 @@ const AddAnnonce: React.FC = () => {
   };
 
   const handleView = (id: string) => {
-    // À compléter plus tard
     alert('Voir les détails/candidatures de l\'annonce');
   };
 

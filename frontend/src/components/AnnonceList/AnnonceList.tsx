@@ -28,8 +28,10 @@ interface AnnonceListProps {
 const AnnonceList: React.FC<AnnonceListProps> = ({ annonces, onEdit, onDelete, onView, onNew }) => (
   <div className={styles.listWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     <div className={styles.header}>
-      <h2>Mes annonces</h2>
-      <p>Gérez vos offres d'emploi et suivez les candidatures</p>
+      <div>
+        <h2>Mes annonces</h2>
+        <p>Gérez vos offres d'emploi et suivez les candidatures</p>
+      </div>
       <button className={styles.newBtn} onClick={onNew}>+ Nouvelle annonce</button>
     </div>
     <div className={styles.annonces} style={{ width: '100%', maxWidth: 900 }}>

@@ -17,20 +17,35 @@ const StepCompanyDetails: React.FC<StepProps> = ({ icon: Icon, data, updateData 
         '500+ employés',
     ];
 
+    const [formData, setFormData] = React.useState({
+        sector: data.sector || '',
+        employees: data.employees || '',
+        website: data.website || '',
+        linkedinUrl: data.linkedinUrl || ''
+    });
+
+    React.useEffect(() => {
+        updateData(formData);
+    }, [formData]);
+
+    const handleInputChange = (field: string, value: string) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
     return (
         <>
             <div className={styles.stepHeader}>
                 <div className={styles.iconContainer}><Icon /></div>
                 <h3>Détails</h3>
-                <p>Secteur et taille</p>
+                <p>Secteur et liens externes</p>
             </div>
             <form>
                 <div className={styles.formGroup}>
                     <label htmlFor="sector">Secteur d'activité</label>
                     <select
                         id="sector"
-                        defaultValue={data.sector || ''}
-                        onChange={(e) => updateData({ sector: e.target.value })}
+                        value={formData.sector}
+                        onChange={(e) => handleInputChange('sector', e.target.value)}
                     >
                         <option value="" disabled>Choisissez votre secteur</option>
                         <option value="IT">Informatique</option>
@@ -39,17 +54,28 @@ const StepCompanyDetails: React.FC<StepProps> = ({ icon: Icon, data, updateData 
                     </select>
                 </div>
                 <div className={styles.formGroup}>
-                    <label htmlFor="employees">Taille de l'entreprise</label>
-                    <select
-                        id="employees"
-                        defaultValue={data.employees || ''}
-                        onChange={(e) => updateData({ employees: e.target.value })}
-                    >
-                        <option value="" disabled>Nombre d'employés</option>
-                        {employeeOptions.map(option => (
-                            <option key={option} value={option}>{option}</option>
-                        ))}
-                    </select>
+                    <label htmlFor="website">
+                        <span>Site web</span>
+                    </label>
+                    <input
+                        type="url"
+                        id="website"
+                        placeholder="https://www.votreentreprise.com"
+                        value={formData.website}
+                        onChange={(e) => handleInputChange('website', e.target.value)}
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                    <label htmlFor="linkedinUrl">
+                        <span>LinkedIn de l'entreprise</span>
+                    </label>
+                    <input
+                        type="url"
+                        id="linkedinUrl"
+                        placeholder="https://www.linkedin.com/company/votre-entreprise"
+                        value={formData.linkedinUrl}
+                        onChange={(e) => handleInputChange('linkedinUrl', e.target.value)}
+                    />
                 </div>
             </form>
         </>

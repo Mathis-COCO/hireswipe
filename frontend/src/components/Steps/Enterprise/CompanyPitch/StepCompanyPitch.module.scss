@@ -14,7 +14,6 @@
     display: flex;
     justify-content: center;
     position: relative;
-    
     &::before {
       content: '';
       position: absolute;
@@ -27,7 +26,6 @@
       transform: translate(-50%, -50%);
       z-index: -1;
     }
-    
     svg {
       width: 56px;
       height: 56px;
@@ -56,7 +54,6 @@
 
     .formGroup {
       margin-bottom: 2rem;
-
       label {
         display: flex;
         align-items: center;
@@ -65,14 +62,12 @@
         color: #374151;
         margin-bottom: 0.75rem;
         font-size: 15px;
-
         svg {
           width: 18px;
           height: 18px;
           color: #3b82f6;
         }
       }
-
       textarea, input {
         width: 100%;
         padding: 16px 20px;
@@ -83,19 +78,16 @@
         background: #fafbfc;
         font-family: inherit;
         resize: vertical;
-
         &:focus {
           border-color: #3b82f6;
           outline: none;
           box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
           background: white;
         }
-
         &::placeholder {
           color: #9ca3af;
         }
       }
-
       .charCount {
         display: block;
         text-align: right;
@@ -109,7 +101,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
-
       .sizeOption {
         padding: 0.75rem 1.5rem;
         border: 2px solid #e2e8f0;
@@ -119,12 +110,10 @@
         cursor: pointer;
         transition: all 0.2s ease;
         font-weight: 500;
-
         &:hover {
           border-color: #cbd5e1;
           background: white;
         }
-
         &.selected {
           border-color: #3b82f6;
           background: #3b82f6;
@@ -138,7 +127,6 @@
       flex-wrap: wrap;
       gap: 0.75rem;
       margin-top: 0.5rem;
-
       .benefitTag {
         padding: 0.5rem 1rem;
         background: #f1f5f9;
@@ -148,12 +136,10 @@
         color: #64748b;
         cursor: pointer;
         transition: all 0.2s ease;
-
         &:hover {
           background: #e2e8f0;
           border-color: #cbd5e1;
         }
-
         &.selected {
           background: #3b82f6;
           color: white;
@@ -167,27 +153,22 @@
 @media (max-width: 768px) {
   .stepContainer {
     padding: 1rem 0;
-
     h2 {
       font-size: 1.5rem;
     }
-
     p {
       font-size: 1rem;
     }
-
     .icon {
       &::before {
         width: 70px;
         height: 70px;
       }
-      
       svg {
         width: 40px;
         height: 40px;
       }
     }
-
     .formSection {
       .sizeOptions {
         .sizeOption {
@@ -195,7 +176,6 @@
           font-size: 0.9rem;
         }
       }
-
       .benefitsGrid {
         .benefitTag {
           padding: 0.4rem 0.8rem;
@@ -205,3 +185,4 @@
     }
   }
 }
+
