@@ -13,7 +13,7 @@ const candidateNav = [
 const recruiterNav = [
   { label: 'Accueil', icon: Home, path: '/' },
   { label: 'Messagerie', icon: MessageCircle, path: '/messages' },
-  { label: 'Ajouter annonce', icon: PlusSquare, path: '/add-annonce' },
+  { label: 'Ajouter annonce', icon: PlusSquare, path: '/ajouter-offre' },
   { label: 'Profil', icon: Briefcase, path: '/profile' },
 ];
 

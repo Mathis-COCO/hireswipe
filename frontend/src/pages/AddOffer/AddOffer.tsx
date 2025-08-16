@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import AnnonceList from '../../components/AnnonceList/AnnonceList';
-import AnnonceForm from '../../components/Forms/AnnonceForm/AnnonceForm';
+import OfferList from '../../components/OfferList/OfferList';
+import OfferForm from '../../components/Forms/OfferForm/OfferForm';
 import styles from './AddAnnonce.module.scss';
 
-const initialAnnonces = [
+const initialOffers = [
   {
     id: '1',
     title: 'Développeur Full Stack Senior',
@@ -34,8 +34,8 @@ const initialAnnonces = [
   }
 ];
 
-const AddAnnonce: React.FC = () => {
-  const [annonces, setAnnonces] = useState(initialAnnonces);
+const AddOffer: React.FC = () => {
+  const [offers, setOffers] = useState(initialOffers);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
 
@@ -50,15 +50,15 @@ const AddAnnonce: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    setAnnonces(annonces.filter(a => a.id !== id));
+    setOffers(offers.filter(o => o.id !== id));
   };
 
   const handleSubmit = (data: any) => {
     if (editId) {
-      setAnnonces(annonces.map(a => a.id === editId ? { ...a, ...data } : a));
+      setOffers(offers.map(o => o.id === editId ? { ...o, ...data } : o));
     } else {
-      setAnnonces([
-        ...annonces,
+      setOffers([
+        ...offers,
         {
           ...data,
           id: Math.random().toString(36).slice(2),
@@ -77,20 +77,20 @@ const AddAnnonce: React.FC = () => {
   };
 
   const handleView = (id: string) => {
-    alert('Voir les détails/candidatures de l\'annonce');
+    alert('Voir les détails/candidatures de l\'offre');
   };
 
   return (
     <>
       {showForm ? (
-        <AnnonceForm
+        <OfferForm
           onSubmit={handleSubmit}
           onCancel={handleCancel}
-          initialData={editId ? annonces.find(a => a.id === editId) : undefined}
+          initialData={editId ? offers.find(o => o.id === editId) : undefined}
         />
       ) : (
-        <AnnonceList
-          annonces={annonces}
+        <OfferList
+          offers={offers}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onView={handleView}
@@ -101,4 +101,4 @@ const AddAnnonce: React.FC = () => {
   );
 };
 
-export default AddAnnonce;
+export default AddOffer;

@@ -5,7 +5,7 @@ import AppNavigation from '../../components/AppNavigation/AppNavigation';
 import Messages from '../Messages/Messages';
 import Likes from '../Likes/Likes';
 import Profile from '../Profile/Profile';
-import AddAnnonce from '../AddAnnonce/AddAnnonce';
+import AddOffer from '../AddOffer/AddOffer';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
@@ -28,8 +28,8 @@ const App: React.FC = () => {
     case '/likes':
       content = accountType === 'candidat' ? <Likes /> : <Navigate to="/" replace />;
       break;
-    case '/add-annonce':
-      content = accountType === 'entreprise' ? <AddAnnonce /> : <Navigate to="/" replace />;
+    case '/ajouter-offre':
+      content = accountType === 'entreprise' ? <AddOffer /> : <Navigate to="/" replace />;
       break;
     case '/profile':
       content = <Profile />;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styles from './AnnonceForm.module.scss';
-import InteractiveMap from '../../../components/InteractiveMap/InteractiveMap';
+import styles from './OfferForm.module.scss';
+import InteractiveMap from '../../InteractiveMap/InteractiveMap';
 import ImageUpload from '../../ImageUpload/ImageUpload';
 import { categories } from '../../../constants/categories';
 

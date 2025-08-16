@@ -4,7 +4,6 @@ import AuthPage from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
 import ProtectedOnboarding from './components/ProtectedRoute/ProtectedRoute';
 
-// Protected home component
 const ProtectedHome: React.FC = () => {
     const token = localStorage.getItem('authToken');
     const isCompleted = localStorage.getItem('onboardingCompleted');
