@@ -112,6 +112,7 @@ label {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   color: $color-text-dark;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -287,6 +288,30 @@ textarea {
   &:hover {
     background: $color-primary-dark;
   }
+}
+
+.required {
+  position: static;
+  display: inline;
+  color: #dc3545;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-left: 0;
+  margin-top: 0;
+  line-height: 1;
+}
+
+.errorInput {
+  border-color: #dc3545 !important;
+  background: #fff5f5 !important;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 0.3rem;
+  font-weight: 500;
+  display: block;
 }
 
 @media (max-width: 700px) {

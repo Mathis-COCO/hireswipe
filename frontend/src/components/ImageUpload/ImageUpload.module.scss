@@ -1,0 +1,43 @@
+.uploadWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.uploadLabel {
+    cursor: pointer;
+    display: inline-block;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    background: #f9fafb;
+    transition: border-color 0.2s;
+    min-width: 180px;
+    min-height: 120px;
+    text-align: center;
+
+    &:hover {
+        border-color: #3b82f6;
+        background: #f1f5f9;
+    }
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.previewImg {
+    max-width: 180px;
+    max-height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}

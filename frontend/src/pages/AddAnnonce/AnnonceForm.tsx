@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AnnonceForm.module.scss';
 import InteractiveMap from '../../components/InteractiveMap/InteractiveMap';
+import ImageUpload from '../../components/ImageUpload/ImageUpload';
+import { categories } from '../../constants/categories';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
@@ -11,8 +13,29 @@ interface AnnonceFormProps {
   initialData?: any;
 }
 
+const requiredFields = [
+  'title', 'teletravail', 'category', 'experience', 'contract', 'imageUrl'
+];
+
 const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialData }) => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: any;
+    location: string;
+    salary: any;
+    experience: any;
+    contract: any;
+    teletravail: any;
+    description: any;
+    skills: any;
+    skillInput: string;
+    avantages: any;
+    avantageInput: string;
+    latitude: number;
+    longitude: number;
+    category: any;
+    imageUrl: any;
+    imageFile: File | null;
+  }>({
     title: initialData?.title || '',
     location: '',
     salary: initialData?.salary || '',
@@ -26,7 +49,11 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
     avantageInput: '',
     latitude: 48.8566,
     longitude: 2.3522,
+    category: initialData?.category || '',
+    imageUrl: initialData?.imageUrl || '',
+    imageFile: null,
   });
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (initialData) {
@@ -35,6 +62,7 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
         ...initialData,
         latitude: initialData.latitude || 48.8566,
         longitude: initialData.longitude || 2.3522,
+        category: initialData.category || '',
       });
     }
   }, [initialData]);
@@ -78,8 +106,29 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
     setForm(f => ({ ...f, avantages: f.avantages.filter((a: string) => a !== avantage) }));
   };
 
+  const handleImageChange = (file: File | null, url?: string) => {
+    setForm(f => ({
+      ...f,
+      imageFile: file,
+      imageUrl: url || ''
+    }));
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: boolean } = {};
+    newErrors.title = !form.title.trim();
+    newErrors.teletravail = typeof form.teletravail !== 'boolean';
+    newErrors.category = !form.category;
+    newErrors.experience = !form.experience;
+    newErrors.contract = !form.contract;
+    newErrors.imageUrl = !form.imageUrl;
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     onSubmit({
       ...form,
       skills: form.skills,
@@ -101,27 +150,48 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
           <p className={styles.subtitle}>Remplissez les informations de votre offre d'emploi</p>
           <div className={styles.row}>
             <label>
-              Titre du poste
+              Titre du poste <span className={styles.required}>*</span>
               <input
                 name="title"
                 type="text"
                 placeholder="Ex: Développeur Full Stack"
                 value={form.title}
                 onChange={e => handleChange('title', e.target.value)}
+                className={errors.title ? styles.errorInput : ''}
               />
+              {errors.title && <span className={styles.errorText}>Ce champ est obligatoire</span>}
             </label>
           </div>
           <div className={styles.row}>
             <div className={styles.field}>
-              <div className={styles.mapContainer}>
-                <InteractiveMap
-                  initialLatitude={form.latitude}
-                  initialLongitude={form.longitude}
-                  onLocationChange={handleMapLocationChange}
+              <div className={styles.teletravailBlock}>
+                <span className={styles.teletravailSubtitle}>
+                  Ce poste est-il en télétravail ?
+                </span>
+                <input
+                  type="checkbox"
+                  name="teletravail"
+                  checked={form.teletravail}
+                  onChange={e => handleChange('teletravail', e.target.checked)}
+                  className={errors.teletravail ? styles.errorInput : styles.switch}
                 />
               </div>
+              {errors.teletravail && <span className={styles.errorText}>Ce champ est obligatoire</span>}
             </div>
           </div>
+          {!form.teletravail && (
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <div className={styles.mapContainer}>
+                  <InteractiveMap
+                    initialLatitude={form.latitude}
+                    initialLongitude={form.longitude}
+                    onLocationChange={handleMapLocationChange}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
           <div className={styles.rowDouble}>
             <label>
               Salaire
@@ -136,35 +206,39 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
           </div>
           <div className={styles.rowDouble}>
             <label>
-              Expérience requise
-              <select name="experience" value={form.experience} onChange={e => handleChange('experience', e.target.value)}>
+              Catégorie <span className={styles.required}>*</span>
+              <select
+                name="category"
+                value={form.category}
+                onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
+                className={errors.category ? styles.errorInput : ''}
+              >
+                <option value="">Choisissez une catégorie</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+              {errors.category && <span className={styles.errorText}>Ce champ est obligatoire</span>}
+            </label>
+            <label>
+              Expérience requise <span className={styles.required}>*</span>
+              <select name="experience" value={form.experience} onChange={e => handleChange('experience', e.target.value)}
+                className={errors.experience ? styles.errorInput : ''}
+              >
                 <option value="">Niveau d'expérience</option>
                 {experienceLevels.map(lvl => <option key={lvl} value={lvl}>{lvl}</option>)}
               </select>
+              {errors.experience && <span className={styles.errorText}>Ce champ est obligatoire</span>}
             </label>
             <label>
-              Type de contrat
-              <select name="contract" value={form.contract} onChange={e => handleChange('contract', e.target.value)}>
+              Type de contrat <span className={styles.required}>*</span>
+              <select name="contract" value={form.contract} onChange={e => handleChange('contract', e.target.value)}
+                className={errors.contract ? styles.errorInput : ''}
+              >
                 {contractTypes.map(type => <option key={type} value={type}>{type}</option>)}
               </select>
+              {errors.contract && <span className={styles.errorText}>Ce champ est obligatoire</span>}
             </label>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label style={{ fontWeight: 600 }}>Télétravail possible</label>
-              <div className={styles.teletravailBlock}>
-                <span className={styles.teletravailSubtitle}>
-                  Ce poste peut-il être effectué en télétravail ?
-                </span>
-                <input
-                  type="checkbox"
-                  name="teletravail"
-                  checked={form.teletravail}
-                  onChange={e => handleChange('teletravail', e.target.checked)}
-                  className={styles.switch}
-                />
-              </div>
-            </div>
           </div>
           <div className={styles.row}>
             <label>
@@ -219,6 +293,17 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
                   </span>
                 ))}
               </div>
+            </label>
+          </div>
+          <div className={styles.row}>
+            <label>
+              Photo de l'annonce <span className={styles.required}>*</span>
+              <ImageUpload
+                label="Ajouter une photo"
+                imageUrl={form.imageUrl}
+                onChange={handleImageChange}
+              />
+              {errors.imageUrl && <span className={styles.errorText}>Ce champ est obligatoire</span>}
             </label>
           </div>
         </fieldset>
