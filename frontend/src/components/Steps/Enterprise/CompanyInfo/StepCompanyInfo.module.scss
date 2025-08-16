@@ -1,0 +1,73 @@
+@import '../../../../styles/variables.scss';
+
+.sizeOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.75rem;
+
+  .sizeOption {
+    padding: 0.875rem 1.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 25px;
+    background: #fafbfc;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 14px;
+
+    &:hover {
+      border-color: #cbd5e1;
+      background: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &.selected {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+  }
+}
+
+// Styles pour la validation des erreurs
+.errorLabel {
+  color: #dc2626 !important;
+
+  div svg {
+    color: #dc2626 !important;
+  }
+}
+
+.errorInput {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+
+  &:focus {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+  }
+}
+
+.errorText {
+  display: block;
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .sizeOptions {
+    gap: 0.75rem;
+
+    .sizeOption {
+      padding: 0.75rem 1.25rem;
+      font-size: 13px;
+    }
+  }
+}

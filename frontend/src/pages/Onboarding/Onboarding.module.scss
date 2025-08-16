@@ -1,0 +1,616 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixin.scss';
+
+.onboardingWrapper {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  
+  @media (min-width: 769px) {
+    padding-left: 370px;
+  }
+
+  .onboardingContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: calc(100vh - 4rem);
+    justify-content: center;
+    padding: 2rem 0;
+
+    .onboardingMain {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow-y: auto;
+      position: relative;
+
+      .formCard {
+        background: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 900px;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        
+        .stepContent {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          padding: 4rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          overflow-y: auto;
+          transition: opacity 0.3s ease;
+          
+          &.fadeOut {
+            opacity: 0;
+          }
+          
+          &.fadeIn {
+            opacity: 1;
+          }
+
+          h1, h2, h3 {
+            color: #1e293b;
+            margin-bottom: 0.1rem;
+            font-weight: 600;
+            line-height: 1.3;
+            text-align: center;
+          }
+
+          p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            text-align: center;
+          }
+
+          .icon {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            
+            &::before {
+              content: '';
+              position: absolute;
+              width: 90px;
+              height: 90px;
+              background: rgba(59, 130, 246, 0.15);
+              border-radius: 50%;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: -1;
+            }
+            
+            svg {
+              width: 56px;
+              height: 56px;
+              color: #3b82f6;
+              z-index: 1;
+            }
+          }
+
+          .form-section {
+            margin: 2rem 0;
+            
+            .form-group {
+              margin-bottom: 1.5rem;
+              
+              label {
+                font-weight: 500;
+                color: #475569;
+                margin-bottom: 0.5rem;
+                display: block;
+                font-size: 15px;
+                letter-spacing: normal;
+                text-transform: none;
+              }
+            }
+          }
+
+          .choices-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+
+            .choice-item {
+              padding: 1.25rem;
+              border: 2px solid #e2e8f0;
+              border-radius: 16px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              text-align: center;
+              background: #fafbfc;
+              
+              &:hover {
+                border-color: #94a3b8;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              }
+              
+              &.selected {
+                border-color: #3b82f6;
+                background: rgba(59, 130, 246, 0.08);
+                
+                .choice-icon {
+                  color: #3b82f6;
+                }
+              }
+
+              .choice-icon {
+                font-size: 24px;
+                margin-bottom: 0.75rem;
+                color: #64748b;
+                transition: color 0.2s;
+              }
+
+              .choice-title {
+                font-weight: 600;
+                color: #1e293b;
+                margin-bottom: 0.25rem;
+                font-size: 14px;
+              }
+
+              .choice-subtitle {
+                font-size: 12px;
+                color: #64748b;
+              }
+            }
+          }
+
+          .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+
+            .skill-tag {
+              padding: 0.5rem 1rem;
+              background: #f1f5f9;
+              border: 1px solid #e2e8f0;
+              border-radius: 20px;
+              font-size: 0.9rem;
+              color: #64748b;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                background: #e2e8f0;
+              }
+
+              &.selected {
+                background: #3b82f6;
+                color: white;
+                border-color: #3b82f6;
+              }
+            }
+          }
+        }
+        
+        input, select {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-weight: 400;
+          font-size: 15px !important;
+          padding: 16px 20px !important;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          margin-bottom: 1.5rem;
+          background: #fafbfc;
+          
+          &:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+          }
+        }
+
+        textarea {
+          min-height: 120px !important;
+          max-height: 200px !important;
+          resize: vertical;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 16px 20px !important;
+          font-size: 15px !important;
+          line-height: 1.5;
+          transition: border-color 0.2s ease;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-weight: 400;
+          background: #fafbfc;
+          
+          &:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+          }
+        }
+
+        label {
+          font-weight: 600;
+          color: #374151;
+          margin-bottom: 0.75rem;
+          display: block;
+          font-size: 14px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .form-group {
+          margin-bottom: 2rem;
+        }
+
+        .button-group {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+          flex-wrap: wrap;
+        }
+
+        .option-card {
+          padding: 1.5rem;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          margin-bottom: 1rem;
+          
+          &:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+          }
+          
+          &.selected {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+          }
+        }
+
+        .license-section {
+          margin: 2rem 0;
+          
+          .license-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            
+            .license-title {
+              font-size: 1.25rem;
+              font-weight: 700;
+              color: #1e293b;
+              margin-bottom: 0.5rem;
+            }
+            
+            .license-subtitle {
+              color: #64748b;
+              font-size: 0.95rem;
+              line-height: 1.4;
+            }
+          }
+          
+          .license-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            
+            .license-item {
+              display: flex;
+              align-items: center;
+              padding: 1rem 1.25rem;
+              border: 2px solid #e2e8f0;
+              border-radius: 12px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              background: #fafbfc;
+              
+              &:hover {
+                border-color: #cbd5e1;
+                background: white;
+              }
+              
+              &.selected {
+                border-color: #3b82f6;
+                background: rgba(59, 130, 246, 0.05);
+                
+                .license-checkbox {
+                  background: #3b82f6;
+                  border-color: #3b82f6;
+                  
+                  &::after {
+                    opacity: 1;
+                  }
+                }
+              }
+              
+              .license-checkbox {
+                width: 20px;
+                height: 20px;
+                border: 2px solid #cbd5e1;
+                border-radius: 4px;
+                margin-right: 0.75rem;
+                position: relative;
+                background: white;
+                transition: all 0.2s ease;
+                flex-shrink: 0;
+                
+                &::after {
+                  content: '✓';
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  color: white;
+                  font-size: 12px;
+                  font-weight: bold;
+                  opacity: 0;
+                  transition: opacity 0.2s ease;
+                }
+              }
+              
+              .license-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: 0.75rem;
+                color: #64748b;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                &.car { color: #3b82f6; }
+                &.motorcycle { color: #ef4444; }
+                &.truck { color: #f59e0b; }
+                &.bus { color: #10b981; }
+                &.boat { color: #06b6d4; }
+              }
+              
+              .license-info {
+                flex: 1;
+                
+                .license-code {
+                  font-weight: 600;
+                  color: #1e293b;
+                  font-size: 0.95rem;
+                  margin-bottom: 0.25rem;
+                }
+                
+                .license-description {
+                  color: #64748b;
+                  font-size: 0.85rem;
+                  line-height: 1.3;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .onboardingFooter {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 1rem 2rem;
+      gap: 1rem;
+      flex-shrink: 0;
+      
+      .prev {
+        margin-right: auto;
+      }
+
+      .navButton {
+        padding: 12px 32px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+        }
+        
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        &:active:not(:disabled) {
+          transform: translateY(0);
+        }
+        
+        &.prev {
+          background: #f8fafc;
+          color: #475569;
+          border: 2px solid #e2e8f0;
+          
+          &:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+          }
+        }
+        
+        &.next, &.finish {
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+          color: white;
+          cursor: pointer;
+          
+          &:hover:not(.disabled) {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+          }
+          
+          &.disabled {
+            background: #94a3b8;
+            cursor: pointer; // Still clickable to trigger validation
+            
+            &:hover {
+              background: #94a3b8;
+              transform: none;
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    background: white;
+    
+    .onboardingContainer {
+      height: 100vh;
+      padding: 0;
+      
+      .onboardingMain {
+        .formCard {
+          padding: 0;
+          height: 100vh;
+          max-width: 100%;
+          border-radius: 0;
+          box-shadow: none;
+          background: white;
+          
+          .stepContent {
+            padding: 2rem 1.5rem;
+
+            h1, h2, h3 {
+              font-size: 1.5rem;
+              margin-bottom: 1rem;
+            }
+
+            p {
+              font-size: 0.9rem;
+              margin-bottom: 1.5rem;
+            }
+
+            .icon {
+              &::before {
+                width: 70px;
+                height: 70px;
+              }
+              
+              svg {
+                width: 40px;
+                height: 40px;
+              }
+            }
+
+            .choices-container {
+              grid-template-columns: 1fr;
+              gap: 0.75rem;
+            }
+
+            .license-section {
+              .license-grid {
+                grid-template-columns: 1fr;
+                
+                .license-item {
+                  padding: 0.875rem 1rem;
+                  
+                  .license-icon {
+                    width: 28px;
+                    height: 28px;
+                  }
+                }
+              }
+            }
+          }
+          
+          textarea {
+            min-height: 100px !important;
+            padding: 14px 16px !important;
+            font-size: 14px !important;
+          }
+          
+          input, select {
+            font-size: 14px !important;
+            padding: 14px 16px !important;
+            margin-bottom: 1.25rem;
+          }
+
+          .form-group {
+            margin-bottom: 1.5rem;
+          }
+
+          .option-card {
+            padding: 1.25rem;
+          }
+        }
+      }
+      
+      .onboardingFooter {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 1rem 1.5rem;
+        
+        .navButton {
+          padding: 12px 24px;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

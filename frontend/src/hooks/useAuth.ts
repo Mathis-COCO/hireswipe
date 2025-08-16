@@ -13,6 +13,9 @@ export const useAuth = () => {
     try {
       const response = await authService.register(data);
       authService.saveAuthData(response);
+      
+      localStorage.setItem('accountType', data.role === 'candidat' ? 'candidat' : 'entreprise');
+
       return { success: true, data: response };
     } catch (err: any) {
       const errorMessage = err.message || 'Erreur lors de l\'inscription';
@@ -30,6 +33,13 @@ export const useAuth = () => {
     try {
       const response = await authService.login(data);
       authService.saveAuthData(response);
+      
+      // Store account type from response if available
+      if (response.user?.role) {
+        const accountType = response.user.role === 'candidat' ? 'candidat' : 'entreprise';
+        localStorage.setItem('accountType', accountType);
+      }
+      
       return { success: true, data: response };
     } catch (err: any) {
       const errorMessage = err.message || 'Erreur lors de la connexion';
@@ -42,6 +52,10 @@ export const useAuth = () => {
 
   const logout = () => {
     authService.logout();
+    // Clear account type on logout
+    localStorage.removeItem('accountType');
+    localStorage.removeItem('onboardingCompleted');
+    localStorage.removeItem('onboardingProgress');
   };
 
   const clearError = () => {

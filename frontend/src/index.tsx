@@ -5,6 +5,7 @@ import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import AuthForm from './pages/Auth/AuthPage';
+import Onboarding from './pages/Onboarding/Onboarding';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +16,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/auth" element={<AuthForm />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="*" element={<div>Page non trouvée</div>} />
       </Routes>
     </BrowserRouter>

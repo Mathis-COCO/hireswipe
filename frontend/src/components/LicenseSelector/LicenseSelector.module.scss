@@ -1,0 +1,144 @@
+.licenseSection {
+  margin: 2rem 0;
+
+  .licenseHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .licenseTitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .licenseSubtitle {
+      color: #64748b;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+  }
+
+  .licenseGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+
+    .licenseItem {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fafbfc;
+
+      &:hover {
+        border-color: #cbd5e1;
+        background: white;
+      }
+
+      &.selected {
+        border-color: #3b82f6;
+        background: rgba(59, 130, 246, 0.05);
+      }
+
+      .licenseIcon {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.75rem;
+        color: #64748b;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.car {
+          color: #3b82f6;
+        }
+
+        &.motorcycle {
+          color: #ef4444;
+        }
+
+        &.truck {
+          color: #f59e0b;
+        }
+
+        &.bus {
+          color: #10b981;
+        }
+
+        &.boat {
+          color: #06b6d4;
+        }
+      }
+
+      .licenseInfo {
+        flex: 1;
+
+        .licenseCode {
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 0.95rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .licenseDescription {
+          color: #64748b;
+          font-size: 0.85rem;
+          line-height: 1.3;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .licenseSection {
+    .licenseGrid {
+      grid-template-columns: 1fr;
+
+      .licenseItem {
+        padding: 0.875rem 1rem;
+
+        .licenseIcon {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+  }
+}
+
+.licenseCode {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.licenseDescription {
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+  .licenseSection {
+    .licenseGrid {
+      grid-template-columns: 1fr;
+
+      .licenseItem {
+        padding: 0.875rem 1rem;
+
+        .licenseIcon {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+  }
+}

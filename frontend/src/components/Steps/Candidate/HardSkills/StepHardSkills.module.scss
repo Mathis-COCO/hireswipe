@@ -1,0 +1,61 @@
+@import '../../../../styles/variables.scss';
+@import '../../Steps.module.scss';
+
+.stepHeader {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.iconContainer {
+    color: $primary-color;
+    margin-bottom: 10px;
+    
+    svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+.skillsContent {
+    margin-top: 20px;
+}
+
+.skillsInput {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    
+    input {
+        flex-grow: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+    }
+}
+
+.skillsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skillTag {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 0.9rem;
+    
+    &:hover {
+        background-color: darken(#fff, 5%);
+    }
+}
