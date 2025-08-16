@@ -1,7 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
+import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
+import { UpdateRecruiterOnboardingDto } from './dto/updateRecruiterOnboarding.dto';
 
 @Injectable()
 export class UsersService {
@@ -33,5 +39,21 @@ export class UsersService {
 
     Object.assign(user, updateDto);
     return this.userRepository.save(user);
+  }
+
+  updateProfile(
+    userId: number,
+    userRole: string,
+    dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
+  ) {
+    if (userRole === 'candidat') {
+      const candidateDto = dto as UpdateCandidateOnboardingDto;
+      return this.updateUser(userId, candidateDto);
+    } else if (userRole === 'entreprise') {
+      const recruiterDto = dto as UpdateRecruiterOnboardingDto;
+      return this.updateUser(userId, recruiterDto);
+    }
+
+    throw new BadRequestException('Rôle utilisateur non pris en charge');
   }
 }

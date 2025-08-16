@@ -18,7 +18,7 @@ root.render(
         <Route path="/messages" element={<App />} />
         <Route path="/likes" element={<App />} />
         <Route path="/profile" element={<App />} />
-        <Route path="/ajouter-offre" element={<App />} />
+        <Route path="/mes-offres" element={<App />} />
         <Route path="/auth" element={<AuthForm />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="*" element={<div>Page non trouvée</div>} />

@@ -24,13 +24,19 @@ const Onboarding: React.FC = () => {
     const [animationDirection, setAnimationDirection] = useState<'left' | 'right'>('right');
     const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
     const navigate = useNavigate();
-
     const candidateSteps: number = 8;
     const companySteps: number = 6;
-
     const totalSteps = accountType === 'entreprise' ? companySteps : candidateSteps;
 
     useEffect(() => {
+        authService.getCurrentUser().then(userData => {
+            if (userData.firstName || userData.companyName) {
+                navigate('/');
+            } else {
+                navigate('/onboarding');
+            }
+        });
+
         const token = localStorage.getItem('authToken');
         if (!token) {
             navigate('/auth');
@@ -48,7 +54,7 @@ const Onboarding: React.FC = () => {
             navigate('/auth');
             return;
         }
-        
+
         setAccountType(storedAccountType);
 
         const savedProgress = localStorage.getItem('onboardingProgress');
@@ -172,7 +178,7 @@ const Onboarding: React.FC = () => {
             await authService.updateProfile(profileData);
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
-            
+
             navigate('/');
         } catch (error) {
             console.error('Erreur lors de la finalisation:', error);

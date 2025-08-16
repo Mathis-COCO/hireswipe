@@ -38,7 +38,7 @@ class AuthService {
   }
 
   async updateProfile(profileData: any): Promise<any> {
-    const response = await apiRequest('/auth/profile', {
+    const response = await apiRequest('/user/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
       headers: {
@@ -66,9 +66,16 @@ class AuthService {
     localStorage.removeItem('onboardingProgress');
   }
 
-  getCurrentUser(): any {
-    const userData = localStorage.getItem('userData');
-    return userData ? JSON.parse(userData) : null;
+  async getCurrentUser(): Promise<any> {
+    const response = await apiRequest('/user/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('Current user data:', response);
+    return response;
   }
 }
 

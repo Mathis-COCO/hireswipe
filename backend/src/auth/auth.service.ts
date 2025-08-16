@@ -1,9 +1,7 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
-import { UpdateRecruiterOnboardingDto } from './dto/updateRecruiterOnboarding.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,21 +41,5 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
-  }
-
-  updateProfile(
-    userId: number,
-    userRole: string,
-    dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
-  ) {
-    if (userRole === 'candidat') {
-      const candidateDto = dto as UpdateCandidateOnboardingDto;
-      return this.usersService.updateUser(userId, candidateDto);
-    } else if (userRole === 'entreprise') {
-      const recruiterDto = dto as UpdateRecruiterOnboardingDto;
-      return this.usersService.updateUser(userId, recruiterDto);
-    }
-
-    throw new BadRequestException('Rôle utilisateur non pris en charge');
   }
 }

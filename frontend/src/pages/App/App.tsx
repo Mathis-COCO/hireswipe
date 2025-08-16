@@ -6,18 +6,20 @@ import Messages from '../Messages/Messages';
 import Likes from '../Likes/Likes';
 import Profile from '../Profile/Profile';
 import AddOffer from '../AddOffer/AddOffer';
+import { authService } from '../../services/authService';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
-  const isCompleted = localStorage.getItem('onboardingCompleted');
   const accountType = localStorage.getItem('accountType');
   const location = useLocation();
+  authService.getCurrentUser().then(userData => {
+          if (userData.firstName || userData.companyName) {
+            return <Navigate to="/onboarding" replace />;
+          }
+        });
 
   if (!token) {
     return <Navigate to="/auth" replace />;
-  }
-  if (isCompleted !== 'true') {
-    return <Navigate to="/onboarding" replace />;
   }
 
   let content;
@@ -28,7 +30,7 @@ const App: React.FC = () => {
     case '/likes':
       content = accountType === 'candidat' ? <Likes /> : <Navigate to="/" replace />;
       break;
-    case '/ajouter-offre':
+    case '/mes-offres':
       content = accountType === 'entreprise' ? <AddOffer /> : <Navigate to="/" replace />;
       break;
     case '/profile':
