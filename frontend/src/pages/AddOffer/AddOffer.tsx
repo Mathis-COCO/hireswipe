@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import styles from './OfferForm.module.scss';
-import InteractiveMap from '../../InteractiveMap/InteractiveMap';
-import ImageUpload from '../../ImageUpload/ImageUpload';
-import { categories } from '../../../constants/categories';
+import styles from './AddOffer.module.scss';
+import InteractiveMap from '../../components/InteractiveMap/InteractiveMap';
+import ImageUpload from '../../components/ImageUpload/ImageUpload';
+import { categories } from '../../constants/categories';
+import { Navigate } from 'react-router-dom';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
-
-interface AnnonceFormProps {
-  onSubmit: (data: any) => void;
-  onCancel: () => void;
-  initialData?: any;
-}
 
 const requiredFields = [
   'title', 'teletravail', 'category', 'experience', 'contract', 'imageUrl'
 ];
 
-const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialData }) => {
+const AddOffer: React.FC = () => {
   const [form, setForm] = useState<{
     title: any;
     location: string;
@@ -36,36 +31,24 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
     imageUrl: any;
     imageFile: File | null;
   }>({
-    title: initialData?.title || '',
+    title: '',
     location: '',
-    salary: initialData?.salary || '',
-    experience: initialData?.experience || '',
-    contract: initialData?.contract || contractTypes[0],
-    teletravail: initialData?.teletravail || false,
-    description: initialData?.description || '',
-    skills: initialData?.skills || [],
+    salary: '',
+    experience: '',
+    contract: contractTypes[0],
+    teletravail: false,
+    description: '',
+    skills: [],
     skillInput: '',
-    avantages: initialData?.avantages || [],
+    avantages: [],
     avantageInput: '',
     latitude: 48.8566,
     longitude: 2.3522,
-    category: initialData?.category || '',
-    imageUrl: initialData?.imageUrl || '',
+    category: '',
+    imageUrl: '',
     imageFile: null,
   });
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
-
-  useEffect(() => {
-    if (initialData) {
-      setForm({
-        ...form,
-        ...initialData,
-        latitude: initialData.latitude || 48.8566,
-        longitude: initialData.longitude || 2.3522,
-        category: initialData.category || '',
-      });
-    }
-  }, [initialData]);
 
   const handleChange = (field: string, value: any) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -129,19 +112,11 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    onSubmit({
-      ...form,
-      skills: form.skills,
-      avantages: form.avantages
-    });
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.headerRow}>
-        <button className={styles.backBtn} type="button" onClick={onCancel}>
-          {/* ...existing code... */}
-        </button>
         <span className={styles.pageTitle}>Créer une nouvelle annonce</span>
       </div>
       <form className={styles.formCard} onSubmit={handleSubmit}>
@@ -308,7 +283,6 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
           </div>
         </fieldset>
         <div className={styles.actionsRow}>
-          <button type="button" className={styles.cancelBtn} onClick={onCancel}>Annuler</button>
           <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
         </div>
       </form>
@@ -316,4 +290,4 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({ onSubmit, onCancel, initialDa
   );
 };
 
-export default AnnonceForm;
+export default AddOffer;

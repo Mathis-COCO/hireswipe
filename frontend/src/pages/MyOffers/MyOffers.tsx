@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import OfferList from '../../components/OfferList/OfferList';
-import OfferForm from '../../components/Forms/OfferForm/OfferForm';
 import styles from './MyOffers.module.scss';
 
 const initialOffers = [
@@ -36,17 +35,10 @@ const initialOffers = [
 
 const MyOffers: React.FC = () => {
   const [offers, setOffers] = useState(initialOffers);
-  const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-
-  const handleNew = () => {
-    setEditId(null);
-    setShowForm(true);
-  };
 
   const handleEdit = (id: string) => {
     setEditId(id);
-    setShowForm(true);
   };
 
   const handleDelete = (id: string) => {
@@ -67,12 +59,6 @@ const MyOffers: React.FC = () => {
         }
       ]);
     }
-    setShowForm(false);
-    setEditId(null);
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
     setEditId(null);
   };
 
@@ -81,23 +67,12 @@ const MyOffers: React.FC = () => {
   };
 
   return (
-    <>
-      {showForm ? (
-        <OfferForm
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          initialData={editId ? offers.find(o => o.id === editId) : undefined}
-        />
-      ) : (
-        <OfferList
-          offers={offers}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onView={handleView}
-          onNew={handleNew}
-        />
-      )}
-    </>
+    <OfferList
+      offers={offers}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+      onView={handleView}
+    />
   );
 };
 
