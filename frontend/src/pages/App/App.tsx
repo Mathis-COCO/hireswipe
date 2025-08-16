@@ -1,11 +1,17 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import styles from './App.module.scss';
+import AppNavigation from '../../components/AppNavigation/AppNavigation';
+import Messages from '../Messages/Messages';
+import Likes from '../Likes/Likes';
+import Profile from '../Profile/Profile';
+import AddAnnonce from '../AddAnnonce/AddAnnonce';
 
-// Redirection selon token et onboarding
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
   const isCompleted = localStorage.getItem('onboardingCompleted');
+  const accountType = localStorage.getItem('accountType');
+  const location = useLocation();
 
   if (!token) {
     return <Navigate to="/auth" replace />;
@@ -14,10 +20,35 @@ const App: React.FC = () => {
     return <Navigate to="/onboarding" replace />;
   }
 
+  let content;
+  switch (location.pathname) {
+    case '/messages':
+      content = <Messages />;
+      break;
+    case '/likes':
+      content = accountType === 'candidat' ? <Likes /> : <Navigate to="/" replace />;
+      break;
+    case '/add-annonce':
+      content = accountType === 'entreprise' ? <AddAnnonce /> : <Navigate to="/" replace />;
+      break;
+    case '/profile':
+      content = <Profile />;
+      break;
+    case '/':
+    default:
+      content = (
+        <>
+          <h1>HireSwipe</h1>
+          <p>Bienvenue sur la page d'accueil ! 🎉</p>
+        </>
+      );
+      break;
+  }
+
   return (
     <div className={styles.appRoot}>
-      <h1>HireSwipe</h1>
-      <p>Bienvenue sur la page d'accueil ! 🎉</p>
+      {content}
+      <AppNavigation />
     </div>
   );
 };
