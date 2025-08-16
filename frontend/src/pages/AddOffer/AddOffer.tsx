@@ -4,6 +4,7 @@ import InteractiveMap from '../../components/InteractiveMap/InteractiveMap';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { categories } from '../../constants/categories';
 import { authService } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
@@ -62,6 +63,7 @@ const AddOffer: React.FC = () => {
   }, []);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const navigate = useNavigate();
 
   const handleChange = (field: string, value: any) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -128,8 +130,8 @@ const AddOffer: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
+      navigate('/mes-offres');
       console.log('Offre publiée :', form);
-      // Logique pour envoyer les données au backend
     }
   };
 
