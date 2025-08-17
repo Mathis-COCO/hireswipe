@@ -5,6 +5,8 @@ import { config } from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
+import { OffersModule } from './offers/offers.module';
+import { Offer } from './offers/entities/offer.entity';
 
 config();
 
@@ -12,16 +14,18 @@ config();
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT || '5432', 10),
-      username: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASS || '',
-      database: process.env.DB_NAME || 'hireswipe',
-      entities: [User],
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      entities: [User, Offer],
       synchronize: true,
+      schema: 'public',
     }),
     UsersModule,
     AuthModule,
+    OffersModule,
   ],
 })
 export class AppModule {}

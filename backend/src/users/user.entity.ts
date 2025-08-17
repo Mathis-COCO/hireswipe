@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
+import { Offer } from 'src/offers/entities/offer.entity';
 
 @Entity()
 export class User {
@@ -97,4 +105,10 @@ export class User {
 
   @Column({ nullable: true })
   workEnvironment?: string;
+
+  @OneToMany(() => Offer, (offer: Offer) => offer.createdBy)
+  createdOffers: Offer[];
+
+  @ManyToMany(() => Offer, (offer: Offer) => offer.candidates)
+  appliedOffers: Offer[];
 }
