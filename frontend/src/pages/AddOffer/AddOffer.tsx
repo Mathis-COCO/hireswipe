@@ -5,6 +5,7 @@ import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { categories } from '../../constants/categories';
 import { authService } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { offerService } from '../../services/offerService';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
@@ -130,6 +131,9 @@ const AddOffer: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
+      offerService.createOffer({
+        ...form,
+      });
       navigate('/mes-offres');
       console.log('Offre publiée :', form);
     }
