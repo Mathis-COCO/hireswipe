@@ -16,8 +16,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findById(id: number): Promise<User | null> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async findById(id: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
     return user ?? null;
   }
 
@@ -31,8 +33,10 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async updateUser(id: number, updateDto: Partial<User>): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async updateUser(id: string, updateDto: Partial<User>): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
@@ -42,7 +46,7 @@ export class UsersService {
   }
 
   updateProfile(
-    userId: number,
+    userId: string,
     userRole: string,
     dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
   ) {

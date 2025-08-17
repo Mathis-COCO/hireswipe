@@ -14,7 +14,7 @@ export class UsersController {
     @Request() req: { user: { id: string; role: string } },
     @Body() dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
   ) {
-    const userId = Number(req.user.id);
+    const userId = req.user.id;
     const userRole = req.user.role;
 
     return this.userService.updateProfile(userId, userRole, dto);
@@ -23,7 +23,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
   getProfile(@Request() req: { user: { id: string } }) {
-    const userId = Number(req.user.id);
+    const userId = req.user.id;
     return this.userService.findById(userId);
   }
 }

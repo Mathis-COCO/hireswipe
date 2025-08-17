@@ -13,7 +13,7 @@ import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Offer {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
