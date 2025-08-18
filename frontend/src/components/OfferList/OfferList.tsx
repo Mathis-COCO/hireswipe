@@ -32,20 +32,9 @@ const getCityFromLocation = (location: string) => {
 
 
 const OfferList: React.FC<OfferListProps> = ({ offers, onEdit, onDelete, onView }) => {
-  const navigate = useNavigate();
-
-  const handleNewClick = () => {
-    navigate('/ajouter-offre');
-  };
-
   return (
-    <div className={styles.listWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className={styles.header}>
-        <h2>Mes offres</h2>
-        <p>Gérez vos offres d'emploi et suivez les candidatures</p>
-        <button className={styles.newBtn} onClick={handleNewClick}>+ Nouvelle offre</button>
-      </div>
-      <div className={styles.offers} style={{ width: '100%', maxWidth: 900 }}>
+    <div className={styles.listWrapper}>
+      <div className={styles.offers}>
         {offers.map(o => (
           <div key={o.id} className={styles.offerCard}>
             <div className={styles.offerHeader}>

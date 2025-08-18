@@ -1,51 +1,19 @@
 @import '../../styles/variables.scss';
 
 .listWrapper {
-  max-width: 1100px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-}
-
-.header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 4rem;
   width: 100%;
-  h2 {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin: 0;
-    color: $color-primary-dark;
-  }
-  p {
-    color: $color-text-secondary;
-    font-size: $font-size-sm;
-    margin: 0;
-  }
-}
-
-.newBtn {
-  margin-left: auto;
-  background: $color-primary-dark;
-  color: #fff;
-  border: none;
-  border-radius: $border-radius-md;
-  font-size: $font-size-md;
-  font-weight: $font-weight-bold;
-  cursor: pointer;
-  padding: 0.7rem 1.2rem;
-  transition: background 0.2s;
-  &:hover {
-    background: $color-primary;
-  }
 }
 
 .offers {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 20px;
 }
 
 .offerCard {
