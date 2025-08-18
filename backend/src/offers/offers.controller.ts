@@ -76,6 +76,17 @@ export class OffersController {
     return this.offersService.getRandomAvailableOfferForCandidate(req.user.id);
   }
 
+  @Get('remaining/candidate')
+  @UseGuards(AuthGuard('jwt'))
+  async hasRemainingOffer(
+    @Request() req: { user: { id: string } },
+  ): Promise<{ hasRemaining: boolean }> {
+    const hasRemaining = await this.offersService.hasRemainingOffer(
+      req.user.id,
+    );
+    return { hasRemaining };
+  }
+
   @Post(':id/apply')
   @UseGuards(AuthGuard('jwt'))
   async applyToOffer(

@@ -83,6 +83,18 @@ class OfferService {
     });
     return response;
   }
+
+  async hasRemainingOffer(): Promise<boolean> {
+    const response = await apiRequest(`/offers/remaining/candidate`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    console.log('Response from hasRemainingOffer:', response);
+    return (response as { hasRemaining: boolean }).hasRemaining;
+  }
 }
 
 export const offerService = new OfferService();

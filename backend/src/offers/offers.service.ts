@@ -104,4 +104,16 @@ export class OffersService {
       await this.offerRepository.save(offer);
     }
   }
+
+  async hasRemainingOffer(userId: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) return false;
+
+    const interactedIds = user.interactedOfferIds ?? [];
+    const availableOffers = await this.offerRepository.find({
+      where: { isAvailable: true },
+    });
+
+    return availableOffers.some((o) => !interactedIds.includes(String(o.id)));
+  }
 }

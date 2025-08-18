@@ -12,12 +12,11 @@ const CandidateFeed: React.FC = () => {
 
   useEffect(() => {
     authService.getCurrentUser().then(async (user) => {
-      if (user && user.interactedOfferIds?.length > 0) {
+      if (user && Array.isArray(user.interactedOfferIds) && user.interactedOfferIds.length > 0) {
         setHasInteracted(true);
-
         try {
-          const randomOffer = await offerService.getRandomOfferForCandidate();
-          if (!randomOffer) {
+          const hasRemaining = await offerService.hasRemainingOffer();
+          if (!hasRemaining) {
             setNoOffers(true);
             setOffer(null);
           }
@@ -35,37 +34,39 @@ const CandidateFeed: React.FC = () => {
   useEffect(() => {
     if (hasInteracted) {
       authService.getCurrentUser().then(user => {
-        offerService.getOfferById(user.interactedOfferIds[user.interactedOfferIds.length - 1]).then(offer => {
-          setOffer(offer);
-          setLoading(false);
-        });
+        const lastId = Array.isArray(user?.interactedOfferIds)
+          ? user.interactedOfferIds[user.interactedOfferIds.length - 1]
+          : null;
+        if (lastId) {
+          offerService.getOfferById(lastId).then(offer => {
+            setOffer(offer);
+            setLoading(false);
+          });
+        }
       });
     }
   }, [hasInteracted]);
 
-
   const handleInteractClick = async (hasLiked: boolean) => {
-    setHasInteracted(true)
-    console.log(hasLiked)
+    setHasInteracted(true);
     if (hasLiked) {
       offerService.applyToOffer(offer.id);
     }
     try {
       const data = await offerService.getRandomOfferForCandidate();
       setOffer(data);
-    } catch (error) {
+    } catch {
       setNoOffers(true);
     }
-    offerService.getAllOffers().then(offers => {
-      console.warn(offers)
-    });
   };
 
   return (
     <div className={styles.candidateFeedContainer}>
-      {!hasInteracted && (<div>
-        <button onClick={() => handleInteractClick(false)}>Démarrer</button>
-      </div>)}
+      {!hasInteracted && (
+        <div>
+          <button onClick={() => handleInteractClick(false)}>Démarrer</button>
+        </div>
+      )}
       {loading && hasInteracted && <div>Chargement...</div>}
       {hasInteracted && noOffers && <div>Aucune offre disponible.</div>}
       {offer && hasInteracted && !noOffers && (
