@@ -1,0 +1,32 @@
+.actionsWrapper {
+  position: fixed;
+  bottom: 32px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  z-index: 10;
+}
+
+.crossBtn, .heartBtn {
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.crossBtn {
+  background: #e74c3c;
+}
+
+.heartBtn {
+  background: #27ae60;
+}

@@ -60,4 +60,13 @@ export class UsersService {
 
     throw new BadRequestException('Rôle utilisateur non pris en charge');
   }
+
+  async findInteractedOffers(userId: string): Promise<any[]> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found.`);
+    }
+
+    return user.interactedOfferIds ?? [];
+  }
 }

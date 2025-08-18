@@ -26,4 +26,11 @@ export class UsersController {
     const userId = req.user.id;
     return this.userService.findById(userId);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/interacted-offers')
+  getInteractedOffers(@Request() req: { user: { id: string } }) {
+    const userId = req.user.id;
+    return this.userService.findInteractedOffers(userId);
+  }
 }
