@@ -75,4 +75,14 @@ export class OffersController {
   ): Promise<Offer | null> {
     return this.offersService.getRandomAvailableOfferForCandidate(req.user.id);
   }
+
+  @Post(':id/apply')
+  @UseGuards(AuthGuard('jwt'))
+  async applyToOffer(
+    @Param('id') offerId: string,
+    @Request() req: { user: { id: string } },
+  ): Promise<{ success: boolean; message: string }> {
+    await this.offersService.applyToOffer(offerId, req.user.id);
+    return { success: true, message: 'Candidature enregistrée.' };
+  }
 }

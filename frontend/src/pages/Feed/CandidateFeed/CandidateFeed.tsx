@@ -10,46 +10,45 @@ const CandidateFeed: React.FC = () => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [noOffers, setNoOffers] = useState(false);
 
-useEffect(() => {
-  authService.getCurrentUser().then(async (user) => {
-    if (user && user.interactedOfferIds?.length > 0) {
-      setHasInteracted(true);
-      
-      try {
-        const randomOffer = await offerService.getRandomOfferForCandidate();
-        if (!randomOffer) {
+  useEffect(() => {
+    authService.getCurrentUser().then(async (user) => {
+      if (user && user.interactedOfferIds?.length > 0) {
+        setHasInteracted(true);
+
+        try {
+          const randomOffer = await offerService.getRandomOfferForCandidate();
+          if (!randomOffer) {
+            setNoOffers(true);
+            setOffer(null);
+          }
+        } catch {
           setNoOffers(true);
-          setOffer(null);
-        } else {
-          setOffer(randomOffer);
+        } finally {
+          setLoading(false);
         }
-      } catch {
-        setNoOffers(true);
-      } finally {
+      } else {
         setLoading(false);
       }
-    } else {
-      setLoading(false);
-    }
-  });
-}, []);
-
-useEffect(() => {
-  if (hasInteracted) {
-    authService.getCurrentUser().then(user => {
-      offerService.getOfferById(user.interactedOfferIds[user.interactedOfferIds.length - 1]).then(offer => {
-        setOffer(offer);
-        setLoading(false);
-      });
     });
-  }
-}, [hasInteracted]);
+  }, []);
+
+  useEffect(() => {
+    if (hasInteracted) {
+      authService.getCurrentUser().then(user => {
+        offerService.getOfferById(user.interactedOfferIds[user.interactedOfferIds.length - 1]).then(offer => {
+          setOffer(offer);
+          setLoading(false);
+        });
+      });
+    }
+  }, [hasInteracted]);
 
 
   const handleInteractClick = async (hasLiked: boolean) => {
     setHasInteracted(true)
+    console.log(hasLiked)
     if (hasLiked) {
-      // Ajouter le truc pour postuler à l'offre
+      offerService.applyToOffer(offer.id);
     }
     try {
       const data = await offerService.getRandomOfferForCandidate();
@@ -57,6 +56,9 @@ useEffect(() => {
     } catch (error) {
       setNoOffers(true);
     }
+    offerService.getAllOffers().then(offers => {
+      console.warn(offers)
+    });
   };
 
   return (

@@ -61,6 +61,28 @@ class OfferService {
     });
     return response;
   }
+
+  async getAllOffers(): Promise<any[]> {
+    const response = await apiRequest(`/offers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return response as any[];
+  }
+
+  async applyToOffer(offerId: number): Promise<any> {
+    const response = await apiRequest(`/offers/${offerId}/apply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return response;
+  }
 }
 
 export const offerService = new OfferService();

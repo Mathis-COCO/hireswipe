@@ -89,4 +89,19 @@ export class OffersService {
 
     return randomOffer;
   }
+
+  async applyToOffer(offerId: string, userId: string): Promise<void> {
+    const offer = await this.offerRepository.findOne({
+      where: { id: offerId },
+      relations: ['candidates'],
+    });
+    if (!offer) throw new Error('Offer not found');
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new Error('User not found');
+
+    if (!offer.candidates.some((candidate) => candidate.id === userId)) {
+      offer.candidates.push(user);
+      await this.offerRepository.save(offer);
+    }
+  }
 }
