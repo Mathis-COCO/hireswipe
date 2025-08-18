@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import AuthForm from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
+import EditOffer from './pages/EditOffer/EditOffer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +22,7 @@ root.render(
         <Route path="/mes-offres" element={<App />} />
         <Route path="/ajouter-offre" element={<App />} />
         <Route path="/auth" element={<AuthForm />} />
+        <Route path="/mes-offres/:id/edit" element={<EditOffer />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="*" element={<div>Page non trouvée</div>} />
       </Routes>

@@ -95,6 +95,18 @@ class OfferService {
     console.log('Response from hasRemainingOffer:', response);
     return (response as { hasRemaining: boolean }).hasRemaining;
   }
+
+  async updateOffer(id: number, data: any): Promise<any> {
+    const response = await apiRequest(`/offers/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return response;
+  }
 }
 
 export const offerService = new OfferService();

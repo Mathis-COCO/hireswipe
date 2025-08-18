@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
 import ProtectedOnboarding from './components/ProtectedRoute/ProtectedRoute';
-import { authService } from '../src/services/authService';
+import { authService } from './services/authService';
 
 interface UserData {
   firstName?: string;
@@ -11,20 +11,32 @@ interface UserData {
 }
 
 const ProtectedHome: React.FC = () => {
-  const token = localStorage.getItem('authToken');
+  const [loading, setLoading] = useState(true);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
-  if (token) {
-    authService.getCurrentUser().then((userData: UserData) => {
-      if (userData.firstName || userData.companyName) {
-        return <Navigate to="/" replace />;
-      } else {
-        return <Navigate to="/onboarding" replace />;
+  useEffect(() => {
+    const checkUser = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setRedirectTo('/auth');
+        setLoading(false);
+        return;
       }
-    });
-  } else {
-    return <Navigate to="/auth" replace />;
-  }
 
+      const userData: UserData = await authService.getCurrentUser();
+      if (userData.firstName || userData.companyName) {
+        setRedirectTo('/');
+      } else {
+        setRedirectTo('/onboarding');
+      }
+      setLoading(false);
+    };
+
+    checkUser();
+  }, []);
+
+  if (loading) return <div>Chargement...</div>;
+  if (redirectTo) return <Navigate to={redirectTo} replace />;
   return <div>Page d'accueil - onboarding terminé</div>;
 };
 
