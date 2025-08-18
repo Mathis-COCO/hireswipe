@@ -1,41 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OfferList from '../../components/OfferList/OfferList';
 import styles from './MyOffers.module.scss';
+import { offerService } from '../../services/offerService';
 
-const initialOffers = [
-  {
-    id: '1',
-    title: 'Développeur Full Stack Senior',
-    location: 'Paris',
-    salary: '55-70k€',
-    experience: '5+ ans',
-    contract: 'CDI',
-    teletravail: true,
-    description: 'Nous recherchons un développeur Full Stack expérimenté pour rejoindre notre équipe technique et participer au développement de nos applications web innovantes.',
-    skills: ['React', 'Node.js', 'TypeScript', 'AWS'],
-    avantages: [],
-    publishedAt: '20/01/2024',
-    candidates: 12
-  },
-  {
-    id: '2',
-    title: 'Product Manager',
-    location: 'Paris',
-    salary: '60-75k€',
-    experience: '3-5 ans',
-    contract: 'CDI',
-    teletravail: false,
-    description: 'Rejoignez notre équipe produit pour définir la vision et la stratégie de nos produits.',
-    skills: ['Product Management', 'Agile', 'Data Analysis'],
-    avantages: [],
-    publishedAt: '18/01/2024',
-    candidates: 12
-  }
-];
+type Offer = {
+  id: string;
+  title: string;
+  location: string;
+  salary: string;
+  experience: string;
+  contract: string;
+  teletravail: boolean;
+  description: string;
+  skills: string[];
+  avantages: any[];
+  publishedAt: string;
+  candidates: number;
+};
 
 const MyOffers: React.FC = () => {
-  const [offers, setOffers] = useState(initialOffers);
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [editId, setEditId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      const myOffers = await offerService.getMyOffers();
+      setOffers(myOffers);
+    };
+    fetchOffers();
+  }, []);
 
   const handleEdit = (id: string) => {
     setEditId(id);

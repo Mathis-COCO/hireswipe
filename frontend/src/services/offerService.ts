@@ -17,6 +17,17 @@ class OfferService {
     });
     return response;
   }
+
+  async getMyOffers(): Promise<any[]> {
+    const response = await apiRequest(`/offers/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return response as any[];
+  }
 }
 
 export const offerService = new OfferService();
