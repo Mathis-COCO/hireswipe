@@ -19,6 +19,7 @@ export class UsersService {
   async findById(id: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { id: id },
+      relations: ['createdOffers', 'appliedOffers'], // Load offer relations
     });
     return user ?? null;
   }
