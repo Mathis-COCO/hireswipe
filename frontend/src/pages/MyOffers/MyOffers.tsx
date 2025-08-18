@@ -4,6 +4,7 @@ import OfferFilter from '../../components/OfferFilter/OfferFilter';
 import styles from './MyOffers.module.scss';
 import { offerService } from '../../services/offerService';
 import { useNavigate } from 'react-router-dom';
+import { categories } from '../../constants/categories';
 
 type Offer = {
   id: string;
@@ -21,9 +22,6 @@ type Offer = {
   candidates: number;
 };
 
-const categories = [
-  'Tech', 'Produit', 'Design', 'Marketing', 'RH', 'Finance', 'Autre'
-];
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
 const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
 
