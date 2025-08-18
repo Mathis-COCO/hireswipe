@@ -32,6 +32,10 @@ export class OffersService {
     return this.offerRepository.find();
   }
 
+  async findAllForUser(userId: string): Promise<Offer[]> {
+    return this.offerRepository.find({ where: { createdBy: { id: userId } } });
+  }
+
   async findOne(id: string): Promise<Offer | null> {
     return this.offerRepository.findOne({ where: { id } });
   }
