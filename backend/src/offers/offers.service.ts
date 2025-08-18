@@ -20,11 +20,9 @@ export class OffersService {
     if (userId) {
       const user = await this.userRepository.findOne({
         where: { id: userId },
-        // relations: ['createdOffers'], // Not needed for creation
       });
       if (user) {
         offer.createdBy = user;
-        // Do NOT push offer to user.createdOffers or save user here
       }
     }
     return this.offerRepository.save(offer);
@@ -32,6 +30,10 @@ export class OffersService {
 
   async findAll(): Promise<Offer[]> {
     return this.offerRepository.find();
+  }
+
+  async findAllForUser(userId: string): Promise<Offer[]> {
+    return this.offerRepository.find({ where: { createdBy: { id: userId } } });
   }
 
   async findOne(id: string): Promise<Offer | null> {

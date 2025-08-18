@@ -34,6 +34,17 @@ export class OffersController {
     return this.offersService.findAll();
   }
 
+  @Get('/user/:id')
+  findAllForUser(@Param('id') userId: string): Promise<Offer[]> {
+    return this.offersService.findAllForUser(userId);
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard('jwt'))
+  findAllForMe(@Request() req: { user: { id: string } }): Promise<Offer[]> {
+    return this.offersService.findAllForUser(req.user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Offer | null> {
     return this.offersService.findOne(id);
