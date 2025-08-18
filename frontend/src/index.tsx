@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './pages/App/App';
+import App from './pages/Feed/App';
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import AuthForm from './pages/Auth/AuthPage';

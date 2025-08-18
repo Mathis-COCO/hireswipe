@@ -111,4 +111,7 @@ export class User {
 
   @ManyToMany(() => Offer, (offer: Offer) => offer.candidates)
   appliedOffers: Offer[];
+
+  @Column('simple-array', { nullable: true })
+  interactedOfferIds?: string[];
 }

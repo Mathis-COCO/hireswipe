@@ -8,6 +8,8 @@ import Profile from '../Profile/Profile';
 import MyOffers from '../MyOffers/MyOffers';
 import { authService } from '../../services/authService';
 import AddOffer from '../AddOffer/AddOffer';
+import CandidateFeed from './CandidateFeed/CandidateFeed';
+import RecruiterFeed from './RecruiterFeed/RecruiterFeed';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
@@ -41,13 +43,7 @@ const App: React.FC = () => {
       content = <Profile />;
       break;
     case '/':
-    default:
-      content = (
-        <>
-          <h1>HireSwipe</h1>
-          <p>Bienvenue sur la page d'accueil ! 🎉</p>
-        </>
-      );
+      content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
       break;
   }
 

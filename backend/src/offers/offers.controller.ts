@@ -62,4 +62,17 @@ export class OffersController {
   remove(@Param('id') id: string): Promise<void> {
     return this.offersService.remove(id);
   }
+
+  @Get('random')
+  async getRandomOffer(): Promise<Offer | null> {
+    return this.offersService.getRandomAvailableOffer();
+  }
+
+  @Get('random/candidate')
+  @UseGuards(AuthGuard('jwt'))
+  async getRandomOfferForCandidate(
+    @Request() req: { user: { id: string } },
+  ): Promise<Offer | null> {
+    return this.offersService.getRandomAvailableOfferForCandidate(req.user.id);
+  }
 }

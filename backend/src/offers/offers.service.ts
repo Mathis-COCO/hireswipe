@@ -51,4 +51,42 @@ export class OffersService {
   async remove(id: string): Promise<void> {
     await this.offerRepository.delete(id);
   }
+
+  async getRandomAvailableOffer(): Promise<Offer | null> {
+    const now = new Date();
+    const availableOffers = await this.offerRepository.find({
+      where: { isAvailable: true },
+    });
+    const validOffers = availableOffers.filter(
+      (o) => !o.createdAt || o.createdAt <= now,
+    );
+    if (validOffers.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * validOffers.length);
+    return validOffers[randomIndex];
+  }
+
+  async getRandomAvailableOfferForCandidate(
+    userId: string,
+  ): Promise<Offer | null> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) return null;
+
+    const interactedIds = user.interactedOfferIds ?? [];
+    const availableOffers = await this.offerRepository.find({
+      where: { isAvailable: true },
+    });
+    const validOffers = availableOffers.filter(
+      (o) => !interactedIds.includes(String(o.id)),
+    );
+    if (validOffers.length === 0) return null;
+    const randomOffer =
+      validOffers[Math.floor(Math.random() * validOffers.length)];
+
+    if (!interactedIds.includes(String(randomOffer.id))) {
+      user.interactedOfferIds = [...interactedIds, String(randomOffer.id)];
+      await this.userRepository.save(user);
+    }
+
+    return randomOffer;
+  }
 }
