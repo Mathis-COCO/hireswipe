@@ -8,11 +8,28 @@ const CandidateFeed: React.FC = () => {
   const [offer, setOffer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [noOffers, setNoOffers] = useState(false);
 
 useEffect(() => {
-  authService.getCurrentUser().then(user => {
-    if (user) {
-      setHasInteracted(user.interactedOfferIds?.length > 0);
+  authService.getCurrentUser().then(async (user) => {
+    if (user && user.interactedOfferIds?.length > 0) {
+      setHasInteracted(true);
+      
+      try {
+        const randomOffer = await offerService.getRandomOfferForCandidate();
+        if (!randomOffer) {
+          setNoOffers(true);
+          setOffer(null);
+        } else {
+          setOffer(randomOffer);
+        }
+      } catch {
+        setNoOffers(true);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
     }
   });
 }, []);
@@ -34,8 +51,12 @@ useEffect(() => {
     if (hasLiked) {
       // Ajouter le truc pour postuler à l'offre
     }
-    const data = await offerService.getRandomOfferForCandidate();
-    setOffer(data);
+    try {
+      const data = await offerService.getRandomOfferForCandidate();
+      setOffer(data);
+    } catch (error) {
+      setNoOffers(true);
+    }
   };
 
   return (
@@ -44,11 +65,9 @@ useEffect(() => {
         <button onClick={() => handleInteractClick(false)}>Démarrer</button>
       </div>)}
       {loading && hasInteracted && <div>Chargement...</div>}
-      {/* {!offer && hasInteracted && <div>Aucune offre disponible.</div>} */}
-      {/* a fix en ajoutant une vérif sur le nombre d'annonces disponibles */}
-      {offer && hasInteracted && (
+      {hasInteracted && noOffers && <div>Aucune offre disponible.</div>}
+      {offer && hasInteracted && !noOffers && (
         <div>
-          <h2>Annonce aléatoire</h2>
           <div>
             <h3>{offer.title}</h3>
             <p>{offer.description}</p>
