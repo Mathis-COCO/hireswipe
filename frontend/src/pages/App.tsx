@@ -1,15 +1,15 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import styles from './App.module.scss';
-import AppNavigation from '../../components/AppNavigation/AppNavigation';
-import Messages from '../Messages/Messages';
-import Likes from '../Likes/Likes';
-import Profile from '../Profile/Profile';
-import MyOffers from '../MyOffers/MyOffers';
-import { authService } from '../../services/authService';
-import AddOffer from '../AddOffer/AddOffer';
-import CandidateFeed from './CandidateFeed/CandidateFeed';
-import RecruiterFeed from './RecruiterFeed/RecruiterFeed';
+import AppNavigation from '../components/AppNavigation/AppNavigation';
+import Messages from './Messages/Messages';
+import Likes from './Likes/Likes';
+import Profile from './Profile/Profile';
+import MyOffers from './MyOffers/MyOffers';
+import { authService } from '../services/authService';
+import AddOffer from './AddOffer/AddOffer';
+import CandidateFeed from './Feed/CandidateFeed/CandidateFeed';
+import RecruiterFeed from './Feed/RecruiterFeed/RecruiterFeed';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');

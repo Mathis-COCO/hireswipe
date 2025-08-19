@@ -98,7 +98,7 @@ class OfferService {
 
   async updateOffer(id: number, data: any): Promise<any> {
     const response = await apiRequest(`/offers/${id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',

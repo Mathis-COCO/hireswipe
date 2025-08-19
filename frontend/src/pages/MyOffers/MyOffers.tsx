@@ -28,7 +28,6 @@ const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Ex
 const MyOffers: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [editId, setEditId] = useState<string | null>(null);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     category: '',
     contract: '',
@@ -63,23 +62,6 @@ const MyOffers: React.FC = () => {
     setOffers(offers.filter(o => o.id !== id));
   };
 
-  const handleSubmit = (data: any) => {
-    if (editId) {
-      setOffers(offers.map(o => o.id === editId ? { ...o, ...data } : o));
-    } else {
-      setOffers([
-        ...offers,
-        {
-          ...data,
-          id: Math.random().toString(36).slice(2),
-          publishedAt: new Date().toLocaleDateString('fr-FR'),
-          candidates: 0
-        }
-      ]);
-    }
-    setEditId(null);
-  };
-
   const handleView = (id: string) => {
     alert('Voir les détails/candidatures de l\'offre');
   };
@@ -109,10 +91,6 @@ const MyOffers: React.FC = () => {
 
   const handleFilterChange = (changed: Partial<typeof filters>) => {
     setFilters(f => ({ ...f, ...changed }));
-  };
-
-  const handleNewClick = () => {
-    navigate('/ajouter-offre');
   };
 
   return (

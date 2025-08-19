@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './OfferForm.module.scss';
 import InteractiveMap from '../../../components/InteractiveMap/InteractiveMap';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
@@ -30,6 +31,22 @@ const OfferForm: React.FC<OfferFormProps> = ({
   onImageChange,
   onSubmit,
 }) => {
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCancelClick = () => {
+    setShowCancelPopup(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setShowCancelPopup(false);
+    navigate('/mes-offres');
+  };
+
+  const handleCloseCancelPopup = () => {
+    setShowCancelPopup(false);
+  };
+
   return (
     <form className={styles.formCard} onSubmit={onSubmit}>
       <fieldset className={styles.fieldset}>
@@ -212,7 +229,18 @@ const OfferForm: React.FC<OfferFormProps> = ({
 
       <div className={styles.actionsRow}>
         <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
+        <button type="button" className={styles.submitBtn} onClick={handleCancelClick}>Annuler les modifications</button>
       </div>
+
+      {showCancelPopup && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.popupContent}>
+            <p>Êtes-vous sûr(e) de vouloir annuler les modifications en cours ?</p>
+            <button type="button" className={styles.mainBtn} onClick={handleConfirmCancel}>Oui</button>
+            <button type="button" className={styles.mainBtn} onClick={handleCloseCancelPopup}>Non</button>
+          </div>
+        </div>
+      )}
     </form>
   );
 };

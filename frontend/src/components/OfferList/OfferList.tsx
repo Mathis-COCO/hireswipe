@@ -30,8 +30,13 @@ const getCityFromLocation = (location: string) => {
   return location.split(',')[0].trim();
 };
 
-
 const OfferList: React.FC<OfferListProps> = ({ offers, onEdit, onDelete, onView }) => {
+  const navigate = useNavigate();
+
+  const handleEditClick = (offer: Offer) => {
+    navigate(`/mes-offres/${offer.id}/edit`);
+  };
+
   return (
     <div className={styles.listWrapper}>
       <div className={styles.offers}>
@@ -51,7 +56,7 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onEdit, onDelete, onView 
                 <button title="Voir" onClick={() => onView(o.id)} className={styles.iconBtn}>
                   <Eye size={20} />
                 </button>
-                <button title="Modifier" onClick={() => onEdit(o.id)} className={styles.iconBtn}>
+                <button title="Modifier" onClick={() => handleEditClick(o)} className={styles.iconBtn}>
                   <Pencil size={20} />
                 </button>
                 <button title="Supprimer" onClick={() => onDelete(o.id)} className={styles.iconBtn}>
