@@ -25,10 +25,11 @@ const SeeOfferCandidate: React.FC = () => {
 
     return (
         <>
-            <div className={styles.pageBg} style={{ paddingBottom: '125px' }}>
+            <div className={styles.pageBg}>
                 <div className={styles.header}>
                     <button className={styles.backButton} onClick={() => navigate(`/mes-offres/${offerId}/candidats`)}>← Retour</button>
                     <h2 className={styles.title}>Profil du candidat</h2>
+                    <div></div>
                 </div>
                 <div className={styles.content}>
                     {candidate && <CandidateFullCard candidate={candidate} offer={offer} />}
