@@ -19,7 +19,7 @@ type Offer = {
   skills: string[];
   avantages: any[];
   publishedAt: string;
-  candidates: number;
+  candidates: any[];
   isAvailable: boolean;
 };
 
@@ -56,10 +56,6 @@ const MyOffers: React.FC = () => {
 
   const handleDelete = (id: string) => {
     setOffers(offers.filter(o => o.id !== id));
-  };
-
-  const handleView = (id: string) => {
-    alert('Voir les détails/candidatures de l\'offre');
   };
 
   const filteredOffers = offers
@@ -111,7 +107,6 @@ const MyOffers: React.FC = () => {
       <OfferList
         offers={filteredOffers}
         onDelete={handleDelete}
-        onView={handleView}
       />
     </div>
   );

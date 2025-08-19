@@ -15,14 +15,13 @@ interface Offer {
   skills: string[];
   avantages: string[];
   publishedAt: string;
-  candidates: number;
+  candidates: any[];
   isAvailable: boolean;
 }
 
 interface OfferListProps {
   offers: Offer[];
   onDelete: (id: string) => void;
-  onView: (id: string) => void;
 }
 
 const getCityFromLocation = (location: string) => {
@@ -30,11 +29,15 @@ const getCityFromLocation = (location: string) => {
   return location.split(',')[0].trim();
 };
 
-const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
+const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
   const navigate = useNavigate();
 
   const handleEditClick = (offer: Offer) => {
     navigate(`/mes-offres/${offer.id}/edit`);
+  };
+
+  const handleViewCandidates = (offerId: string) => {
+    navigate(`/mes-offres/${offerId}/candidatures`);
   };
 
   return (
@@ -51,7 +54,6 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
                   <span>€ {o.salary}</span>
                   <span>
                     {o.experience}
-                    {/* Ajout du statut disponible/indisponible avec isAvailable */}
                     {typeof o.isAvailable !== 'undefined' && (
                       <span
                         className={
@@ -68,7 +70,7 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
                 </div>
               </div>
               <div className={styles.offerActions}>
-                <button title="Voir" onClick={() => onView(o.id)} className={styles.iconBtn}>
+                <button title="Voir" className={styles.iconBtn}>
                   <Eye size={20} />
                 </button>
                 <button title="Modifier" onClick={() => handleEditClick(o)} className={styles.iconBtn}>
@@ -84,14 +86,14 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
               <div className={styles.offerFooterInfos}>
                 <div className={styles.inlineMeta}>
                   <span className={styles.published}>Publié le {o.publishedAt}</span>
-                  <span className={styles.candidates}>{o.candidates} candidatures</span>
+                  <span className={styles.candidates}>{o.candidates.length} candidature{o.candidates.length > 1 ? 's' : ''}</span>
                   <span className={styles.contract}>{o.contract}</span>
                 </div>
                 <div className={styles.tagsRow}>
                   {o.skills.map(s => <span key={s} className={styles.tag}>{s}</span>)}
                 </div>
               </div>
-              <button className={styles.candidatesBtn}>
+              <button className={styles.candidatesBtn} onClick={() => handleViewCandidates(o.id)}>
                 <Users size={18} style={{ marginRight: 6, verticalAlign: 'middle' }} />
                 Voir les candidatures
               </button>
