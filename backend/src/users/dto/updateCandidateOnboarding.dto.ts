@@ -27,6 +27,14 @@ export class UpdateCandidateOnboardingDto {
   candidateLocationAddress?: string;
 
   @IsOptional()
+  @IsNumber()
+  candidateLocationLat?: string;
+
+  @IsOptional()
+  @IsNumber()
+  candidateLocationLng?: string;
+
+  @IsOptional()
   @IsString()
   workExperiences?: string;
 

@@ -7,7 +7,7 @@ import { offerService } from '../../services/offerService';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditOffer: React.FC = () => {
-    const { id: offerId } = useParams<{ id: string }>();
+    const { offerId: offerId } = useParams<{ offerId: string }>();
     const [form, setForm] = useState<any>({
         title: null,
         location: null,

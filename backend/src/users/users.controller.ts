@@ -1,4 +1,12 @@
-import { Controller, Put, Body, Request, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Put,
+  Body,
+  Request,
+  UseGuards,
+  Get,
+  Param,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
 import { UpdateRecruiterOnboardingDto } from './dto/updateRecruiterOnboarding.dto';
@@ -32,5 +40,11 @@ export class UsersController {
   getInteractedOffers(@Request() req: { user: { id: string } }) {
     const userId = req.user.id;
     return this.userService.findInteractedOffers(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  getUserById(@Param('id') id: string) {
+    return this.userService.findById(id);
   }
 }

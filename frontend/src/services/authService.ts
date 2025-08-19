@@ -74,7 +74,6 @@ class AuthService {
         'Content-Type': 'application/json',
       },
     });
-    console.log('Current user data:', response);
     return response;
   }
 }

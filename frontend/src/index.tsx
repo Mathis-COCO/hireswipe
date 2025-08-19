@@ -8,6 +8,7 @@ import AuthForm from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
 import EditOffer from './pages/EditOffer/EditOffer';
 import SeeCandidates from './pages/SeeCandidates/SeeCandidates';
+import SeeOfferCandidate from './pages/SeeOfferCandidate/SeeOfferCandidate';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,8 +24,9 @@ root.render(
         <Route path="/mes-offres" element={<App />} />
         <Route path="/ajouter-offre" element={<App />} />
         <Route path="/auth" element={<AuthForm />} />
-        <Route path="/mes-offres/:id/edit" element={<EditOffer />} />
-        <Route path="/mes-offres/:id/candidatures" element={<SeeCandidates />} />
+        <Route path="/mes-offres/:offerId/edit" element={<EditOffer />} />
+        <Route path="/mes-offres/:offerId/candidats" element={<SeeCandidates />} />
+        <Route path="/mes-offres/:offerId/candidats/:candidateId" element={<SeeOfferCandidate />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="*" element={<div>Page non trouvée</div>} />
       </Routes>

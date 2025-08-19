@@ -41,6 +41,12 @@ export class User {
   candidateLocationAddress?: string;
 
   @Column({ nullable: true })
+  candidateLocationLat?: string;
+
+  @Column({ nullable: true })
+  candidateLocationLng?: string;
+
+  @Column({ nullable: true })
   workExperiences?: string;
 
   @Column({ nullable: true })

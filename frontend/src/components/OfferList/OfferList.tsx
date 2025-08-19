@@ -37,7 +37,7 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
   };
 
   const handleViewCandidates = (offerId: string) => {
-    navigate(`/mes-offres/${offerId}/candidatures`);
+    navigate(`/mes-offres/${offerId}/candidats`);
   };
 
   return (

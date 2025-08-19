@@ -1,13 +1,17 @@
 import React from 'react';
 import styles from './CandidateSmallCard.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface SmallCandidateCardProps {
     candidate: any;
+    offerId: string | undefined;
 }
 
-const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate }) => {
+const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offerId }) => {
+    const navigate = useNavigate();
+    
     return (
-        <div className={styles.card} key={candidate.id}>
+        <div className={styles.card} key={candidate.id} onClick={() => navigate(`/mes-offres/${offerId}/candidats/${candidate.id}`)}>
             <img className={styles.profilePhoto} src={candidate.profilePhoto} alt="" />
             <p className={styles.name}>{candidate.lastName} {candidate.firstName} ({candidate.age} ans)</p>
             <p className={styles.jobTitle}>{candidate.jobTitle} {candidate.experience}</p>

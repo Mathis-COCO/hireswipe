@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import SmallCandidateCard from '../../components/Cards/CandidateSmallCard/CandidateSmallCard';
 
 const SeeCandidates: React.FC = () => {
-    const { id: offerId } = useParams<{ id: string }>();
+    const { offerId: offerId } = useParams<{ offerId: string }>();
     const navigate = useNavigate();
 
     const [candidates, setCandidates] = React.useState<any[]>([]);
@@ -39,7 +39,7 @@ const SeeCandidates: React.FC = () => {
                 </header>
                 <div className={styles.cardList}>
                     {candidates.map(candidate => (
-                        <SmallCandidateCard key={candidate.id} candidate={candidate} />
+                        <SmallCandidateCard key={candidate.id} candidate={candidate} offerId={offerId} />
                     ))}
                 </div>
             </div>
