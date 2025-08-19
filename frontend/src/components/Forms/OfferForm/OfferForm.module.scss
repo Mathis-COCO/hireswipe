@@ -239,6 +239,91 @@ textarea {
   display: block;
 }
 
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 41, 59, 0.45); // dark blue with opacity
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popupContent {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem;
+  min-width: 320px;
+  max-width: 90vw;
+  text-align: center;
+  animation: fadeInUp 0.25s;
+}
+
+.popupActions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.popupActions .submitBtn {
+  background: $color-primary;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $color-primary-dark;
+  }
+}
+
+.btnGreen {
+  background: linear-gradient(135deg, $color-green, darken($color-green, 10%)) !important;
+  color: #fff !important;
+  border: none !important;
+}
+.btnGreen:hover {
+  background: linear-gradient(135deg, darken($color-green, 10%), darken($color-green, 20%)) !important;
+}
+
+.btnRed {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #fff !important;
+  border: none !important;
+}
+.btnRed:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+}
+
+.btnGrey {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+  border: none !important;
+}
+.btnGrey:hover {
+  background: #d1d5db !important;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 700px) {
   .form {
     max-width: 100%;

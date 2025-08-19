@@ -20,7 +20,6 @@ interface Offer {
 
 interface OfferListProps {
   offers: Offer[];
-  onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onView: (id: string) => void;
 }
@@ -30,7 +29,7 @@ const getCityFromLocation = (location: string) => {
   return location.split(',')[0].trim();
 };
 
-const OfferList: React.FC<OfferListProps> = ({ offers, onEdit, onDelete, onView }) => {
+const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
   const navigate = useNavigate();
 
   const handleEditClick = (offer: Offer) => {

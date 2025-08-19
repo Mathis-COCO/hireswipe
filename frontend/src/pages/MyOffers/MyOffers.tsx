@@ -27,7 +27,6 @@ const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Ex
 
 const MyOffers: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [editId, setEditId] = useState<string | null>(null);
   const [filters, setFilters] = useState({
     category: '',
     contract: '',
@@ -53,10 +52,6 @@ const MyOffers: React.FC = () => {
         .filter(city => !!city)
     )
   );
-
-  const handleEdit = (id: string) => {
-    setEditId(id);
-  };
 
   const handleDelete = (id: string) => {
     setOffers(offers.filter(o => o.id !== id));
@@ -93,12 +88,16 @@ const MyOffers: React.FC = () => {
     setFilters(f => ({ ...f, ...changed }));
   };
 
+  const redirect = (route: string) => {
+    navigate(route);
+  };
+
   return (
     <div>
       <div className={styles.header}>
         <h2>Mes offres</h2>
         <p>Gérez vos offres d'emploi et suivez les candidatures</p>
-        <button className={styles.newBtn} onClick={() => setEditId(null)}>+ Nouvelle offre</button>
+        <button className={styles.newBtn} onClick={() => redirect('/ajouter-offre')}>+ Nouvelle offre</button>
       </div>
       <OfferFilter
         categories={categories}
@@ -110,7 +109,6 @@ const MyOffers: React.FC = () => {
       />
       <OfferList
         offers={filteredOffers}
-        onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
       />

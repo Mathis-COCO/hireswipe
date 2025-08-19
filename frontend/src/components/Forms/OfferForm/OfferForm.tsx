@@ -228,16 +228,30 @@ const OfferForm: React.FC<OfferFormProps> = ({
       </fieldset>
 
       <div className={styles.actionsRow}>
-        <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
         <button type="button" className={styles.submitBtn} onClick={handleCancelClick}>Annuler les modifications</button>
+        <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
       </div>
 
       {showCancelPopup && (
         <div className={styles.popupOverlay}>
           <div className={styles.popupContent}>
             <p>Êtes-vous sûr(e) de vouloir annuler les modifications en cours ?</p>
-            <button type="button" className={styles.mainBtn} onClick={handleConfirmCancel}>Oui</button>
-            <button type="button" className={styles.mainBtn} onClick={handleCloseCancelPopup}>Non</button>
+            <div className={styles.popupActions}>
+              <button
+                type="button"
+                className={`${styles.submitBtn} ${styles.btnGreen}`}
+                onClick={handleConfirmCancel}
+              >
+                Oui
+              </button>
+              <button
+                type="button"
+                className={`${styles.submitBtn} ${styles.btnRed}`}
+                onClick={handleCloseCancelPopup}
+              >
+                Non
+              </button>
+            </div>
           </div>
         </div>
       )}
