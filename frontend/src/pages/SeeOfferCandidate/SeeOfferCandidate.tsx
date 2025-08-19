@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CandidateFullCard from '../../components/Cards/CandidateFullCard/CandidateFullCard';
 import { userService } from '../../services/userService';
 import { offerService } from '../../services/offerService';
+import AppNavigation from '../../components/AppNavigation/AppNavigation';
 
 const SeeOfferCandidate: React.FC = () => {
     const navigate = useNavigate();
@@ -20,18 +21,21 @@ const SeeOfferCandidate: React.FC = () => {
             setOffer(offerData);
         };
         fetchCandidate();
-    }, [candidateId]);
+    }, [candidateId, offerId]);
 
     return (
-        <div>
-            <div className={styles.header}>
-                <button onClick={() => navigate(`/mes-offres/${offerId}/candidats`)}>Retour</button>
-                <p>Profil du candidat</p>
+        <>
+            <div className={styles.pageBg} style={{ paddingBottom: '125px' }}>
+                <div className={styles.header}>
+                    <button className={styles.backButton} onClick={() => navigate(`/mes-offres/${offerId}/candidats`)}>← Retour</button>
+                    <h2 className={styles.title}>Profil du candidat</h2>
+                </div>
+                <div className={styles.content}>
+                    {candidate && <CandidateFullCard candidate={candidate} offer={offer} />}
+                </div>
             </div>
-            <div className={styles.content}>
-                {candidate && <CandidateFullCard candidate={candidate} offer={offer} />}
-            </div>
-        </div>
+            <AppNavigation />
+        </>
     );
 };
 

@@ -5,6 +5,7 @@ import OfferForm from '../../components/Forms/OfferForm/OfferForm';
 import { authService } from '../../services/authService';
 import { offerService } from '../../services/offerService';
 import { useNavigate, useParams } from 'react-router-dom';
+import AppNavigation from '../../components/AppNavigation/AppNavigation';
 
 const EditOffer: React.FC = () => {
     const { offerId: offerId } = useParams<{ offerId: string }>();
@@ -95,24 +96,27 @@ const EditOffer: React.FC = () => {
     };
 
     return (
-        <div className={styles2.appRoot}>
-            <div className={styles.wrapper}>
-                <div className={styles.headerRow}>
-                    <span className={styles.pageTitle}>Modifier votre annonce</span>
+        <>
+            <div className={styles2.appRoot}>
+                <div className={styles.wrapper} style={{ paddingBottom: '64px' }}>
+                    <div className={styles.headerRow}>
+                        <span className={styles.pageTitle}>Modifier votre annonce</span>
+                    </div>
+                    <OfferForm
+                        form={form}
+                        errors={errors}
+                        onChange={handleChange}
+                        onMapChange={loc => setForm((prev: typeof form) => ({ ...prev, location: loc.address, latitude: loc.lat, longitude: loc.lng }))}
+                        onAddSkill={handleAddSkill}
+                        onAddAvantage={handleAddAvantage}
+                        onRemoveTag={handleRemoveTag}
+                        onImageChange={handleImageChange}
+                        onSubmit={handleSubmit}
+                    />
                 </div>
-                <OfferForm
-                    form={form}
-                    errors={errors}
-                    onChange={handleChange}
-                    onMapChange={loc => setForm((prev: typeof form) => ({ ...prev, location: loc.address, latitude: loc.lat, longitude: loc.lng }))}
-                    onAddSkill={handleAddSkill}
-                    onAddAvantage={handleAddAvantage}
-                    onRemoveTag={handleRemoveTag}
-                    onImageChange={handleImageChange}
-                    onSubmit={handleSubmit}
-                />
             </div>
-        </div>
+            <AppNavigation />
+        </>
     );
 };
 

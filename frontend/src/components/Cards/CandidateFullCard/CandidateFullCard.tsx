@@ -6,20 +6,18 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Building2, User } from 'lucide-react';
 import { renderToString } from 'react-dom/server';
-
-// Fix Leaflet marker icon issue
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const DefaultIcon = L.icon({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -45,7 +43,6 @@ function getLicenseInfo(code: string) {
     return licenseTypes.find(l => l.code === code);
 }
 
-// Helper pour créer un divIcon avec une icône Lucide React
 function createLucideDivIcon(icon: JSX.Element, borderColor: string = "#2563eb") {
     return L.divIcon({
         className: "",
@@ -76,14 +73,11 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
     const offerLng = Number(offer?.longitude);
     const hasOfferLocation = !isNaN(offerLat) && !isNaN(offerLng);
 
-    // Création des icônes Lucide avec bordure colorée et fond blanc
     const personIcon = createLucideDivIcon(<User color="#2563eb" size={26} />, "#2563eb");
     const companyIcon = createLucideDivIcon(<Building2 color="#dc2626" size={26} />, "#dc2626");
 
-    // Ref pour la carte
     const mapRef = useRef<any>(null);
 
-    // Ajuste la vue pour inclure les deux markers
     useEffect(() => {
         if (mapRef.current && hasLocation && hasOfferLocation) {
             const bounds = L.latLngBounds([
@@ -96,64 +90,118 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
 
     return (
         <div className={styles.card} key={candidate.id}>
-            <img className={styles.profilePhoto} src={candidate.profilePhoto || candidate.profilePhotoUrl || ''} alt="" />
-            <p className={styles.name}>{candidate.lastName} {candidate.firstName}</p>
-            <p className={styles.jobTitle}>{candidate.jobTitle}</p>
-            <p className={styles.age}>Âge : {candidate.age}</p>
-            <p className={styles.phone}>Téléphone : {candidate.phone}</p>
-            <p className={styles.location}>Adresse : {candidate.candidateLocationAddress}</p>
-            <div className={styles.mapSection}>
-                {hasLocation ? (
-                    <MapContainer
-                        key={candidateLat + '-' + candidateLng}
-                        center={[candidateLat, candidateLng]}
-                        zoom={13}
-                        style={{ height: '200px', width: '100%' }}
-                        ref={mapRef}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        />
-                        <Marker
-                            position={[candidateLat, candidateLng]}
-                            icon={personIcon}
-                        />
-                        {hasOfferLocation && (
-                            <Marker
-                                position={[offerLat, offerLng]}
-                                icon={companyIcon}
-                            />
+            <div className={styles.headerInfo}>
+                <img className={styles.profilePhoto} src={candidate.profilePhoto || candidate.profilePhotoUrl || ''} alt="" />
+                <div className={styles.headerText}>
+                    <div>
+                        {(candidate.lastName || candidate.firstName) && (
+                            <p className={styles.name}>
+                                {candidate.lastName} {candidate.firstName}
+                                {candidate.age ? ` (${candidate.age})` : ''}
+                            </p>
                         )}
-                    </MapContainer>
-                ) : (
-                    <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
-                        <span>Localisation non renseignée</span>
+                        {candidate.jobTitle && (
+                            <p className={styles.jobTitle}>{candidate.jobTitle}</p>
+                        )}
                     </div>
-                )}
+                    {candidate.candidateLocationAddress && (
+                        <p className={styles.locationHeader}>{candidate.candidateLocationAddress}</p>
+                    )}
+                </div>
             </div>
-            <p className={styles.mobility}>Mobilité : {candidate.mobility}</p>
-            <p className={styles.salary}>Salaire : {candidate.salary}</p>
-            <p className={styles.bio}>Bio : {candidate.bio}</p>
-            <p className={styles.experience}>Résumé : {candidate.experience}</p>
-            <p className={styles.education}>Formation : {candidate.education}</p>
-            <p className={styles.workExperiences}>Expériences : {candidate.workExperiences}</p>
-            <div className={styles.tags}>
-                {candidate.hardSkills?.map((skill: string) => (
-                    <span className={styles.tag} key={skill}>{skill}</span>
-                ))}
-                {candidate.softSkills?.map((skill: string) => (
-                    <span className={styles.tag} key={skill}>{skill}</span>
-                ))}
-                {candidate.contractTypes?.map((contract: string) => (
-                    <span className={styles.tag} key={contract}>{contract}</span>
-                ))}
-                {candidate.workModes?.map((workMode: string) => (
-                    <span className={styles.tag} key={workMode}>{workMode}</span>
-                ))}
-            </div>
+
+            {(candidate.candidateLocationAddress || hasLocation) && (
+                <div className={styles.section}>
+                    <div className={styles.locationMapWrapper}>
+                        {hasLocation && (
+                            <div className={styles.mapSection}>
+                                <MapContainer
+                                    key={candidateLat + '-' + candidateLng}
+                                    center={[candidateLat, candidateLng]}
+                                    zoom={13}
+                                    style={{ height: '100%', width: '100%' }}
+                                    ref={mapRef}
+                                >
+                                    <TileLayer
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                    />
+                                    <Marker
+                                        position={[candidateLat, candidateLng]}
+                                        icon={personIcon}
+                                    />
+                                    {hasOfferLocation && (
+                                        <Marker
+                                            position={[offerLat, offerLng]}
+                                            icon={companyIcon}
+                                        />
+                                    )}
+                                </MapContainer>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {candidate.mobility && (
+                <div className={styles.section}>
+                    <div className={styles.flexRow}>
+                        {candidate.mobility && (
+                            <div className={styles.mobility}><span className={styles.label}>Mobilité :</span> {candidate.mobility}</div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {(candidate.bio || candidate.experience || candidate.education || candidate.workExperiences) && (
+                <div className={styles.section}>
+                    {candidate.bio && (
+                        <div className={styles.bio}><span className={styles.label}>Bio :</span> {candidate.bio}</div>
+                    )}
+                    <div className={styles.flexRow}>
+                        {candidate.experience && (
+                            <div className={styles.experience}><span className={styles.label}>Résumé :</span> {candidate.experience}</div>
+                        )}
+                        {candidate.education && (
+                            <div className={styles.education}><span className={styles.label}>Formation :</span> {candidate.education}</div>
+                        )}
+                    </div>
+                    {candidate.workExperiences && (
+                        <div className={styles.workExperiences}><span className={styles.label}>Expériences :</span> {candidate.workExperiences}</div>
+                    )}
+                </div>
+            )}
+
+            {(candidate.hardSkills?.length > 0 || candidate.softSkills?.length > 0) && (
+                <div className={styles.section}>
+                    <div className={styles.sectionTitle}>Compétences</div>
+                    <div className={styles.tags}>
+                        {candidate.hardSkills?.map((skill: string) => (
+                            <span className={styles.tag} key={skill}>{skill}</span>
+                        ))}
+                        {candidate.softSkills?.map((skill: string) => (
+                            <span className={styles.tag} key={skill}>{skill}</span>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {(candidate.contractTypes?.length > 0 || candidate.workModes?.length > 0) && (
+                <div className={styles.section}>
+                    <div className={styles.sectionTitle}>Préférences</div>
+                    <div className={styles.tags}>
+                        {candidate.contractTypes?.map((contract: string) => (
+                            <span className={styles.tag} key={contract}>{contract}</span>
+                        ))}
+                        {candidate.workModes?.map((workMode: string) => (
+                            <span className={styles.tag} key={workMode}>{workMode}</span>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {((candidate.licenseList || candidate.licenses)?.length > 0) && (
-                <div className={styles.licenseSection}>
+                <div className={styles.section}>
                     <div className={styles.licenseHeader}>
                         <span>Permis de conduire</span>
                     </div>
@@ -171,13 +219,19 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                     </div>
                 </div>
             )}
-            <div className={styles.languages}>
-                {candidate.languages?.map((lang: { language: string; level: string }, idx: number) => (
-                    <span className={styles.languageTag} key={idx}>
-                        {lang.language} ({lang.level})
-                    </span>
-                ))}
-            </div>
+
+            {candidate.languages?.length > 0 && (
+                <div className={styles.section}>
+                    <div className={styles.sectionTitle}>Langues</div>
+                    <div className={styles.languages}>
+                        {candidate.languages?.map((lang: { language: string; level: string }, idx: number) => (
+                            <span className={styles.languageTag} key={idx}>
+                                {lang.language} ({lang.level})
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

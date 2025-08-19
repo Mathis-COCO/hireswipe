@@ -13,28 +13,37 @@
 }
 
 .header {
-  margin-bottom: 32px;
-  text-align: center;
+  width: 100%;
+  max-width: 870px;
+  margin: 0 auto;
+  padding: 10px 0 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .backButton {
-  margin-bottom: 18px;
-  padding: 8px 18px;
-  border-radius: 8px;
+  background: $color-primary;
+  color: $color-white;
   border: none;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 500;
+  border-radius: $border-radius-md;
+  padding: 10px 22px;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  box-shadow: $box-shadow-sm;
+  transition: background 0.2s;
+  &:hover {
+    background: $color-primary-dark;
+  }
 }
 
 .title {
   font-size: 2rem;
   font-weight: 700;
-  color: #222;
-  margin-bottom: 8px;
+  color: $color-primary-dark;
+  text-align: center;
 }
 
 .subtitle {
