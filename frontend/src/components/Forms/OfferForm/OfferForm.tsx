@@ -158,13 +158,15 @@ const OfferForm: React.FC<OfferFormProps> = ({
 
         <div className={styles.row}>
           <label>
-            Description du poste
+            Description du poste <span className={styles.required}>*</span>
             <textarea
               name="description"
               placeholder="Décrivez le poste, les missions, l'environnement de travail..."
               value={form.description || ''}
               onChange={e => onChange('description', e.target.value)}
+              className={errors.description ? styles.errorInput : ''}
             />
+            {errors.description && <span className={styles.errorText}>{errors.description}</span>}
           </label>
         </div>
 
