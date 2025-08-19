@@ -166,6 +166,16 @@
   font-weight: $font-weight-medium;
 }
 
+.statusAvailable {
+  color: #22c55e; // vert
+  font-size: 0.95em;
+}
+
+.statusUnavailable {
+  color: #ef4444; // rouge
+  font-size: 0.95em;
+}
+
 @media (max-width: 900px) {
   .listWrapper {
     max-width: 100%;

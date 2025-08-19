@@ -16,6 +16,7 @@ interface Offer {
   avantages: string[];
   publishedAt: string;
   candidates: number;
+  isAvailable: boolean;
 }
 
 interface OfferListProps {
@@ -48,7 +49,22 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onView }) => {
                   <span>{getCityFromLocation(o.location)}</span>
                   {o.teletravail && <span className={styles.teletravailTag}>Télétravail</span>}
                   <span>€ {o.salary}</span>
-                  <span>{o.experience}</span>
+                  <span>
+                    {o.experience}
+                    {/* Ajout du statut disponible/indisponible avec isAvailable */}
+                    {typeof o.isAvailable !== 'undefined' && (
+                      <span
+                        className={
+                          o.isAvailable
+                            ? styles.statusAvailable
+                            : styles.statusUnavailable
+                        }
+                        style={{ marginLeft: 8, fontWeight: 600 }}
+                      >
+                        {o.isAvailable ? 'Disponible' : 'Indisponible'}
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
               <div className={styles.offerActions}>

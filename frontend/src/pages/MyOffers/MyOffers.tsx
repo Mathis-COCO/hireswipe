@@ -20,6 +20,7 @@ type Offer = {
   avantages: any[];
   publishedAt: string;
   candidates: number;
+  isAvailable: boolean;
 };
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
