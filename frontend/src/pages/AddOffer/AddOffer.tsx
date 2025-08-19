@@ -73,6 +73,7 @@ const AddOffer: React.FC = () => {
     if (!form.category) newErrors.category = 'La catégorie est obligatoire.';
     if (!form.experience) newErrors.experience = 'Le niveau d\'expérience est obligatoire.';
     if (!form.contract) newErrors.contract = 'Le type de contrat est obligatoire.';
+    if (!form.description) newErrors.description = 'La description est obligatoire.';
     if (!form.imageUrl) newErrors.imageUrl = 'Une image est obligatoire.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
