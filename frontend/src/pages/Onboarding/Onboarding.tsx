@@ -141,7 +141,7 @@ const Onboarding: React.FC = () => {
                 case 5:
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:
-                    return !!(profileData.salary && profileData.contractTypes && profileData.contractTypes.length > 0);
+                    return !!(profileData.contractTypes && profileData.contractTypes.length > 0);
                 default:
                     return true;
             }

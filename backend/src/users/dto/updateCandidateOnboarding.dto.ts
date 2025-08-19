@@ -63,10 +63,23 @@ export class UpdateCandidateOnboardingDto {
   workModes?: string[];
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  licenseList?: string[];
+
+  @IsOptional()
+  @IsString()
+  mobility?: string;
+
+  @IsOptional()
   @IsString()
   profilePhoto?: string;
 
   @IsOptional()
   @IsString()
   bio?: string;
+
+  @IsOptional()
+  @IsString()
+  experience?: string;
 }

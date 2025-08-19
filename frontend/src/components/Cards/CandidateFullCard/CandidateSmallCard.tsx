@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from './CandidateSmallCard.module.scss';
 
-interface SmallCandidateCardProps {
+interface CandidateFullCardProps {
     candidate: any;
 }
 
-const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate }) => {
+const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate }) => {
     return (
         <div className={styles.card} key={candidate.id}>
             <img className={styles.profilePhoto} src={candidate.profilePhoto} alt="" />
-            <p className={styles.name}>{candidate.lastName} {candidate.firstName} ({candidate.age} ans)</p>
-            <p className={styles.jobTitle}>{candidate.jobTitle} {candidate.experience}</p>
+            <p className={styles.name}>{candidate.lastName} {candidate.firstName}</p>
+            <p className={styles.jobTitle}>{candidate.jobTitle}</p>
             <div className={styles.tags}>
                 {candidate.contractTypes.map((contract: string) => (
                     <span className={styles.tag} key={contract}>{contract}</span>
@@ -21,8 +21,9 @@ const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate }) =>
                     <span className={styles.tag} key={workMode}>{workMode}</span>
                 ))}
             </div>
+            <p>{candidate.age}</p>
         </div>
     );
 };
 
-export default SmallCandidateCard;
+export default CandidateFullCard;

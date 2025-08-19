@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './StepLocalization.module.scss';
 import { LucideProps } from 'lucide-react';
 import LicenseSelector from '../../../LicenseSelector/LicenseSelector';
 import InteractiveMap from '../../../InteractiveMap/InteractiveMap';
-import { MapPin } from 'lucide-react';
 
 interface StepProps {
     icon: React.ElementType<LucideProps>;
@@ -12,6 +11,16 @@ interface StepProps {
 }
 
 const StepLocalization: React.FC<StepProps> = ({ icon: Icon, data, updateData }) => {
+    const [mobility, setMobility] = useState(data.mobility || '');
+    const [licenseList, setLicensesList] = useState(data.licenseList || []);
+
+    useEffect(() => {
+        updateData({
+            mobility,
+            licenseList
+        });
+    }, [mobility, licenseList]);
+
     return (
         <>
             <div className={styles.stepHeader}>
@@ -39,16 +48,16 @@ const StepLocalization: React.FC<StepProps> = ({ icon: Icon, data, updateData })
                         id="mobility"
                         type="text"
                         placeholder="Votre mobilité"
-                        defaultValue={data.mobility || ''}
-                        onChange={(e) => updateData({ mobility: e.target.value })}
+                        value={mobility}
+                        onChange={(e) => setMobility(e.target.value)}
                     />
                 </div>
                 
                 <div className={styles.formGroup}>
                     <label>Permis de conduire</label>
                     <LicenseSelector 
-                        selectedLicenses={data.licenses || []}
-                        onLicenseChange={(newLicenses) => updateData({ licenses: newLicenses })}
+                        selectedLicenses={licenseList}
+                        onLicenseChange={setLicensesList}
                     />
                 </div>
             </form>

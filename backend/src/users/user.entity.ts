@@ -58,11 +58,20 @@ export class User {
   @Column({ nullable: true })
   salary?: number;
 
+  @Column({ nullable: true })
+  experience?: string;
+
   @Column('simple-array', { nullable: true })
   contractTypes?: string[];
 
   @Column('simple-array', { nullable: true })
   workModes?: string[];
+
+  @Column('simple-array', { nullable: true })
+  licenseList?: string[];
+
+  @Column({ nullable: true })
+  mobility?: string;
 
   @Column({ nullable: true })
   profilePhoto?: string;

@@ -49,9 +49,9 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
               <div>
                 <span className={styles.offerTitle}>{o.title}</span>
                 <div className={styles.offerMeta}>
-                  <span>{getCityFromLocation(o.location)}</span>
+                  {o.location && <span>{getCityFromLocation(o.location)}</span> }
                   {o.teletravail && <span className={styles.teletravailTag}>Télétravail</span>}
-                  <span>€ {o.salary}</span>
+                  {o.salary && <span>€ {o.salary}</span>}
                   <span>
                     {o.experience}
                     {typeof o.isAvailable !== 'undefined' && (
