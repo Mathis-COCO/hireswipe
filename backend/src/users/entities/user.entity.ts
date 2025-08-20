@@ -1,12 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  ManyToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Offer } from 'src/offers/entities/offer.entity';
+import { OfferCandidate } from './userOffer.entity';
 
 @Entity()
 export class User {
@@ -124,8 +118,8 @@ export class User {
   @OneToMany(() => Offer, (offer: Offer) => offer.createdBy)
   createdOffers: Offer[];
 
-  @ManyToMany(() => Offer, (offer: Offer) => offer.candidates)
-  appliedOffers: Offer[];
+  @OneToMany(() => OfferCandidate, (oc) => oc.user)
+  appliedOffers: OfferCandidate[];
 
   @Column('simple-array', { nullable: true })
   interactedOfferIds?: string[];

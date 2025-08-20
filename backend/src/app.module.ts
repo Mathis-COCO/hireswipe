@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { User } from './users/user.entity';
+import { User } from './users/entities/user.entity';
 import { OffersModule } from './offers/offers.module';
 import { Offer } from './offers/entities/offer.entity';
 
@@ -21,6 +21,7 @@ config();
       database: process.env.DB_NAME,
       entities: [User, Offer],
       synchronize: true,
+      autoLoadEntities: true,
       schema: 'public',
     }),
     UsersModule,

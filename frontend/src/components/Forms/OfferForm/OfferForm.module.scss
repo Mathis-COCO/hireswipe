@@ -155,7 +155,6 @@ textarea {
   font-weight: 400;
 }
 
-// Switch custom style
 .switch {
   appearance: none;
   width: 40px;
@@ -245,7 +244,7 @@ textarea {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 41, 59, 0.45); // dark blue with opacity
+  background: rgba(30, 41, 59, 0.45);
   z-index: 1000;
   display: flex;
   align-items: center;

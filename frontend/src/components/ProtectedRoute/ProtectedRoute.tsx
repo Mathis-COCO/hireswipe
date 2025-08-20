@@ -13,23 +13,19 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
         const checkAccess = async () => {
             const token = localStorage.getItem('authToken');
             
-            // Si pas connecté, rediriger vers auth
             if (!token) {
                 navigate('/auth');
                 return;
             }
 
-            // Vérifier si l'onboarding est déjà terminé
             const isCompleted = localStorage.getItem('onboardingCompleted');
             if (isCompleted === 'true') {
                 navigate('/');
                 return;
             }
 
-            // Vérifier si on a un type de compte
             const accountType = localStorage.getItem('accountType');
             if (!accountType) {
-                // Si pas de type de compte, rediriger vers auth pour re-login
                 localStorage.removeItem('authToken');
                 navigate('/auth');
                 return;
@@ -41,7 +37,6 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
         checkAccess();
     }, [navigate]);
 
-    // Show loading while checking
     if (isChecking) {
         return (
             <div style={{ 

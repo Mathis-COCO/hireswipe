@@ -74,6 +74,7 @@ const OfferCandidateMap: React.FC<OfferCandidateMapProps> = ({ candidates, offer
     const hasOfferLocation = offer.latitude !== null && offer.longitude !== null && !isNaN(Number(offer.latitude)) && !isNaN(Number(offer.longitude));
     const offerLat = Number(offer.latitude);
     const offerLng = Number(offer.longitude);
+    console.log(offer)
 
     const candidatePositions: [number, number][] = validCandidates
         .map(c => [Number(c.latitude), Number(c.longitude)])

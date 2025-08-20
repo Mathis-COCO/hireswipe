@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { Offer } from './entities/offer.entity';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
-import { User } from 'src/users/user.entity';
+import { User } from 'src/users/entities/user.entity';
+import { OfferCandidate } from '../users/entities/userOffer.entity';
 
 @Injectable()
 export class OffersService {
@@ -13,14 +14,14 @@ export class OffersService {
     private readonly offerRepository: Repository<Offer>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(OfferCandidate)
+    private readonly offerCandidateRepository: Repository<OfferCandidate>,
   ) {}
 
   async create(createOfferDto: CreateOfferDto, userId: string): Promise<Offer> {
     const offer = this.offerRepository.create(createOfferDto);
     if (userId) {
-      const user = await this.userRepository.findOne({
-        where: { id: userId },
-      });
+      const user = await this.userRepository.findOne({ where: { id: userId } });
       if (user) {
         offer.createdBy = user;
       }
@@ -96,13 +97,34 @@ export class OffersService {
       relations: ['candidates'],
     });
     if (!offer) throw new Error('Offer not found');
+
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new Error('User not found');
 
-    if (!offer.candidates.some((candidate) => candidate.id === userId)) {
-      offer.candidates.push(user);
-      await this.offerRepository.save(offer);
-    }
+    const alreadyCandidate = offer.candidates.some(
+      (oc) => oc.user.id === userId,
+    );
+    if (alreadyCandidate) return;
+
+    const offerCandidate = new OfferCandidate();
+    offerCandidate.offer = offer;
+    offerCandidate.user = user;
+    offerCandidate.status = 'pending';
+
+    offer.candidates.push(offerCandidate);
+
+    await this.offerCandidateRepository.save(offerCandidate);
+  }
+
+  async updateCandidateStatus(offerId: string, userId: string, status: string) {
+    const offerCandidate = await this.offerCandidateRepository.findOne({
+      where: { offer: { id: offerId }, user: { id: userId } },
+      relations: ['offer', 'user'],
+    });
+    if (!offerCandidate) throw new Error('Candidate not found');
+
+    offerCandidate.status = status;
+    return this.offerCandidateRepository.save(offerCandidate);
   }
 
   async hasRemainingOffer(userId: string): Promise<boolean> {

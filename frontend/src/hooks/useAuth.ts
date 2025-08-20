@@ -34,7 +34,6 @@ export const useAuth = () => {
       const response = await authService.login(data);
       authService.saveAuthData(response);
       
-      // Store account type from response if available
       if (response.user?.role) {
         const accountType = response.user.role === 'candidat' ? 'candidat' : 'entreprise';
         localStorage.setItem('accountType', accountType);
@@ -52,7 +51,6 @@ export const useAuth = () => {
 
   const logout = () => {
     authService.logout();
-    // Clear account type on logout
     localStorage.removeItem('accountType');
     localStorage.removeItem('onboardingCompleted');
     localStorage.removeItem('onboardingProgress');

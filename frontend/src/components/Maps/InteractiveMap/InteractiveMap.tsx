@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Fix Leaflet marker icon issue
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -26,7 +25,7 @@ interface InteractiveMapProps {
     initialLatitude?: number;
     initialLongitude?: number;
     onLocationChange: (location: { address: string; lat: number; lng: number }) => void;
-    showDefaultMarker?: boolean; // Ajoute une prop pour contrôler le marker
+    showDefaultMarker?: boolean;
 }
 
 const CenterMap: React.FC<{ lat: number; lng: number }> = ({ lat, lng }) => {
@@ -53,7 +52,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
 
     useEffect(() => {
-        // Affiche le marker si les coordonnées sont définies
         if (
           typeof initialLatitude === 'number' &&
           typeof initialLongitude === 'number' &&
@@ -70,7 +68,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         if (!searchAddress) return;
         setIsLoading(true);
 
-        // Géocodage réel avec Nominatim
         try {
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}`
@@ -89,7 +86,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 });
             }
         } catch (err) {
-            // Optionnel: gestion d'erreur
         }
         setIsLoading(false);
     };
