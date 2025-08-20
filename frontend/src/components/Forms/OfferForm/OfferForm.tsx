@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './OfferForm.module.scss';
-import InteractiveMap from '../../../components/InteractiveMap/InteractiveMap';
+import InteractiveMap from '../../Maps/InteractiveMap/InteractiveMap';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import { categories } from '../../../constants/categories';
 

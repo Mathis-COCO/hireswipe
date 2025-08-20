@@ -1,25 +1,8 @@
-import React, { JSX, useRef, useEffect } from 'react';
+import React from 'react';
 import styles from './CandidateFullCard.module.scss';
 import { Car, Bike, Truck, Bus, Ship } from 'lucide-react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { Building2, User } from 'lucide-react';
-import { renderToString } from 'react-dom/server';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-const DefaultIcon = L.icon({
-    iconUrl: markerIcon,
-    iconRetinaUrl: markerIcon2x,
-    shadowUrl: markerShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
+import OfferCandidateMap from '../../Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 
 interface CandidateFullCardProps {
     candidate: any;
@@ -43,50 +26,7 @@ function getLicenseInfo(code: string) {
     return licenseTypes.find(l => l.code === code);
 }
 
-function createLucideDivIcon(icon: JSX.Element, borderColor: string = "#2563eb") {
-    return L.divIcon({
-        className: "",
-        html: `<div style="
-            background:#fff;
-            border: 3px solid ${borderColor};
-            border-radius:50%;
-            width:38px;
-            height:38px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        ">
-            <span style="display:inline-block;width:26px;height:26px;">${renderToString(icon)}</span>
-        </div>`,
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -38],
-    });
-}
-
 const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer }) => {
-    const candidateLat = Number(candidate.candidateLocationLat);
-    const candidateLng = Number(candidate.candidateLocationLng);
-    const hasLocation = !isNaN(candidateLat) && !isNaN(candidateLng);
-    const offerLat = Number(offer?.latitude);
-    const offerLng = Number(offer?.longitude);
-    const hasOfferLocation = !isNaN(offerLat) && !isNaN(offerLng);
-
-    const personIcon = createLucideDivIcon(<User color="#2563eb" size={26} />, "#2563eb");
-    const companyIcon = createLucideDivIcon(<Building2 color="#dc2626" size={26} />, "#dc2626");
-
-    const mapRef = useRef<any>(null);
-
-    useEffect(() => {
-        if (mapRef.current && hasLocation && hasOfferLocation) {
-            const bounds = L.latLngBounds([
-                [candidateLat, candidateLng],
-                [offerLat, offerLng]
-            ]);
-            mapRef.current.fitBounds(bounds, { padding: [40, 40] });
-        }
-    }, [hasLocation, hasOfferLocation, candidateLat, candidateLng, offerLat, offerLng]);
 
     return (
         <div className={styles.card} key={candidate.id}>
@@ -110,35 +50,10 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                 </div>
             </div>
 
-            {(candidate.candidateLocationAddress || hasLocation) && (
+            {candidate.candidateLocationAddress &&  candidate.candidateLocationLat && candidate.candidateLocationLng && (
                 <div className={styles.section}>
                     <div className={styles.locationMapWrapper}>
-                        {hasLocation && (
-                            <div className={styles.mapSection}>
-                                <MapContainer
-                                    key={candidateLat + '-' + candidateLng}
-                                    center={[candidateLat, candidateLng]}
-                                    zoom={13}
-                                    style={{ height: '100%', width: '100%' }}
-                                    ref={mapRef}
-                                >
-                                    <TileLayer
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                    />
-                                    <Marker
-                                        position={[candidateLat, candidateLng]}
-                                        icon={personIcon}
-                                    />
-                                    {hasOfferLocation && (
-                                        <Marker
-                                            position={[offerLat, offerLng]}
-                                            icon={companyIcon}
-                                        />
-                                    )}
-                                </MapContainer>
-                            </div>
-                        )}
+                        {offer && candidate && <OfferCandidateMap candidates={[candidate]} offer={offer} />}
                     </div>
                 </div>
             )}

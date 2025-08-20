@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './StepLocalization.module.scss';
 import { LucideProps } from 'lucide-react';
 import LicenseSelector from '../../../LicenseSelector/LicenseSelector';
-import InteractiveMap from '../../../InteractiveMap/InteractiveMap';
+import InteractiveMap from '../../../Maps/InteractiveMap/InteractiveMap';
 
 interface StepProps {
     icon: React.ElementType<LucideProps>;
