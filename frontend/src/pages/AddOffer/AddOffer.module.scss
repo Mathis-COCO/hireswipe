@@ -1,0 +1,38 @@
+@import '../../styles/variables.scss';
+
+.wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: none;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .form {
+    max-width: 100%;
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .header h2 {
+    font-size: $font-size-h3;
+  }
+
+  .fieldset {
+    padding: 1rem 0.5rem;
+  }
+}

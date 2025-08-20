@@ -1,9 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
+import { Offer } from 'src/offers/entities/offer.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   email: string;
@@ -33,6 +41,12 @@ export class User {
   candidateLocationAddress?: string;
 
   @Column({ nullable: true })
+  latitude?: string;
+
+  @Column({ nullable: true })
+  longitude?: string;
+
+  @Column({ nullable: true })
   workExperiences?: string;
 
   @Column({ nullable: true })
@@ -50,11 +64,20 @@ export class User {
   @Column({ nullable: true })
   salary?: number;
 
+  @Column({ nullable: true })
+  experience?: string;
+
   @Column('simple-array', { nullable: true })
   contractTypes?: string[];
 
   @Column('simple-array', { nullable: true })
   workModes?: string[];
+
+  @Column('simple-array', { nullable: true })
+  licenseList?: string[];
+
+  @Column({ nullable: true })
+  mobility?: string;
 
   @Column({ nullable: true })
   profilePhoto?: string;
@@ -97,4 +120,13 @@ export class User {
 
   @Column({ nullable: true })
   workEnvironment?: string;
+
+  @OneToMany(() => Offer, (offer: Offer) => offer.createdBy)
+  createdOffers: Offer[];
+
+  @ManyToMany(() => Offer, (offer: Offer) => offer.candidates)
+  appliedOffers: Offer[];
+
+  @Column('simple-array', { nullable: true })
+  interactedOfferIds?: string[];
 }

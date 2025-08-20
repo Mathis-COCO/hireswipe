@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './StepCompanyLocalization.module.scss';
 import { LucideProps } from 'lucide-react';
-import InteractiveMap from '../../../InteractiveMap/InteractiveMap';
+import InteractiveMap from '../../../Maps/InteractiveMap/InteractiveMap';
 
 interface StepProps {
     icon: React.ElementType<LucideProps>;
@@ -28,21 +28,6 @@ const StepCompanyLocalization: React.FC<StepProps> = ({ icon: Icon, data, update
                         companyLng: newLocation.lng
                     })}
                 />
-            </div>
-            
-            <div className={styles.formGroup}>
-                <label>Taille de l'entreprise</label>
-                <select
-                    value={data.employees || ''}
-                    onChange={(e) => updateData({ employees: e.target.value })}
-                >
-                    <option value="" disabled>Sélectionner le nombre d'employés</option>
-                    <option value="1-10">1-10</option>
-                    <option value="11-50">11-50</option>
-                    <option value="51-200">51-200</option>
-                    <option value="201-500">201-500</option>
-                    <option value="501+">501+</option>
-                </select>
             </div>
         </>
     );

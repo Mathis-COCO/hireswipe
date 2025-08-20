@@ -1,7 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
+import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
+import { UpdateRecruiterOnboardingDto } from './dto/updateRecruiterOnboarding.dto';
 
 @Injectable()
 export class UsersService {
@@ -10,8 +16,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findById(id: number): Promise<User | null> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async findById(id: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
     return user ?? null;
   }
 
@@ -25,13 +33,40 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async updateUser(id: number, updateDto: Partial<User>): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async updateUser(id: string, updateDto: Partial<User>): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
 
     Object.assign(user, updateDto);
     return this.userRepository.save(user);
+  }
+
+  updateProfile(
+    userId: string,
+    userRole: string,
+    dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
+  ) {
+    if (userRole === 'candidat') {
+      const candidateDto = dto as UpdateCandidateOnboardingDto;
+      return this.updateUser(userId, candidateDto);
+    } else if (userRole === 'entreprise') {
+      const recruiterDto = dto as UpdateRecruiterOnboardingDto;
+      return this.updateUser(userId, recruiterDto);
+    }
+
+    throw new BadRequestException('Rôle utilisateur non pris en charge');
+  }
+
+  async findInteractedOffers(userId: string): Promise<any[]> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found.`);
+    }
+
+    return user.interactedOfferIds ?? [];
   }
 }

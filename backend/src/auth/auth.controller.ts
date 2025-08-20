@@ -1,18 +1,7 @@
-import {
-  Controller,
-  Post,
-  Put,
-  Body,
-  UnauthorizedException,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
-import { UpdateRecruiterOnboardingDto } from './dto/updateRecruiterOnboarding.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -38,17 +27,5 @@ export class AuthController {
         role: user.role,
       },
     };
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Put('profile')
-  updateProfile(
-    @Request() req: { user: { id: string; role: string } },
-    @Body() dto: UpdateCandidateOnboardingDto | UpdateRecruiterOnboardingDto,
-  ) {
-    const userId = Number(req.user.id);
-    const userRole = req.user.role;
-
-    return this.authService.updateProfile(userId, userRole, dto);
   }
 }

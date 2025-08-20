@@ -27,6 +27,14 @@ export class UpdateCandidateOnboardingDto {
   candidateLocationAddress?: string;
 
   @IsOptional()
+  @IsNumber()
+  latitude?: string;
+
+  @IsOptional()
+  @IsNumber()
+  longitude?: string;
+
+  @IsOptional()
   @IsString()
   workExperiences?: string;
 
@@ -63,10 +71,23 @@ export class UpdateCandidateOnboardingDto {
   workModes?: string[];
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  licenseList?: string[];
+
+  @IsOptional()
+  @IsString()
+  mobility?: string;
+
+  @IsOptional()
   @IsString()
   profilePhoto?: string;
 
   @IsOptional()
   @IsString()
   bio?: string;
+
+  @IsOptional()
+  @IsString()
+  experience?: string;
 }

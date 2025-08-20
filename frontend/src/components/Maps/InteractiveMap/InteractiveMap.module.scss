@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@import '../../../styles/variables.scss';
 
 .addressSearch {
     display: flex;
@@ -55,6 +55,9 @@
     height: 18.75rem;
     border-radius: 0.5rem;
     overflow: hidden;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
 }
 
 .selectedLocation {

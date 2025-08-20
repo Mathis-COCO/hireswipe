@@ -11,9 +11,7 @@ interface CompanyInfoProps {
 const StepCompanyInfo: React.FC<CompanyInfoProps> = ({ icon: Icon, data, updateData }) => {
   const [formData, setFormData] = useState({
     companyName: data.companyName || '',
-    companySize: data.companySize || '',
-    website: data.website || '',
-    linkedinUrl: data.linkedinUrl || ''
+    companySize: data.companySize || ''
   });
 
   const [showErrors, setShowErrors] = useState(false);
@@ -49,7 +47,6 @@ const StepCompanyInfo: React.FC<CompanyInfoProps> = ({ icon: Icon, data, updateD
     const newData = { ...formData, [field]: value };
     setFormData(newData);
     
-    // Clear errors when user starts typing
     if (showErrors) {
       setShowErrors(false);
     }
@@ -102,33 +99,6 @@ const StepCompanyInfo: React.FC<CompanyInfoProps> = ({ icon: Icon, data, updateD
             ))}
           </div>
           {showErrors && errors.companySize && <span className={styles.errorText}>Veuillez sélectionner une taille d'entreprise</span>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="website">
-            <div><Globe size={18} color="#3b82f6" /></div>
-            <span>Site web</span>
-          </label>
-          <input
-            type="url"
-            id="website"
-            placeholder="https://www.votreentreprise.com"
-            value={formData.website}
-            onChange={(e) => handleInputChange('website', e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="linkedinUrl">
-            <span>LinkedIn de l'entreprise</span>
-          </label>
-          <input
-            type="url"
-            id="linkedinUrl"
-            placeholder="https://www.linkedin.com/company/votre-entreprise"
-            value={formData.linkedinUrl}
-            onChange={(e) => handleInputChange('linkedinUrl', e.target.value)}
-          />
         </div>
       </div>
     </>

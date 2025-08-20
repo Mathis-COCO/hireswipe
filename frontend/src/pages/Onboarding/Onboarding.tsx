@@ -24,13 +24,19 @@ const Onboarding: React.FC = () => {
     const [animationDirection, setAnimationDirection] = useState<'left' | 'right'>('right');
     const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
     const navigate = useNavigate();
-
     const candidateSteps: number = 8;
     const companySteps: number = 6;
-
     const totalSteps = accountType === 'entreprise' ? companySteps : candidateSteps;
 
     useEffect(() => {
+        authService.getCurrentUser().then(userData => {
+            if (userData.firstName || userData.companyName) {
+                navigate('/');
+            } else {
+                navigate('/onboarding');
+            }
+        });
+
         const token = localStorage.getItem('authToken');
         if (!token) {
             navigate('/auth');
@@ -48,7 +54,7 @@ const Onboarding: React.FC = () => {
             navigate('/auth');
             return;
         }
-        
+
         setAccountType(storedAccountType);
 
         const savedProgress = localStorage.getItem('onboardingProgress');
@@ -89,7 +95,9 @@ const Onboarding: React.FC = () => {
             setTimeout(() => {
                 const newStep = step + 1;
                 setStep(newStep);
-                saveProgress(newStep, profileData);
+                if (step !== totalSteps - 1) {
+                    saveProgress(newStep, profileData);
+                }
                 setTimeout(() => {
                     setIsTransitioning(false);
                 }, 100);
@@ -105,6 +113,7 @@ const Onboarding: React.FC = () => {
             }
             return;
         }
+        console.log(profileData);
         nextStep();
     };
 
@@ -131,11 +140,13 @@ const Onboarding: React.FC = () => {
                 case 3:
                     return !!(profileData.workExperiences?.trim());
                 case 4:
-                    return !!(profileData.hardSkills && profileData.hardSkills.length > 0);
+                    return (
+                        profileData.hardSkills.length > 0 && profileData.experience
+                    );
                 case 5:
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:
-                    return !!(profileData.salary && profileData.contractTypes && profileData.contractTypes.length > 0);
+                    return !!(profileData.contractTypes && profileData.contractTypes.length > 0);
                 default:
                     return true;
             }
@@ -143,7 +154,11 @@ const Onboarding: React.FC = () => {
     };
 
     const isNextButtonDisabled = (): boolean => {
-        return isTransitioning || !validateCurrentStep();
+        const valid = validateCurrentStep();
+        if (profileData && typeof profileData === 'object') {
+            profileData._showValidationError = !valid;
+        }
+        return isTransitioning || !valid;
     };
 
     const prevStep = (): void => {
@@ -164,7 +179,6 @@ const Onboarding: React.FC = () => {
     const updateProfileData = (stepData: any) => {
         const newData = { ...profileData, ...stepData, accountType };
         setProfileData(newData);
-        saveProgress(step, newData);
     };
 
     const completeOnboarding = async () => {
@@ -172,7 +186,7 @@ const Onboarding: React.FC = () => {
             await authService.updateProfile(profileData);
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
-            
+
             navigate('/');
         } catch (error) {
             console.error('Erreur lors de la finalisation:', error);

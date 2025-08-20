@@ -5,12 +5,13 @@ import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import TabButton from '../../components/Buttons/TabButton/TabButton';
 import { HeartHandshake } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { RegisterData, LoginData } from '../../types/auth';
+import { LoginData } from '../../types/auth';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 const AuthForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register');
-  const { register, login, isLoading, error, clearError } = useAuth();
+  const { register, login, error, clearError } = useAuth();
   const navigate = useNavigate();
 
   const handleRegisterSubmit = async (data: { email: string; password: string; role: 'candidat' | 'entreprise' }) => {
@@ -27,13 +28,13 @@ const AuthForm: React.FC = () => {
     const result = await login(data);
     
     if (result.success) {
-      console.log("Connexion réussie, redirection vers l'onboarding");
-      const isCompleted = localStorage.getItem('onboardingCompleted');
-      if (isCompleted === 'true') {
-        navigate('/');
-      } else {
-        navigate('/onboarding');
-      }
+      authService.getCurrentUser().then(userData => {
+        if (userData.firstName || userData.companyName) {
+          navigate('/');
+        } else {
+          navigate('/onboarding');
+        }
+      });
     }
   };
 
