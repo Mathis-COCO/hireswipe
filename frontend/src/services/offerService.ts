@@ -97,6 +97,10 @@ class OfferService {
   }
 
   async updateOffer(id: number, data: any): Promise<any> {
+    delete data.candidates;
+    delete data.skillInput;
+    delete data.avantageInput;
+    data.updatedAt = new Date();
     const response = await apiRequest(`/offers/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),

@@ -65,6 +65,9 @@ export class Offer {
   @CreateDateColumn()
   createdAt: Date;
 
+  @CreateDateColumn({ nullable: true })
+  updatedAt?: Date;
+
   @Column({ default: true })
   isAvailable: boolean;
 }

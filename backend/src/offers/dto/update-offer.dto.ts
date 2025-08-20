@@ -12,4 +12,5 @@ export class UpdateOfferDto {
   longitude: number | undefined;
   category: string | undefined;
   imageUrl: string | undefined;
+  updatedAt: Date | undefined;
 }
