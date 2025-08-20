@@ -53,7 +53,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
 
     useEffect(() => {
-        // Affiche le marker si les coordonnées sont définies
         if (
           typeof initialLatitude === 'number' &&
           typeof initialLongitude === 'number' &&
@@ -70,7 +69,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         if (!searchAddress) return;
         setIsLoading(true);
 
-        // Géocodage réel avec Nominatim
         try {
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}`
@@ -89,7 +87,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 });
             }
         } catch (err) {
-            // Optionnel: gestion d'erreur
         }
         setIsLoading(false);
     };
