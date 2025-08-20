@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './RecruiterProfile.module.scss';
+import styles from '../Profile.module.scss';
 import { authService } from '../../../services/authService';
 import OfferCandidateMap from '../../../components/Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 import InteractiveMap from '../../../components/Maps/InteractiveMap/InteractiveMap';
@@ -29,8 +29,6 @@ const RecruiterProfile: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState<any>({});
     const [loading, setLoading] = useState(false);
-
-    // For dynamic lists
     const [valuesInput, setValuesInput] = useState('');
     const [benefitInput, setBenefitInput] = useState('');
 
@@ -62,7 +60,6 @@ const RecruiterProfile: React.FC = () => {
         setEditData((prev: any) => ({ ...prev, [field]: value }));
     };
 
-    // List management for values and benefits
     const handleAddValue = () => {
         if (valuesInput.trim()) {
             setEditData((prev: any) => ({
@@ -104,12 +101,10 @@ const RecruiterProfile: React.FC = () => {
             setProfile(editData);
             setIsEditing(false);
         } catch (err) {
-            // Optionally show error
         }
         setLoading(false);
     };
 
-    // Ajout pour la gestion de la localisation
     const handleMapChange = (loc: { address: string; lat: number; lng: number }) => {
         setEditData((prev: any) => ({
             ...prev,
