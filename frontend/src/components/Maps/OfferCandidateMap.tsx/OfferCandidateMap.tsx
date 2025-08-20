@@ -71,9 +71,9 @@ interface OfferCandidateMapProps {
 
 const OfferCandidateMap: React.FC<OfferCandidateMapProps> = ({ candidates, offer }) => {
     const validCandidates = candidates.filter(c => c.latitude && c.longitude);
+    const hasOfferLocation = offer.latitude !== null && offer.longitude !== null && !isNaN(Number(offer.latitude)) && !isNaN(Number(offer.longitude));
     const offerLat = Number(offer.latitude);
     const offerLng = Number(offer.longitude);
-    const hasOfferLocation = !isNaN(offerLat) && !isNaN(offerLng);
 
     const candidatePositions: [number, number][] = validCandidates
         .map(c => [Number(c.latitude), Number(c.longitude)])
