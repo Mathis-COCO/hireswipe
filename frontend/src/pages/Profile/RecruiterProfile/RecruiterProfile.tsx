@@ -265,11 +265,13 @@ const RecruiterProfile: React.FC = () => {
                         </div>
 
                         <span className={styles.label}>Localisation :</span>
-                        <InteractiveMap
-                            initialLatitude={editData.companyLat}
-                            initialLongitude={editData.companyLng}
-                            onLocationChange={handleMapChange}
-                        />
+                        <div className={styles.mapContainer}>
+                            <InteractiveMap
+                                initialLatitude={editData.companyLat}
+                                initialLongitude={editData.companyLng}
+                                onLocationChange={handleMapChange}
+                            />
+                        </div>
                         <div className={styles.editActions}>
                             <button type="submit" className={styles.saveBtn} disabled={loading}>
                                 {loading ? 'Enregistrement...' : 'Enregistrer'}

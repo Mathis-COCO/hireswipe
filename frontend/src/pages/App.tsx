@@ -44,7 +44,8 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     case '/':
-      content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
+      // content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
+      content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers/>;
       break;
   }
 
