@@ -4,12 +4,13 @@ import styles from './App.module.scss';
 import AppNavigation from '../components/AppNavigation/AppNavigation';
 import Messages from './Messages/Messages';
 import Likes from './Likes/Likes';
-import Profile from './Profile/Profile';
 import MyOffers from './MyOffers/MyOffers';
 import { authService } from '../services/authService';
 import AddOffer from './AddOffer/AddOffer';
 import CandidateFeed from './Feed/CandidateFeed/CandidateFeed';
 import RecruiterFeed from './Feed/RecruiterFeed/RecruiterFeed';
+import CandidateProfile from './Profile/CandidateProfile/CandidateProfile';
+import RecruiterProfile from './Profile/RecruiterProfile/RecruiterProfile';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
@@ -40,7 +41,7 @@ const App: React.FC = () => {
       content = accountType === 'entreprise' ? <MyOffers /> : <Navigate to="/" replace />;
       break;
     case '/profile':
-      content = <Profile />;
+      content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     case '/':
       content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
