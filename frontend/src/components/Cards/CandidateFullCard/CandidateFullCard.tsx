@@ -41,7 +41,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                             </p>
                         )}
                         {candidate.jobTitle && (
-                            <p className={styles.jobTitle}>{candidate.jobTitle}</p>
+                            <p className={styles.jobTitle}>{candidate.jobTitle}{candidate.experience ? ` (${candidate.experience})` : ''}</p>
                         )}
                     </div>
                     {candidate.candidateLocationAddress && (
@@ -75,7 +75,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                     )}
                     <div className={styles.flexRow}>
                         {candidate.experience && (
-                            <div className={styles.experience}><span className={styles.label}>Résumé :</span> {candidate.experience}</div>
+                            <div className={styles.experience}><span className={styles.label}>Résumé :</span> {candidate.workExperiences}</div>
                         )}
                         {candidate.education && (
                             <div className={styles.education}><span className={styles.label}>Formation :</span> {candidate.education}</div>

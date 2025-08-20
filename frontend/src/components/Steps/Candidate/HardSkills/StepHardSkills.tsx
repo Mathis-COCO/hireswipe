@@ -3,6 +3,8 @@ import styles from './StepHardSkills.module.scss';
 import { LucideProps } from 'lucide-react';
 import { X } from 'lucide-react';
 
+const experienceLevels = ['Débutant', 'Junior', 'Intermédiaire', 'Senior', 'Expert'];
+
 interface StepProps {
     icon: React.ElementType<LucideProps>;
     data: any;
@@ -28,6 +30,12 @@ const StepHardSkills: React.FC<StepProps> = ({ icon: Icon, data, updateData }) =
         const updatedSkills = currentSkills.filter((skill: string) => skill !== skillToRemove);
         updateData({ hardSkills: updatedSkills });
     };
+
+    const handleExperienceLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        updateData({ experience: e.target.value });
+    };
+
+    const showError = !data.experience && data._showValidationError;
 
     return (
         <>
@@ -60,6 +68,26 @@ const StepHardSkills: React.FC<StepProps> = ({ icon: Icon, data, updateData }) =
                             </button>
                         </div>
                     ))}
+                </div>
+                <div className={styles.experienceLevelSelect}>
+                    <label htmlFor="experience">
+                        Niveau d'expérience technique <span style={{color:'#dc2626'}}>*</span>
+                    </label>
+                    <select
+                        id="experience"
+                        name="experience"
+                        value={data.experience || ''}
+                        onChange={handleExperienceLevelChange}
+                        required
+                    >
+                        <option value="">Niveau d'expérience</option>
+                        {experienceLevels.map(lvl => <option key={lvl} value={lvl}>{lvl}</option>)}
+                    </select>
+                    {showError && (
+                        <span className={styles.errorText}>
+                            Le niveau d'expérience technique est obligatoire.
+                        </span>
+                    )}
                 </div>
             </div>
         </>

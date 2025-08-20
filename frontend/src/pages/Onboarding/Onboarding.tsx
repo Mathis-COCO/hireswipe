@@ -113,6 +113,7 @@ const Onboarding: React.FC = () => {
             }
             return;
         }
+        console.log(profileData);
         nextStep();
     };
 
@@ -139,7 +140,9 @@ const Onboarding: React.FC = () => {
                 case 3:
                     return !!(profileData.workExperiences?.trim());
                 case 4:
-                    return !!(profileData.hardSkills && profileData.hardSkills.length > 0);
+                    return (
+                        profileData.hardSkills.length > 0 && profileData.experience
+                    );
                 case 5:
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:
@@ -151,7 +154,11 @@ const Onboarding: React.FC = () => {
     };
 
     const isNextButtonDisabled = (): boolean => {
-        return isTransitioning || !validateCurrentStep();
+        const valid = validateCurrentStep();
+        if (profileData && typeof profileData === 'object') {
+            profileData._showValidationError = !valid;
+        }
+        return isTransitioning || !valid;
     };
 
     const prevStep = (): void => {
