@@ -9,6 +9,7 @@ import Onboarding from './pages/Onboarding/Onboarding';
 import EditOffer from './pages/EditOffer/EditOffer';
 import SeeCandidates from './pages/SeeCandidates/SeeCandidates';
 import SeeOfferCandidate from './pages/SeeOfferCandidate/SeeOfferCandidate';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,17 +18,80 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/messages" element={<App />} />
-        <Route path="/likes" element={<App />} />
-        <Route path="/profile" element={<App />} />
-        <Route path="/mes-offres" element={<App />} />
-        <Route path="/ajouter-offre" element={<App />} />
         <Route path="/auth" element={<AuthForm />} />
-        <Route path="/mes-offres/:offerId/edit" element={<EditOffer />} />
-        <Route path="/mes-offres/:offerId/candidats" element={<SeeCandidates />} />
-        <Route path="/mes-offres/:offerId/candidats/:candidateId" element={<SeeOfferCandidate />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/likes"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mes-offres"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ajouter-offre"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mes-offres/:offerId/edit"
+          element={
+            <ProtectedRoute>
+              <EditOffer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mes-offres/:offerId/candidats"
+          element={
+            <ProtectedRoute>
+              <SeeCandidates />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mes-offres/:offerId/candidats/:candidateId"
+          element={
+            <ProtectedRoute>
+              <SeeOfferCandidate />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<div>Page non trouvée</div>} />
       </Routes>
     </BrowserRouter>

@@ -95,7 +95,9 @@ const Onboarding: React.FC = () => {
             setTimeout(() => {
                 const newStep = step + 1;
                 setStep(newStep);
-                saveProgress(newStep, profileData);
+                if (step !== totalSteps - 1) {
+                    saveProgress(newStep, profileData);
+                }
                 setTimeout(() => {
                     setIsTransitioning(false);
                 }, 100);
@@ -170,7 +172,6 @@ const Onboarding: React.FC = () => {
     const updateProfileData = (stepData: any) => {
         const newData = { ...profileData, ...stepData, accountType };
         setProfileData(newData);
-        saveProgress(step, newData);
     };
 
     const completeOnboarding = async () => {

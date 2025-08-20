@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 interface ProtectedOnboardingProps {
     children: React.ReactNode;
@@ -59,4 +59,13 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
     return <>{children}</>;
 };
 
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        return <Navigate to="/auth" replace />;
+    }
+    return <>{children}</>;
+};
+
 export default ProtectedOnboarding;
+export { ProtectedRoute };
