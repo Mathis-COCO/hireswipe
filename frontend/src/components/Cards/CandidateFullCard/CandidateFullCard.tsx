@@ -50,7 +50,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                 </div>
             </div>
 
-            {candidate.candidateLocationAddress &&  candidate.candidateLocationLat && candidate.candidateLocationLng && (
+            {candidate.candidateLocationAddress &&  candidate.latitude && candidate.longitude && (
                 <div className={styles.section}>
                     <div className={styles.locationMapWrapper}>
                         {offer && candidate && <OfferCandidateMap candidates={[candidate]} offer={offer} />}

@@ -41,10 +41,10 @@ export class User {
   candidateLocationAddress?: string;
 
   @Column({ nullable: true })
-  candidateLocationLat?: string;
+  latitude?: string;
 
   @Column({ nullable: true })
-  candidateLocationLng?: string;
+  longitude?: string;
 
   @Column({ nullable: true })
   workExperiences?: string;

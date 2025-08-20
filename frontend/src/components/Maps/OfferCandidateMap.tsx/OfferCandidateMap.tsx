@@ -70,13 +70,13 @@ interface OfferCandidateMapProps {
 }
 
 const OfferCandidateMap: React.FC<OfferCandidateMapProps> = ({ candidates, offer }) => {
-    const validCandidates = candidates.filter(c => c.candidateLocationLat && c.candidateLocationLng);
+    const validCandidates = candidates.filter(c => c.latitude && c.longitude);
     const offerLat = Number(offer.latitude);
     const offerLng = Number(offer.longitude);
     const hasOfferLocation = !isNaN(offerLat) && !isNaN(offerLng);
 
     const candidatePositions: [number, number][] = validCandidates
-        .map(c => [Number(c.candidateLocationLat), Number(c.candidateLocationLng)])
+        .map(c => [Number(c.latitude), Number(c.longitude)])
         .filter(
             (pos): pos is [number, number] =>
                 Array.isArray(pos) &&
@@ -107,7 +107,7 @@ const OfferCandidateMap: React.FC<OfferCandidateMapProps> = ({ candidates, offer
             {validCandidates.map(candidate => (
                 <Marker
                     key={candidate.id}
-                    position={[Number(candidate.candidateLocationLat), Number(candidate.candidateLocationLng)]}
+                    position={[Number(candidate.latitude), Number(candidate.longitude)]}
                     icon={createProfileIcon(candidate.profilePhoto || candidate.profilePhotoUrl || '')}
                 >
                     <Tooltip direction="top" offset={[0, -20]} opacity={1} permanent={false}>

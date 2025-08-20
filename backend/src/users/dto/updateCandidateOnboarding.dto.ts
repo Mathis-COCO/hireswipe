@@ -28,11 +28,11 @@ export class UpdateCandidateOnboardingDto {
 
   @IsOptional()
   @IsNumber()
-  candidateLocationLat?: string;
+  latitude?: string;
 
   @IsOptional()
   @IsNumber()
-  candidateLocationLng?: string;
+  longitude?: string;
 
   @IsOptional()
   @IsString()

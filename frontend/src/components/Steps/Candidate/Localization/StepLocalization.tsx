@@ -31,12 +31,12 @@ const StepLocalization: React.FC<StepProps> = ({ icon: Icon, data, updateData })
             
             <div className={styles.mapSection}>
                 <InteractiveMap 
-                    initialLatitude={data.candidateLocationLat}
-                    initialLongitude={data.candidateLocationLng}
+                    initialLatitude={data.latitude}
+                    initialLongitude={data.longitude}
                     onLocationChange={(newLocation) => updateData({
                         candidateLocationAddress: newLocation.address,
-                        candidateLocationLat: newLocation.lat,
-                        candidateLocationLng: newLocation.lng
+                        latitude: newLocation.lat,
+                        longitude: newLocation.lng
                     })}
                 />
             </div>
