@@ -140,9 +140,7 @@ const Onboarding: React.FC = () => {
                 case 3:
                     return !!(profileData.workExperiences?.trim());
                 case 4:
-                    return (
-                        profileData.hardSkills.length > 0 && profileData.experience
-                    );
+                    return !!(profileData.hardSkills && profileData.experience);
                 case 5:
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:

@@ -5,11 +5,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { User } from 'src/users/user.entity';
+import { User } from 'src/users/entities/user.entity';
+import { OfferCandidate } from 'src/users/entities/userOffer.entity';
 
 @Entity()
 export class Offer {
@@ -58,9 +58,8 @@ export class Offer {
   @ManyToOne(() => User, (user: User) => user.createdOffers, { eager: true })
   createdBy: User;
 
-  @ManyToMany(() => User, (user: User) => user.appliedOffers, { eager: true })
-  @JoinTable()
-  candidates: User[];
+  @OneToMany(() => OfferCandidate, (oc) => oc.offer, { eager: true })
+  candidates: OfferCandidate[];
 
   @CreateDateColumn()
   createdAt: Date;
