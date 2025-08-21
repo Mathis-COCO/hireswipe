@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CandidateFullCard.module.scss';
-import { Car, Bike, Truck, Bus, Ship } from 'lucide-react';
+import { Car, Bike, Truck, Bus, Ship, X, Heart } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import OfferCandidateMap from '../../Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 
@@ -27,6 +27,13 @@ function getLicenseInfo(code: string) {
 }
 
 const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer }) => {
+
+    // Cherche le statut du candidat dans l'offre
+    let candidateStatus: string | undefined;
+    if (offer && Array.isArray(offer.candidates)) {
+        const found = offer.candidates.find((c: any) => c.user?.id === candidate.id);
+        candidateStatus = found?.status;
+    }
 
     return (
         <div className={styles.card} key={candidate.id}>
@@ -145,6 +152,21 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                             </span>
                         ))}
                     </div>
+                </div>
+            )}
+
+            {candidateStatus === 'pending' && (
+                <div className={styles.actionButtons}>
+                    <button className={styles.rejectBtn} title="Refuser">
+                        <span className={styles.iconCircleRed}>
+                            <X color="white" size={24} />
+                        </span>
+                    </button>
+                    <button className={styles.acceptBtn} title="Accepter">
+                        <span className={styles.iconCircleGreen}>
+                            <Heart color="white" size={24} />
+                        </span>
+                    </button>
                 </div>
             )}
         </div>

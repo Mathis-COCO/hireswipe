@@ -249,6 +249,47 @@
   border: none;
 }
 
+.actionButtons {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.rejectBtn, .acceptBtn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconCircleRed, .iconCircleGreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+}
+
+.iconCircleRed {
+  background: #D7263D;
+}
+
+.iconCircleGreen {
+  background: #21BF73;
+}
+
+.rejectBtn:hover .iconCircleRed,
+.acceptBtn:hover .iconCircleGreen {
+  transform: scale(1.07);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.12);
+}
+
 @media (max-width: 600px) {
   .card {
     padding: 18px 4px;
