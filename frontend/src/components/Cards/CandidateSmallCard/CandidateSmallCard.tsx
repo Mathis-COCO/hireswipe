@@ -7,9 +7,10 @@ import { offerService } from '../../../services/offerService';
 interface SmallCandidateCardProps {
     candidate: any;
     offerId: string | undefined;
+    showActions?: boolean;
 }
 
-const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offerId }) => {
+const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offerId, showActions }) => {
     const navigate = useNavigate();
 
     const handleAccept = async (e: React.MouseEvent) => {
@@ -42,7 +43,7 @@ const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offe
                     <span className={styles.tag} key={workMode}>{workMode}</span>
                 ))}
             </div>
-            {candidate.status === 'pending' && (
+            {(showActions ?? candidate.status === 'pending') && candidate.status === 'pending' && (
                 <div className={styles.actionButtons}>
                     <button className={styles.rejectBtn} title="Refuser" onClick={handleDeny}>
                         <span className={styles.iconCircleRed}>
