@@ -31,7 +31,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
     return (
         <div className={styles.card} key={candidate.id}>
             <div className={styles.headerInfo}>
-                <img className={styles.profilePhoto} src={candidate.profilePhoto || candidate.profilePhotoUrl || ''} alt="" />
+                <img className={styles.profilePhoto} src={candidate.profilePhoto || candidate.profilePhotoUrl || ''} alt="profil" />
                 <div className={styles.headerText}>
                     <div>
                         {(candidate.lastName || candidate.firstName) && (
