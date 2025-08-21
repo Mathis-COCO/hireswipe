@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Put,
 } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
@@ -95,5 +96,18 @@ export class OffersController {
   ): Promise<{ success: boolean; message: string }> {
     await this.offersService.applyToOffer(offerId, req.user.id);
     return { success: true, message: 'Candidature enregistrée.' };
+  }
+
+  @Put(':offerId/candidates/:candidateId/status')
+  async updateCandidateStatus(
+    @Param('offerId') offerId: string,
+    @Param('candidateId') candidateId: string,
+    @Body('status') status: string,
+  ) {
+    return this.offersService.updateCandidateStatus(
+      offerId,
+      candidateId,
+      status,
+    );
   }
 }

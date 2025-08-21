@@ -3,6 +3,7 @@ import styles from './CandidateFullCard.module.scss';
 import { Car, Bike, Truck, Bus, Ship, X, Heart } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import OfferCandidateMap from '../../Maps/OfferCandidateMap.tsx/OfferCandidateMap';
+import { offerService } from '../../../services/offerService'; // Ajout import
 
 interface CandidateFullCardProps {
     candidate: any;
@@ -28,12 +29,18 @@ function getLicenseInfo(code: string) {
 
 const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer }) => {
 
-    // Cherche le statut du candidat dans l'offre
     let candidateStatus: string | undefined;
+    let candidateOfferObj: any;
     if (offer && Array.isArray(offer.candidates)) {
-        const found = offer.candidates.find((c: any) => c.user?.id === candidate.id);
-        candidateStatus = found?.status;
+        candidateOfferObj = offer.candidates.find((c: any) => c.user?.id === candidate.id);
+        candidateStatus = candidateOfferObj?.status;
     }
+
+    const handleAccept = async () => {
+        if (!offer || !candidateOfferObj) return;
+        await offerService.updateCandidateStatus(offer.id, candidate.id, 'accepted');
+        if (candidateOfferObj) candidateOfferObj.status = 'accepted';
+    };
 
     return (
         <div className={styles.card} key={candidate.id}>
@@ -162,7 +169,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                             <X color="white" size={24} />
                         </span>
                     </button>
-                    <button className={styles.acceptBtn} title="Accepter">
+                    <button className={styles.acceptBtn} title="Accepter" onClick={handleAccept}>
                         <span className={styles.iconCircleGreen}>
                             <Heart color="white" size={24} />
                         </span>

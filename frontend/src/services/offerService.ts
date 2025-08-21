@@ -111,6 +111,14 @@ class OfferService {
     });
     return response;
   }
+
+  async updateCandidateStatus(offerId: number, candidateId: number, status: string) {
+    return fetch(`http://localhost:3000/offers/${offerId}/candidates/${candidateId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    }).then(res => res.json());
+  }
 }
 
 export const offerService = new OfferService();

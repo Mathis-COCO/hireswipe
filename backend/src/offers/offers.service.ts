@@ -116,13 +116,16 @@ export class OffersService {
     await this.offerCandidateRepository.save(offerCandidate);
   }
 
-  async updateCandidateStatus(offerId: string, userId: string, status: string) {
+  async updateCandidateStatus(
+    offerId: string,
+    candidateId: string,
+    status: string,
+  ) {
     const offerCandidate = await this.offerCandidateRepository.findOne({
-      where: { offer: { id: offerId }, user: { id: userId } },
+      where: { offer: { id: offerId }, user: { id: candidateId } },
       relations: ['offer', 'user'],
     });
     if (!offerCandidate) throw new Error('Candidate not found');
-
     offerCandidate.status = status;
     return this.offerCandidateRepository.save(offerCandidate);
   }

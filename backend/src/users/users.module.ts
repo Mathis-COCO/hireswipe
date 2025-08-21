@@ -5,9 +5,10 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { Offer } from 'src/offers/entities/offer.entity';
 import { OfferCandidate } from './entities/userOffer.entity';
+import { Match } from './entities/match.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Offer, OfferCandidate])],
+  imports: [TypeOrmModule.forFeature([User, Offer, OfferCandidate, Match])],
   providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService],

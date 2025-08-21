@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Offer } from 'src/offers/entities/offer.entity';
+import { Offer } from '../../offers/entities/offer.entity';
 import { OfferCandidate } from './userOffer.entity';
+import { Match } from './match.entity';
 
 @Entity()
 export class User {
@@ -123,4 +124,7 @@ export class User {
 
   @Column('simple-array', { nullable: true })
   interactedOfferIds?: string[];
+
+  @OneToMany(() => Match, (match) => match.user)
+  matches: Match[];
 }
