@@ -113,11 +113,24 @@ class OfferService {
   }
 
   async updateCandidateStatus(offerId: number, candidateId: number, status: string) {
-    return fetch(`http://localhost:3000/offers/${offerId}/candidates/${candidateId}/status`, {
+    const response = await apiRequest(`/offers/${offerId}/candidates/${candidateId}/status`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),
-    }).then(res => res.json());
+    });
+    return response;
+  }
+
+  async createMatch(candidateId: number, offerId: number) {
+    const response = await apiRequest(`/user/match`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+      body: JSON.stringify({ offerId, candidateId }),
+    });
+    return response;
   }
 }
 

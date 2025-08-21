@@ -39,6 +39,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
         if (!offer || !candidateOfferObj) return;
         await offerService.updateCandidateStatus(offer.id, candidate.id, 'accepted');
         if (candidateOfferObj) candidateOfferObj.status = 'accepted';
+        await offerService.createMatch(candidate.id, offer.id);
     };
 
     const handleDeny = async () => {
