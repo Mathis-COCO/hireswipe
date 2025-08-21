@@ -1,0 +1,195 @@
+@import '../../../styles/variables.scss';
+
+.card {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.10);
+  padding: 32px 28px;
+  max-width: 700px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  min-height: 400px;
+  max-height: 750px;
+  overflow: auto;
+}
+
+.offerFeedCardPageCenter {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $color-primary-dark;
+  margin: 0;
+  flex: 1;
+}
+
+.contract {
+  background: #e9f2ff;
+  color: #2563eb;
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.statusAvailable {
+  background: #e6f9f0;
+  color: #21bf73;
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.statusUnavailable {
+  background: #ffeaea;
+  color: #d7263d;
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 1rem;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.location {
+  font-weight: 400;
+  color: $color-primary-dark;
+}
+
+.salary {
+  color: #21bf73;
+  font-weight: 400;
+}
+
+.experience {
+  color: #475569;
+}
+
+.category {
+  color: #3b82f6;
+}
+
+.teletravail {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.geo {
+  color: #64748b;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.tagsRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.tag {
+  background: linear-gradient(90deg, #e9f2ff 70%, #f1f5f9 100%);
+  color: #2563eb;
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+  border: none;
+}
+
+.tagAdvantage {
+  background: linear-gradient(90deg, #e6ffe9 70%, #f1f5f9 100%);
+  color: #21bf73;
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(33,191,115,0.07);
+  border: none;
+}
+
+.creator {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.candidates {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.imageWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+}
+
+.date {
+  font-size: 0.95rem;
+  color: #64748b;
+  text-align: right;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 16px 4px;
+    max-width: 100%;
+    border-radius: 14px;
+  }
+  .title {
+    font-size: 1.15rem;
+  }
+  .image {
+    max-width: 100%;
+    max-height: 120px;
+  }
+}

@@ -1,15 +1,33 @@
 import React from 'react';
 import styles from './CandidateSmallCard.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { X, Heart } from 'lucide-react';
+import { offerService } from '../../../services/offerService';
 
 interface SmallCandidateCardProps {
     candidate: any;
     offerId: string | undefined;
+    showActions?: boolean;
 }
 
-const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offerId }) => {
+const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offerId, showActions }) => {
     const navigate = useNavigate();
-    
+
+    const handleAccept = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!offerId || !candidate.id) return;
+        await offerService.updateCandidateStatus(Number(offerId), candidate.id, 'accepted');
+        await offerService.createMatch(candidate.id, Number(offerId));
+        window.location.reload();
+    };
+
+    const handleDeny = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!offerId || !candidate.id) return;
+        await offerService.updateCandidateStatus(Number(offerId), candidate.id, 'denied');
+        window.location.reload();
+    };
+
     return (
         <div className={styles.card} key={candidate.id} onClick={() => navigate(`/mes-offres/${offerId}/candidats/${candidate.id}`)}>
             <img className={styles.profilePhoto} src={candidate.profilePhoto} alt="profil" />
@@ -25,6 +43,20 @@ const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offe
                     <span className={styles.tag} key={workMode}>{workMode}</span>
                 ))}
             </div>
+            {(showActions ?? candidate.status === 'pending') && candidate.status === 'pending' && (
+                <div className={styles.actionButtons}>
+                    <button className={styles.rejectBtn} title="Refuser" onClick={handleDeny}>
+                        <span className={styles.iconCircleRed}>
+                            <X color="white" size={20} />
+                        </span>
+                    </button>
+                    <button className={styles.acceptBtn} title="Accepter" onClick={handleAccept}>
+                        <span className={styles.iconCircleGreen}>
+                            <Heart color="white" size={20} />
+                        </span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
