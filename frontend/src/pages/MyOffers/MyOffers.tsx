@@ -18,7 +18,8 @@ type Offer = {
   description: string;
   skills: string[];
   avantages: any[];
-  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
   candidates: any[];
   isAvailable: boolean;
 };
@@ -67,12 +68,12 @@ const MyOffers: React.FC = () => {
     )
     .sort((a, b) => {
       const getDate = (offer: Offer) => {
-        if (!offer.publishedAt) return 0;
-        const parts = offer.publishedAt.split('/');
+        if (!offer.createdAt) return 0;
+        const parts = offer.createdAt.split('/');
         if (parts.length === 3) {
           return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).getTime();
         }
-        return new Date(offer.publishedAt).getTime();
+        return new Date(offer.createdAt).getTime();
       };
       const dateA = getDate(a);
       const dateB = getDate(b);
@@ -80,6 +81,9 @@ const MyOffers: React.FC = () => {
         ? dateA - dateB
         : dateB - dateA;
     });
+
+  const availableOffers = filteredOffers.filter(o => o.isAvailable !== false);
+  const unavailableOffers = filteredOffers.filter(o => o.isAvailable === false);
 
   const handleFilterChange = (changed: Partial<typeof filters>) => {
     setFilters(f => ({ ...f, ...changed }));
@@ -105,9 +109,18 @@ const MyOffers: React.FC = () => {
         onChange={handleFilterChange}
       />
       <OfferList
-        offers={filteredOffers}
+        offers={availableOffers}
         onDelete={handleDelete}
       />
+      {unavailableOffers.length > 0 && (
+        <div style={{ marginTop: 48, paddingTop: 24, borderTop: '2px dashed #d7263d' }}>
+          <h3 style={{ color: '#d7263d', fontWeight: 600, marginBottom: 18 }}>Offres indisponibles</h3>
+          <OfferList
+            offers={unavailableOffers}
+            onDelete={handleDelete}
+          />
+        </div>
+      )}
     </div>
   );
 };

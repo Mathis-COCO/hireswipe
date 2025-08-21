@@ -14,7 +14,8 @@ interface Offer {
   description: string;
   skills: string[];
   avantages: string[];
-  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
   candidates: any[];
   isAvailable: boolean;
 }
@@ -49,7 +50,7 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
               <div>
                 <span className={styles.offerTitle}>{o.title}</span>
                 <div className={styles.offerMeta}>
-                  {o.location && <span>{getCityFromLocation(o.location)}</span> }
+                  {o.location && <span>{getCityFromLocation(o.location)}</span>}
                   {o.teletravail && <span className={styles.teletravailTag}>Télétravail</span>}
                   {o.salary && <span>€ {o.salary}</span>}
                   <span>
@@ -84,9 +85,16 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
             <div className={styles.offerDesc}>{o.description}</div>
             <div className={styles.offerFooterRow}>
               <div className={styles.offerFooterInfos}>
+                  {o.updatedAt 
+                    ? <span className={styles.published}>Publiée le {new Date(o.createdAt).toLocaleDateString('fr-FR')} à {new Date(o.createdAt).toLocaleTimeString('fr-FR')}</span> 
+                    : null
+                  }
                 <div className={styles.inlineMeta}>
-                  <span className={styles.published}>Publié le {o.publishedAt}</span>
-                  <span className={styles.candidates}>{o.candidates.length} candidature{o.candidates.length > 1 ? 's' : ''}</span>
+                  {o.updatedAt 
+                    ? <span className={styles.published}>Mis à jour le {new Date(o.updatedAt).toLocaleDateString('fr-FR')} à {new Date(o.updatedAt).toLocaleTimeString('fr-FR')}</span> 
+                    : <span className={styles.published}>Publiée le {new Date(o.createdAt).toLocaleDateString('fr-FR')} à {new Date(o.createdAt).toLocaleTimeString('fr-FR')}</span>
+                  }
+                  <span className={styles.candidates} style={o.candidates.length > 0 ? {color : '#007bff'} : { color: '#b80517ff' }}>{o.candidates.length} candidature{o.candidates.length > 1 ? 's' : ''}</span>
                   <span className={styles.contract}>{o.contract}</span>
                 </div>
                 <div className={styles.tagsRow}>
