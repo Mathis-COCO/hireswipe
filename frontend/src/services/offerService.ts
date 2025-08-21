@@ -92,7 +92,6 @@ class OfferService {
         'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
-    console.log('Response from hasRemainingOffer:', response);
     return (response as { hasRemaining: boolean }).hasRemaining;
   }
 

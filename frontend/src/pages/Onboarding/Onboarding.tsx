@@ -113,7 +113,6 @@ const Onboarding: React.FC = () => {
             }
             return;
         }
-        console.log(profileData);
         nextStep();
     };
 

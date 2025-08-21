@@ -4,6 +4,7 @@ import { Car, Bike, Truck, Bus, Ship, X, Heart } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import OfferCandidateMap from '../../Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 import { offerService } from '../../../services/offerService';
+import { useNavigate } from 'react-router-dom';
 
 interface CandidateFullCardProps {
     candidate: any;
@@ -30,6 +31,8 @@ function getLicenseInfo(code: string) {
 const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer }) => {
     let candidateStatus: string | undefined;
     let candidateOfferObj: any;
+    const navigate = useNavigate();
+
     if (offer && Array.isArray(offer.candidates)) {
         candidateOfferObj = offer.candidates.find((c: any) => c.user?.id === candidate.id);
         candidateStatus = candidateOfferObj?.status;
@@ -40,16 +43,32 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
         await offerService.updateCandidateStatus(offer.id, candidate.id, 'accepted');
         if (candidateOfferObj) candidateOfferObj.status = 'accepted';
         await offerService.createMatch(candidate.id, offer.id);
+        navigate(`/mes-offres/${offer.id}/candidats/`);
     };
 
     const handleDeny = async () => {
         if (!offer || !candidateOfferObj) return;
         await offerService.updateCandidateStatus(offer.id, candidate.id, 'denied');
         if (candidateOfferObj) candidateOfferObj.status = 'denied';
+        navigate(`/mes-offres/${offer.id}/candidats/`);
     };
 
     return (
         <div className={styles.card} key={candidate.id}>
+            {candidateStatus === 'accepted' && (
+                <div className={styles.matchIndicator}>
+                    <span>
+                        Vous avez matché avec {candidate.firstName} !
+                    </span>
+                </div>
+            )}
+            {candidateStatus === 'denied' && (
+                <div className={styles.denyIndicator}>
+                    <span>
+                        Vous avez refusé {candidate.firstName}
+                    </span>
+                </div>
+            )}
             <div className={styles.headerInfo}>
                 <img className={styles.profilePhoto} src={candidate.profilePhoto || candidate.profilePhotoUrl || ''} alt="profil" />
                 <div className={styles.headerText}>

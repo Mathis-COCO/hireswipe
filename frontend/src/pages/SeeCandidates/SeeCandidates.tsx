@@ -20,15 +20,19 @@ const SeeCandidates: React.FC = () => {
             setOffer(offerData);
 
             const users = (offerData.candidates || [])
-                .map((c: any) => c.user)
+                .map((c: any) => ({ ...c.user, status: c.status }))
                 .filter((u: any) => u);
             setCandidates(users);
         });
     }, [offerId]);
 
+    const pendingCandidates = candidates.filter(u => u.status === 'pending');
+    const acceptedCandidates = candidates.filter(u => u.status === 'accepted');
+    const deniedCandidates = candidates.filter(u => u.status === 'denied');
+
     return (
         <>
-            <div className={styles.wrapper} style={{ paddingBottom: '64px' }}>
+            <div className={styles.wrapper}>
                 <div className={styles.container}>
                     <header className={styles.header}>
                         <button
@@ -46,14 +50,50 @@ const SeeCandidates: React.FC = () => {
                         <OfferCandidateMap candidates={candidates} offer={offer} />
                     </div>
                     <div className={styles.cardWrapper}>
-                        <div className={styles.cardList}>
-                            {candidates.map(u => (
-                                <SmallCandidateCard
-                                    key={u.id}
-                                    candidate={u}
-                                    offerId={offerId}
-                                />
-                            ))}
+                        <div className={styles.listSection}>
+                            <h3 className={`${styles.listLabel} ${styles.labelPending}`}>Candidats en attente</h3>
+                            <div className={styles.cardList}>
+                                {pendingCandidates.length === 0 && (
+                                    <p className={styles.emptyText}>Aucun candidat en attente</p>
+                                )}
+                                {pendingCandidates.map(u => (
+                                    <SmallCandidateCard
+                                        key={u.id}
+                                        candidate={u}
+                                        offerId={offerId}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className={styles.listSection}>
+                            <h3 className={`${styles.listLabel} ${styles.labelAccepted}`}>Candidats matchés</h3>
+                            <div className={styles.cardList}>
+                                {acceptedCandidates.length === 0 && (
+                                    <p className={styles.emptyText}>Aucun candidat matché</p>
+                                )}
+                                {acceptedCandidates.map(u => (
+                                    <SmallCandidateCard
+                                        key={u.id}
+                                        candidate={u}
+                                        offerId={offerId}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`${styles.listSection} ${styles.deniedWrapper}`}>
+                            <h3 className={`${styles.listLabel} ${styles.labelDenied}`}>Candidats refusés</h3>
+                            <div className={styles.cardList}>
+                                {deniedCandidates.length === 0 && (
+                                    <p className={styles.emptyText}>Aucun candidat refusé</p>
+                                )}
+                                {deniedCandidates.map(u => (
+                                    <SmallCandidateCard
+                                        key={u.id}
+                                        candidate={u}
+                                        offerId={offerId}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

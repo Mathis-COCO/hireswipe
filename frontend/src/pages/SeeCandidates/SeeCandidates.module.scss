@@ -9,6 +9,7 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
+  max-width: 870px;
 }
 
 .header {
@@ -33,6 +34,7 @@
   cursor: pointer;
   box-shadow: $box-shadow-sm;
   transition: background 0.2s;
+
   &:hover {
     background: $color-primary-dark;
   }
@@ -51,9 +53,11 @@
 }
 
 .cardWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  max-width: 870px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 3rem;
 }
 
 .cardList {
@@ -98,4 +102,41 @@
   width: 100% !important;
   height: 320px !important;
   border-radius: 16px;
+}
+
+.listSection {
+  margin-bottom: 100px;
+  max-width: 870px;
+  width: 100%;
+}
+
+.listLabel {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 80px;
+  padding-left: 2px;
+  padding-top: 30px;
+  border-top: 1px solid $color-border;
+}
+
+.labelPending {
+  color: #2563eb;
+}
+
+.labelAccepted {
+  color: #21bf73;
+}
+
+.labelDenied {
+  color: #d7263d;
+}
+
+.deniedWrapper {
+  margin-bottom: 100px;
+}
+
+.emptyText {
+  color: #64748b;
+  margin-bottom: 12px;
+  font-size: 1rem;
 }
