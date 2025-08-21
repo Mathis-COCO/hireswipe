@@ -39,9 +39,13 @@ const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offe
                 ))}
             </div>
             <div className={styles.tags}>
-                {candidate.workModes.map((workMode: string) => (
-                    <span className={styles.tag} key={workMode}>{workMode}</span>
-                ))}
+                {candidate.workModes && candidate.workModes.length > 0 && (
+                    <>
+                        {candidate.workModes.map((workMode: string) => (
+                            <span className={styles.tag} key={workMode}>{workMode}</span>
+                        ))}
+                    </>
+                )}
             </div>
             {(showActions ?? candidate.status === 'pending') && candidate.status === 'pending' && (
                 <div className={styles.actionButtons}>
