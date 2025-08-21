@@ -17,6 +17,17 @@ const StepCompanyDetails: React.FC<StepProps> = ({ icon: Icon, data, updateData 
         '500+ employés',
     ];
 
+    const sectorOptions = [
+        'IT',
+        'Finance',
+        'Marketing',
+        'RH',
+        'Santé',
+        'Éducation',
+        'Industrie',
+        'Commerce',
+        'Autre'
+    ];
     const [formData, setFormData] = React.useState({
         sector: data.sector || '',
         employees: data.employees || '',
@@ -48,9 +59,9 @@ const StepCompanyDetails: React.FC<StepProps> = ({ icon: Icon, data, updateData 
                         onChange={(e) => handleInputChange('sector', e.target.value)}
                     >
                         <option value="" disabled>Choisissez votre secteur</option>
-                        <option value="IT">Informatique</option>
-                        <option value="finance">Finance</option>
-                        <option value="marketing">Marketing</option>
+                        {sectorOptions.map(option => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
                     </select>
                 </div>
                 <div className={styles.formGroup}>
