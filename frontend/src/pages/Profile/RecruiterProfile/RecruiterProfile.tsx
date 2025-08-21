@@ -128,7 +128,7 @@ const RecruiterProfile: React.FC = () => {
                 <div className={styles.header}>
                     <img
                         src={profile.companyLogo || profile.profilePhotoUrl || ''}
-                        alt="Logo"
+                        alt="profil"
                         className={styles.logo}
                     />
                     <div>

@@ -21,7 +21,7 @@ function createProfileIcon(photoUrl: string) {
             overflow:hidden;
             box-shadow:0 2px 8px rgba(59,130,246,0.12);
         ">
-            <img src="${photoUrl}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;" />
+            <img src="${photoUrl}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;" alt="profil" />
         </div>`,
         iconSize: [44, 44],
         iconAnchor: [22, 44],

@@ -1,9 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as express from 'express';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: [`'self'`],
+          scriptSrc: [`'self'`, `'unsafe-inline'`],
+          styleSrc: [`'self'`, `'unsafe-inline'`],
+        },
+      },
+    }),
+  );
+  (app.getHttpAdapter().getInstance() as express.Express).disable(
+    'x-powered-by',
+  );
 
   app.enableCors({
     origin: 'http://localhost:3001',

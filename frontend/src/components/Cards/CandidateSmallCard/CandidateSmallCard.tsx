@@ -12,7 +12,7 @@ const SmallCandidateCard: React.FC<SmallCandidateCardProps> = ({ candidate, offe
     
     return (
         <div className={styles.card} key={candidate.id} onClick={() => navigate(`/mes-offres/${offerId}/candidats/${candidate.id}`)}>
-            <img className={styles.profilePhoto} src={candidate.profilePhoto} alt="" />
+            <img className={styles.profilePhoto} src={candidate.profilePhoto} alt="profil" />
             <p className={styles.name}>{candidate.lastName} {candidate.firstName} ({candidate.age} ans)</p>
             <p className={styles.jobTitle}>{candidate.jobTitle} {candidate.experience}</p>
             <div className={styles.tags}>
