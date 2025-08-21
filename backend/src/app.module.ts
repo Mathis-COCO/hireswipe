@@ -11,6 +11,8 @@ import { ConfigModule } from '@nestjs/config';
 
 config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -25,6 +27,7 @@ config();
       synchronize: true,
       autoLoadEntities: true,
       schema: 'public',
+      ssl: isProduction ? { rejectUnauthorized: false } : false,
     }),
     UsersModule,
     AuthModule,
