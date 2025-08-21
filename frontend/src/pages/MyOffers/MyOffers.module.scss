@@ -4,7 +4,7 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 2.5rem 2rem 5rem 2rem;
-  background: #fff;
+  background: $color-white;
   border-radius: $border-radius-lg;
   box-shadow: $box-shadow-md;
   display: flex;
@@ -46,7 +46,7 @@
   .newBtn {
     margin-left: auto;
     background: $color-primary-dark;
-    color: #fff;
+    color: $color-white;
     border: none;
     border-radius: $border-radius-md;
     font-size: $font-size-md;
@@ -105,7 +105,7 @@ label {
     border-color: $color-primary;
     outline: none;
     box-shadow: 0 0 0 2px rgba(59,130,246,0.07);
-    background: #fff;
+    background: $color-white;
   }
 }
 
@@ -152,7 +152,7 @@ label {
 .addSkillBtn {
   padding: 0 0.7rem;
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
@@ -200,7 +200,7 @@ label {
   border-radius: 8px;
   border: none;
   background: linear-gradient(135deg, $color-primary, $color-primary-dark);
-  color: #fff;
+  color: $color-white;
   font-weight: 700;
   font-size: 1.1rem;
   margin-top: 0.5rem;
@@ -242,7 +242,7 @@ label {
     border-color: $color-primary;
     outline: none;
     box-shadow: 0 0 0 2px rgba(59,130,246,0.07);
-    background: #fff;
+    background: $color-white;
   }
 }
 

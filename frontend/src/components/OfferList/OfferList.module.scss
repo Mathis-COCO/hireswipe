@@ -17,7 +17,7 @@
 }
 
 .offerCard {
-  background: #fff;
+  background: $color-white;
   border-radius: $border-radius-lg;
   box-shadow: $box-shadow-sm;
   padding: 1rem 1.2rem;
@@ -58,7 +58,7 @@
 
 .teletravailTag {
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
   border-radius: 8px;
   padding: 2px 10px;
   font-size: $font-size-xs;
@@ -128,7 +128,7 @@
   align-items: center;
   gap: 0.5rem;
   background: linear-gradient(135deg, $color-primary, $color-primary-dark);
-  color: #fff;
+  color: $color-white;
   border: none;
   border-radius: 24px;
   font-size: $font-size-md;
