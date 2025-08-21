@@ -1,46 +1,84 @@
-# Getting Started with Create React App
+# Frontend HireSwipe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
 
-## Available Scripts
+```bash
+npm install
+```
 
-In the project directory, you can run:
+## Lancement
+
+```bash
+npm start
+```
+
+L'application sera disponible sur [http://localhost:3000](http://localhost:3000) ou [http://localhost:4200](http://localhost:4200) si lancée via Docker.
+
+## Variables d'environnement
+
+Créez un fichier `.env` à la racine du frontend si besoin :
+
+```
+REACT_APP_API_URL=http://localhost:3000
+```
+
+## Lancer les tests avec coverage
+
+```bash
+npm test -- --coverage
+```
+
+## Correction et détection des bugs
+
+- Utilisez la console du navigateur pour les erreurs JS.
+- Vérifiez les logs du terminal lors du lancement.
+- Ajoutez des tests unitaires pour chaque bug corrigé.
+- Utilisez ESLint pour détecter les erreurs de syntaxe.
+
+## Recettes principales
+
+- Authentification utilisateur
+- Onboarding candidat/entreprise
+- Création et visualisation des offres
+- Swipe et match
+
+## Scripts disponibles
+
+Dans le dossier du projet, vous pouvez exécuter :
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Lance l'application en mode développement.\
+Ouvrez [http://localhost:3000](http://localhost:3000) pour voir l'application dans le navigateur.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+La page se rechargera si vous modifiez le code.\
+Vous verrez également les erreurs de lint dans la console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Lance le test runner en mode interactif.\
+Voir la section sur [les tests](https://facebook.github.io/create-react-app/docs/running-tests) pour plus d'informations.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Construit l'application pour la production dans le dossier `build`.\
+Optimise le build pour la meilleure performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Le build est minifié et les noms de fichiers incluent les hash.\
+Votre application est prête à être déployée !
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Voir la section sur [le déploiement](https://facebook.github.io/create-react-app/docs/deployment) pour plus d'informations.
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Attention : cette opération est irréversible. Une fois que vous avez éjecté, vous ne pouvez pas revenir en arrière !**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Si vous n'êtes pas satisfait des choix de configuration, vous pouvez éjecter à tout moment. Cette commande copie tous les fichiers de configuration et les dépendances dans votre projet afin que vous ayez un contrôle total.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Vous n'avez jamais besoin d'utiliser `eject`. La configuration par défaut convient à la plupart des projets.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Pour en savoir plus
 
-## Learn More
+Vous pouvez consulter la documentation [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Pour apprendre React, consultez la documentation [React](https://reactjs.org/).
