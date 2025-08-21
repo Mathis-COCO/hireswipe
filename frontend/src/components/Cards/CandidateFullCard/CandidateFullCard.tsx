@@ -3,7 +3,7 @@ import styles from './CandidateFullCard.module.scss';
 import { Car, Bike, Truck, Bus, Ship, X, Heart } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import OfferCandidateMap from '../../Maps/OfferCandidateMap.tsx/OfferCandidateMap';
-import { offerService } from '../../../services/offerService'; // Ajout import
+import { offerService } from '../../../services/offerService';
 
 interface CandidateFullCardProps {
     candidate: any;
@@ -28,7 +28,6 @@ function getLicenseInfo(code: string) {
 }
 
 const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer }) => {
-
     let candidateStatus: string | undefined;
     let candidateOfferObj: any;
     if (offer && Array.isArray(offer.candidates)) {
@@ -40,6 +39,12 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
         if (!offer || !candidateOfferObj) return;
         await offerService.updateCandidateStatus(offer.id, candidate.id, 'accepted');
         if (candidateOfferObj) candidateOfferObj.status = 'accepted';
+    };
+
+    const handleDeny = async () => {
+        if (!offer || !candidateOfferObj) return;
+        await offerService.updateCandidateStatus(offer.id, candidate.id, 'denied');
+        if (candidateOfferObj) candidateOfferObj.status = 'denied';
     };
 
     return (
@@ -164,7 +169,7 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
 
             {candidateStatus === 'pending' && (
                 <div className={styles.actionButtons}>
-                    <button className={styles.rejectBtn} title="Refuser">
+                    <button className={styles.rejectBtn} title="Refuser" onClick={handleDeny}>
                         <span className={styles.iconCircleRed}>
                             <X color="white" size={24} />
                         </span>
