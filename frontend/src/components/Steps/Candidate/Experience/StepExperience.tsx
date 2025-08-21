@@ -74,6 +74,7 @@ const StepExperience: React.FC<StepProps> = ({ icon: Icon, data, updateData }) =
                             onChange={(e) => setNewLanguage({ ...newLanguage, language: e.target.value })}
                         />
                         <select
+                            aria-label='Niveau de langue'
                             value={newLanguage.level}
                             onChange={(e) => setNewLanguage({ ...newLanguage, level: e.target.value })}
                         >

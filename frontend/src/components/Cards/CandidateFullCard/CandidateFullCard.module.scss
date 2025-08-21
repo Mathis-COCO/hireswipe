@@ -1,10 +1,12 @@
+@import '../../../styles/variables.scss';
+
 .pageBg {
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
   min-height: 100vh;
 }
 
 .card {
-  background: linear-gradient(120deg, #fff 80%, #f1f5f9 100%);
+  background: linear-gradient(120deg, $color-white 80%, #f1f5f9 100%);
   border-radius: 24px;
   border: 1px solid #e9ecef;
   box-shadow: 0 8px 32px rgba(59,130,246,0.12);

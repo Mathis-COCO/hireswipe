@@ -1,7 +1,7 @@
 @import '../../../styles/variables.scss';
 
 .formCard {
-  background: #fff;
+  background: $color-white;
   border-radius: 16px;
   box-shadow: none;
   border: 1px solid #e5e7eb;
@@ -78,7 +78,7 @@ select {
   &:focus {
     border-color: $color-primary;
     outline: none;
-    background: #fff;
+    background: $color-white;
   }
 }
 
@@ -95,7 +95,7 @@ textarea {
 
 .addBtn {
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
   border: none;
   border-radius: $border-radius-md;
   font-size: $font-size-lg;
@@ -142,7 +142,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
+  background: $color-white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 1rem 1.2rem;
@@ -181,7 +181,7 @@ textarea {
   top: 4px;
   width: 14px;
   height: 14px;
-  background: #fff;
+  background: $color-white;
   border-radius: 50%;
   transition: transform 0.2s;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
@@ -200,7 +200,7 @@ textarea {
 
 .submitBtn {
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
   border: none;
   border-radius: $border-radius-md;
   font-size: $font-size-md;
@@ -252,7 +252,7 @@ textarea {
 }
 
 .popupContent {
-  background: #fff;
+  background: $color-white;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   padding: 2.5rem 2rem;
@@ -271,7 +271,7 @@ textarea {
 
 .popupActions .submitBtn {
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
   border: none;
   border-radius: $border-radius-md;
   font-size: $font-size-md;
@@ -287,7 +287,7 @@ textarea {
 
 .btnGreen {
   background: linear-gradient(135deg, $color-green, darken($color-green, 10%)) !important;
-  color: #fff !important;
+  color: $color-white !important;
   border: none !important;
 }
 .btnGreen:hover {
@@ -296,7 +296,7 @@ textarea {
 
 .btnRed {
   background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-  color: #fff !important;
+  color: $color-white !important;
   border: none !important;
 }
 .btnRed:hover {

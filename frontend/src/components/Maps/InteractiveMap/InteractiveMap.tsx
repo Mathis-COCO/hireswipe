@@ -127,10 +127,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     onChange={(e) => setSearchAddress(e.target.value)}
                     onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddressSearch(); } }}
                 />
-                <button type="button" onClick={handleAddressSearch} disabled={isLoading} className={styles.searchButton}>
+                <button type="button" onClick={handleAddressSearch} disabled={isLoading} className={styles.searchButton} aria-label="Rechercher ladresse">
                     <Search size={20} />
                 </button>
-                <button type="button" onClick={handleCurrentLocation} disabled={isLoading} className={styles.locationButton}>
+                <button type="button" onClick={handleCurrentLocation} disabled={isLoading} className={styles.locationButton} aria-label="Utiliser ma position actuelle">
                     <LocateFixed size={20} />
                 </button>
             </div>

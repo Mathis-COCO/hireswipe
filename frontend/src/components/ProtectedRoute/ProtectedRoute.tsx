@@ -12,22 +12,22 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
     useEffect(() => {
         const checkAccess = async () => {
             const token = localStorage.getItem('authToken');
-            
             if (!token) {
-                navigate('/auth');
+                navigate('/auth', { replace: true });
                 return;
             }
 
             const isCompleted = localStorage.getItem('onboardingCompleted');
             if (isCompleted === 'true') {
-                navigate('/');
+                setIsChecking(false);
+                navigate('/', { replace: true });
                 return;
             }
 
             const accountType = localStorage.getItem('accountType');
             if (!accountType) {
                 localStorage.removeItem('authToken');
-                navigate('/auth');
+                navigate('/auth', { replace: true });
                 return;
             }
 
@@ -39,10 +39,10 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
 
     if (isChecking) {
         return (
-            <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center', 
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 height: '100vh',
                 backgroundColor: '#f0f2f5'
             }}>

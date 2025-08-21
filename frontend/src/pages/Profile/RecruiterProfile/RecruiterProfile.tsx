@@ -147,17 +147,19 @@ const RecruiterProfile: React.FC = () => {
                     <form className={styles.editForm} onSubmit={e => { e.preventDefault(); handleSave(); }}>
                         <div className={styles.infoGrid}>
                             <div>
-                                <span className={styles.label}>Email :</span>
+                                <label className={styles.label} htmlFor='emailInput'>Email :</label>
                                 <input
                                     type="email"
+                                    id='emailInput'
                                     value={editData.email || ''}
                                     onChange={e => handleChange('email', e.target.value)}
                                     disabled
                                 />
                             </div>
                             <div>
-                                <span className={styles.label}>Taille :</span>
+                                <label className={styles.label} htmlFor='companySize'>Taille :</label>
                                 <select
+                                    id='companySize'
                                     value={editData.companySize || ''}
                                     onChange={e => handleChange('companySize', e.target.value)}
                                 >
@@ -168,8 +170,9 @@ const RecruiterProfile: React.FC = () => {
                                 </select>
                             </div>
                             <div>
-                                <span className={styles.label}>Secteur :</span>
+                                <label className={styles.label} htmlFor='sector'>Secteur :</label>
                                 <select
+                                    id='sector'
                                     value={editData.sector || ''}
                                     onChange={e => handleChange('sector', e.target.value)}
                                 >
@@ -180,24 +183,27 @@ const RecruiterProfile: React.FC = () => {
                                 </select>
                             </div>
                             <div>
-                                <span className={styles.label}>Site web :</span>
+                                <label className={styles.label} htmlFor='websiteInput'>Site web :</label>
                                 <input
                                     type="text"
+                                    id='websiteInput'
                                     value={editData.website || ''}
                                     onChange={e => handleChange('website', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <span className={styles.label}>LinkedIn :</span>
+                                <label className={styles.label} htmlFor='linkedinInput'>LinkedIn :</label>
                                 <input
                                     type="text"
+                                    id='linkedinInput'
                                     value={editData.linkedinUrl || ''}
                                     onChange={e => handleChange('linkedinUrl', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <span className={styles.label}>Pitch :</span>
+                                <label className={styles.label} htmlFor='labelInput'>Pitch :</label>
                                 <textarea
+                                    id='labelInput'
                                     value={editData.pitch || ''}
                                     onChange={e => handleChange('pitch', e.target.value)}
                                 />

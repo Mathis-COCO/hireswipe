@@ -50,12 +50,12 @@
   padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #fff;
+  background-color: $color-white;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
   font-size: 0.9rem;
 
   &:hover {
-    background-color: darken(#fff, 5%);
+    background-color: darken($color-white, 5%);
   }
 }
