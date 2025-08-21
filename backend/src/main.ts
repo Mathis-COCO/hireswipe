@@ -22,8 +22,10 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: 'http://localhost:3001',
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   });
 
   app.use(express.json({ limit: '50mb' }));
@@ -31,5 +33,6 @@ async function bootstrap() {
 
   await app.listen(3000);
   console.log('Backend running on http://localhost:3000');
+  console.log('CORS_ORIGIN from env:', process.env.CORS_ORIGIN);
 }
 bootstrap();

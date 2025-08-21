@@ -7,11 +7,13 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { OffersModule } from './offers/offers.module';
 import { Offer } from './offers/entities/offer.entity';
+import { ConfigModule } from '@nestjs/config';
 
 config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
