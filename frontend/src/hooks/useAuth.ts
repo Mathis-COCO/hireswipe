@@ -60,3 +60,4 @@ export const useAuth = () => {
     clearError,
     isAuthenticated: authService.isAuthenticated(),
   };
+}
