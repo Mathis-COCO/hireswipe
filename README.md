@@ -188,7 +188,8 @@ npm run test:cov
 
 ```bash
 cd frontend
-npm test -- --coverage
+npm run test
+npm run test:cov
 ```
 
 ---
