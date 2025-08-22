@@ -40,24 +40,6 @@ npm run test
 npm run test:cov
 ```
 
-> **Remarque :**  
-> Si le fichier `README.md` apparaît dans le rapport de coverage, c'est probablement parce qu'il est inclus par erreur dans la configuration de collecte de couverture.  
-> Pour l'exclure, vérifiez le champ `collectCoverageFrom` dans le fichier `jest.config.js` et assurez-vous qu'il ne contient pas de règle incluant les fichiers `.md` ou le dossier racine.
-
-Exemple dans `jest.config.js` :
-```js
-collectCoverageFrom: [
-  '**/*.ts',
-  '!**/*.module.ts',
-  '!**/*.entity.ts',
-  '!**/*.dto.ts',
-  '!**/*.interface.ts',
-  '!**/jwt.strategy.ts',
-  '!main.ts',
-  '!../README.md', // Ajoutez cette ligne pour exclure explicitement le README
-],
-```
-
 ## Correction et détection des bugs
 
 - Vérifiez les logs du serveur dans le terminal.
