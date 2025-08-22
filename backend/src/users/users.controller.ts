@@ -47,6 +47,13 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('/matches')
+  async getMatches(@Request() req: { user: { id: string } }) {
+    const userId = req.user.id;
+    return this.userService.getMatchesForUser(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   getUserById(@Param('id') id: string) {
     return this.userService.findById(id);
@@ -66,8 +73,13 @@ export class UsersController {
     const recruiter = await this.userService.findById(recruiterId);
     if (!candidate || !recruiter)
       throw new NotFoundException('Utilisateur non trouvé');
-    await this.userService.createMatchBetweenUsers(candidate, recruiter, offer);
-
-    return { success: true };
+    const saved = await this.userService.createMatchBetweenUsers(
+      candidate,
+      recruiter,
+      offer,
+    );
+    // eslint-disable-next-line no-console
+    console.log('[UsersController] match saved result', saved);
+    return { success: true, saved };
   }
 }

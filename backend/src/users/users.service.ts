@@ -3,7 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { Repository, DataSource } from 'typeorm';
+import { Repository, DataSource, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UpdateCandidateOnboardingDto } from './dto/updateCandidateOnboarding.dto';
@@ -69,17 +69,72 @@ export class UsersService {
     recruiter: User,
     offer: Offer,
   ) {
-    await this.dataSource.transaction(async (manager) => {
-      const matchForCandidate = manager.create(Match, {
-        user: candidate,
-        offer,
-      });
-      const matchForRecruiter = manager.create(Match, {
-        user: recruiter,
-        offer,
-      });
-      await manager.save(matchForCandidate);
-      await manager.save(matchForRecruiter);
+    return this.dataSource.transaction(async (manager) => {
+      try {
+        const matchForCandidate = manager.create(Match, {
+          user: candidate,
+          offer,
+        });
+        const matchForRecruiter = manager.create(Match, {
+          user: recruiter,
+          offer,
+        });
+        const savedCandidateMatch = await manager.save(matchForCandidate);
+        const savedRecruiterMatch = await manager.save(matchForRecruiter);
+        // small debug log to ensure saves happened
+        // eslint-disable-next-line no-console
+        console.log('[UsersService] saved matches', {
+          candidateMatchId: savedCandidateMatch.id,
+          recruiterMatchId: savedRecruiterMatch.id,
+        });
+        return [savedCandidateMatch, savedRecruiterMatch];
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[UsersService] createMatchBetweenUsers error', err);
+        throw err;
+      }
     });
+  }
+
+  /**
+   * Return the list of users the given user has matches with.
+   * For each Match where user = userId, we try to find the counterpart user
+   * either via offer.createdBy or another Match for the same offer.
+   */
+  async getMatchesForUser(userId: string) {
+    // 1) find offers this user has matches for
+    const userMatches = await this.matchRepository.find({
+      where: { user: { id: userId } },
+      relations: ['offer'],
+    });
+
+    const offerIds = userMatches.map((m) => (m.offer as unknown as { id: any }).id).filter(Boolean);
+    if (offerIds.length === 0) return [];
+
+    // 2) find all matches for those offers and include user + offer.createdBy
+    const matchesForOffers = await this.matchRepository.find({
+      where: { offer: { id: In(offerIds) } },
+      relations: ['user', 'offer', 'offer.createdBy'],
+    });
+
+    // 3) collect counterpart users (user.id !== userId)
+    const usersMap = new Map<string, any>();
+    for (const match of matchesForOffers) {
+      const u = match.user;
+      if (!u || u.id === userId) continue;
+      if (!usersMap.has(u.id)) {
+        usersMap.set(u.id, {
+          id: u.id,
+          email: u.email,
+          firstName: (u as any).firstName ?? null,
+          lastName: (u as any).lastName ?? null,
+          role: u.role,
+          profilePhoto: (u as any).profilePhoto ?? null,
+          offerId: (match.offer as any).id,
+        });
+      }
+    }
+
+    return Array.from(usersMap.values());
   }
 }

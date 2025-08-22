@@ -10,6 +10,7 @@ import EditOffer from './pages/EditOffer/EditOffer';
 import SeeCandidates from './pages/SeeCandidates/SeeCandidates';
 import SeeOfferCandidate from './pages/SeeOfferCandidate/SeeOfferCandidate';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import ViewProfile from './pages/Profile/ViewProfile/ViewProfile';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -89,6 +90,14 @@ root.render(
           element={
             <ProtectedRoute>
               <SeeOfferCandidate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/:id"
+          element={
+            <ProtectedRoute>
+              <ViewProfile />
             </ProtectedRoute>
           }
         />

@@ -290,6 +290,25 @@
   }
 }
 
+.backBtn {
+  background: $primary-color;
+  color: $color-white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: $box-shadow-sm;
+  transition: background 0.12s, transform 0.08s;
+  &:hover {
+    background: $color-primary-dark;
+    transform: translateY(-1px);
+  }
+}
+
 .editActions {
   display: flex;
   gap: 1rem;

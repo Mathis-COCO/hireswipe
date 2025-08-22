@@ -11,6 +11,7 @@ import CandidateFeed from './Feed/CandidateFeed/CandidateFeed';
 import RecruiterFeed from './Feed/RecruiterFeed/RecruiterFeed';
 import CandidateProfile from './Profile/CandidateProfile/CandidateProfile';
 import RecruiterProfile from './Profile/RecruiterProfile/RecruiterProfile';
+import ViewProfile from './Profile/ViewProfile/ViewProfile';
 
 const App: React.FC = () => {
   const [accountType, setAccountType] = React.useState<'candidat' | 'entreprise' | null>(null);
@@ -57,6 +58,14 @@ const App: React.FC = () => {
       break;
     case '/profile':
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
+      break;
+    default:
+      // handle dynamic user view route like /user/:id
+      if (location.pathname.startsWith('/user/')) {
+        const parts = location.pathname.split('/');
+        const userId = parts[2];
+        content = <ViewProfile userId={userId} />;
+      }
       break;
     case '/':
       content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers/>;

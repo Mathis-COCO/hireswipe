@@ -131,6 +131,17 @@ class OfferService {
     });
     return response;
   }
+
+  async getMatches(): Promise<any[]> {
+    const response = await apiRequest(`/user/matches`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return response as any[];
+  }
 }
 
 export const offerService = new OfferService();
