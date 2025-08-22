@@ -5,20 +5,18 @@ import { RegisterData, LoginData } from '../types/auth';
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
 
   const register = async (data: RegisterData) => {
     setIsLoading(true);
     setError(null);
-    
     try {
       const response = await authService.register(data);
       authService.saveAuthData(response);
-      
-      localStorage.setItem('accountType', data.role === 'candidat' ? 'candidat' : 'entreprise');
-
+      setAccountType(response.user?.role === 'candidat' ? 'candidat' : 'entreprise');
       return { success: true, data: response };
     } catch (err: any) {
-      const errorMessage = err.message || 'Erreur lors de l\'inscription';
+      const errorMessage = err.message || "Erreur lors de l'inscription";
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -29,19 +27,13 @@ export const useAuth = () => {
   const login = async (data: LoginData) => {
     setIsLoading(true);
     setError(null);
-    
     try {
       const response = await authService.login(data);
       authService.saveAuthData(response);
-      
-      if (response.user?.role) {
-        const accountType = response.user.role === 'candidat' ? 'candidat' : 'entreprise';
-        localStorage.setItem('accountType', accountType);
-      }
-      
+      setAccountType(response.user?.role === 'candidat' ? 'candidat' : 'entreprise');
       return { success: true, data: response };
     } catch (err: any) {
-      const errorMessage = err.message || 'Erreur lors de la connexion';
+      const errorMessage = err.message || "Erreur lors de la connexion";
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -49,9 +41,18 @@ export const useAuth = () => {
     }
   };
 
+  const fetchAccountType = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      setAccountType(user?.role === 'candidat' ? 'candidat' : 'entreprise');
+    } catch {
+      setAccountType(null);
+    }
+  };
+
   const logout = () => {
     authService.logout();
-    localStorage.removeItem('accountType');
+    setAccountType(null);
     localStorage.removeItem('onboardingCompleted');
     localStorage.removeItem('onboardingProgress');
   };
@@ -67,6 +68,8 @@ export const useAuth = () => {
     isLoading,
     error,
     clearError,
+    accountType,
+    fetchAccountType,
     isAuthenticated: authService.isAuthenticated(),
   };
 };

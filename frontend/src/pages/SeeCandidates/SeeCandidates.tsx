@@ -13,11 +13,13 @@ const SeeCandidates: React.FC = () => {
 
     const [candidates, setCandidates] = React.useState<any[]>([]);
     const [offer, setOffer] = React.useState<any>({});
+    const [userType, setUserType] = React.useState<'candidat' | 'entreprise' | null>(null);
 
     React.useEffect(() => {
         if (!offerId) return;
         offerService.getOfferById(Number(offerId)).then(offerData => {
             setOffer(offerData);
+            setUserType(offerData?.recruiter?.role ?? null);
 
             const users = (offerData.candidates || [])
                 .map((c: any) => ({ ...c.user, status: c.status }))
@@ -98,7 +100,7 @@ const SeeCandidates: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <AppNavigation />
+            <AppNavigation accountType={userType} />
         </>
     );
 };

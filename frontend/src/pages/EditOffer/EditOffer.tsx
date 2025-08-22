@@ -30,11 +30,13 @@ const EditOffer: React.FC = () => {
     });
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [userType, setUserType] = useState<'entreprise' | 'candidat' | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
             const user = await authService.getCurrentUser();
+            setUserType(user?.role ?? null);
             setForm((prev: typeof form) => ({ ...prev, recruiterId: user?.id ?? null }));
 
             if (offerId) {
@@ -113,7 +115,7 @@ const EditOffer: React.FC = () => {
                     />
                 </div>
             </div>
-            <AppNavigation />
+            <AppNavigation accountType={userType} />
         </>
     );
 };

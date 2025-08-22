@@ -52,6 +52,7 @@ class AuthService {
   saveAuthData(authData: AuthResponse): void {
     localStorage.setItem('authToken', authData.token);
     localStorage.setItem('userData', JSON.stringify(authData.user));
+    // accountType is no longer stored in localStorage
   }
 
   isAuthenticated(): boolean {
@@ -61,7 +62,6 @@ class AuthService {
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
-    localStorage.removeItem('accountType');
     localStorage.removeItem('onboardingCompleted');
     localStorage.removeItem('onboardingProgress');
   }

@@ -29,46 +29,47 @@ const Onboarding: React.FC = () => {
     const totalSteps = accountType === 'entreprise' ? companySteps : candidateSteps;
 
     useEffect(() => {
-        authService.getCurrentUser().then(userData => {
-            if (userData.firstName || userData.companyName) {
+        const init = async () => {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                navigate('/auth');
+                return;
+            }
+
+            const isCompleted = localStorage.getItem('onboardingCompleted');
+            if (isCompleted === 'true') {
                 navigate('/');
-            } else {
-                navigate('/onboarding');
+                return;
             }
-        });
 
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            navigate('/auth');
-            return;
-        }
-
-        const isCompleted = localStorage.getItem('onboardingCompleted');
-        if (isCompleted === 'true') {
-            navigate('/');
-            return;
-        }
-
-        const storedAccountType = localStorage.getItem('accountType') as 'candidat' | 'entreprise' | null;
-        if (!storedAccountType) {
-            navigate('/auth');
-            return;
-        }
-
-        setAccountType(storedAccountType);
-
-        const savedProgress = localStorage.getItem('onboardingProgress');
-        if (savedProgress) {
             try {
-                const { step: savedStep, data } = JSON.parse(savedProgress);
-                setStep(savedStep || 1);
-                setProfileData({ ...data, accountType: storedAccountType });
-            } catch (error) {
-                setProfileData({ accountType: storedAccountType });
+                const userData = await authService.getCurrentUser();
+                if (!userData || !userData.role) {
+                    navigate('/auth');
+                    return;
+                }
+                setAccountType(userData.role === 'candidat' ? 'candidat' : 'entreprise');
+                if (userData.firstName || userData.companyName) {
+                    navigate('/');
+                    return;
+                }
+                const savedProgress = localStorage.getItem('onboardingProgress');
+                if (savedProgress) {
+                    try {
+                        const { step: savedStep, data } = JSON.parse(savedProgress);
+                        setStep(savedStep || 1);
+                        setProfileData({ ...data, accountType: userData.role });
+                    } catch (error) {
+                        setProfileData({ accountType: userData.role });
+                    }
+                } else {
+                    setProfileData({ accountType: userData.role });
+                }
+            } catch {
+                navigate('/auth');
             }
-        } else {
-            setProfileData({ accountType: storedAccountType });
-        }
+        };
+        init();
     }, [navigate]);
 
     const saveProgress = (currentStep: number, data: any) => {

@@ -24,8 +24,14 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
                 return;
             }
 
-            const accountType = localStorage.getItem('accountType');
-            if (!accountType) {
+            try {
+                const user = await import('../../services/authService').then(m => m.authService.getCurrentUser());
+                if (!user || !user.role) {
+                    localStorage.removeItem('authToken');
+                    navigate('/auth', { replace: true });
+                    return;
+                }
+            } catch {
                 localStorage.removeItem('authToken');
                 navigate('/auth', { replace: true });
                 return;
