@@ -13,17 +13,32 @@ import CandidateProfile from './Profile/CandidateProfile/CandidateProfile';
 import RecruiterProfile from './Profile/RecruiterProfile/RecruiterProfile';
 
 const App: React.FC = () => {
-  const token = localStorage.getItem('authToken');
-  const accountType = localStorage.getItem('accountType');
+  const [accountType, setAccountType] = React.useState<'candidat' | 'entreprise' | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
   const location = useLocation();
-  authService.getCurrentUser().then(userData => {
-          if (userData.firstName || userData.companyName) {
-            return <Navigate to="/onboarding" replace />;
-          }
-        });
+  const token = localStorage.getItem('authToken');
+
+  React.useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      return;
+    }
+    authService.getCurrentUser().then(userData => {
+      if (!userData) {
+        setAccountType(null);
+        setIsLoading(false);
+        return;
+      }
+      setAccountType(userData.role === 'candidat' ? 'candidat' : 'entreprise');
+      setIsLoading(false);
+    });
+  }, [token]);
 
   if (!token) {
     return <Navigate to="/auth" replace />;
+  }
+  if (isLoading) {
+    return <div className={styles.appRoot}><p>Chargement...</p></div>;
   }
 
   let content;
@@ -44,7 +59,6 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     case '/':
-      // content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
       content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers/>;
       break;
   }
@@ -52,7 +66,7 @@ const App: React.FC = () => {
   return (
     <div className={styles.appRoot}>
       {content}
-      <AppNavigation />
+      <AppNavigation accountType={accountType} />
     </div>
   );
 };

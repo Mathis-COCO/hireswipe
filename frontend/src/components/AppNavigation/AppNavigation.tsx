@@ -18,11 +18,13 @@ const recruiterNav = [
   { label: 'Profil', icon: Briefcase, path: '/profile' },
 ];
 
-const AppNavigation: React.FC = () => {
+interface AppNavigationProps {
+  accountType: 'candidat' | 'entreprise' | null;
+}
+
+const AppNavigation: React.FC<AppNavigationProps> = ({ accountType }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const accountType = localStorage.getItem('accountType');
-
   const navItems = accountType === 'entreprise' ? recruiterNav : candidateNav;
 
   return (

@@ -90,10 +90,9 @@ describe('AuthService', () => {
   });
 
   describe('logout', () => {
-    it('should remove all auth-related items from localStorage', () => {
+    it('should remove all auth-related items from localStorage except accountType', () => {
       localStorage.setItem('authToken', 'fake-token');
       localStorage.setItem('userData', '{}');
-      localStorage.setItem('accountType', 'candidat');
       localStorage.setItem('onboardingCompleted', 'true');
       localStorage.setItem('onboardingProgress', '50');
 
@@ -101,7 +100,6 @@ describe('AuthService', () => {
 
       expect(localStorage.getItem('authToken')).toBeNull();
       expect(localStorage.getItem('userData')).toBeNull();
-      expect(localStorage.getItem('accountType')).toBeNull();
       expect(localStorage.getItem('onboardingCompleted')).toBeNull();
       expect(localStorage.getItem('onboardingProgress')).toBeNull();
     });
@@ -110,7 +108,7 @@ describe('AuthService', () => {
   describe('getCurrentUser', () => {
     it('should call apiRequest with correct params and return response', async () => {
       localStorage.setItem('authToken', 'fake-token');
-      const mockResponse = { id: 1, email: 'test@test.com' };
+      const mockResponse = { id: 1, email: 'test@test.com', role: 'candidat' };
       mockApiRequest.mockResolvedValue(mockResponse);
 
       const result = await authService.getCurrentUser();

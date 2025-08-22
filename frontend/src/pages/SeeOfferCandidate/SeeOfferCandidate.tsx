@@ -12,11 +12,13 @@ const SeeOfferCandidate: React.FC = () => {
     const { candidateId } = useParams<{ candidateId: string }>();
     const [candidate, setCandidate] = React.useState<any>(null);
     const [offer, setOffer] = React.useState<any>(null);
+    const [userType, setUserType] = React.useState<'candidat' | 'entreprise' | null>(null);
 
     useEffect(() => {
         const fetchCandidate = async () => {
             const data = await userService.getUserById(candidateId);
             setCandidate(data);
+            setUserType(data?.role ?? null);
             const offerData = await offerService.getOfferById(Number(offerId));
             setOffer(offerData);
         };
@@ -35,7 +37,7 @@ const SeeOfferCandidate: React.FC = () => {
                     {candidate && <CandidateFullCard candidate={candidate} offer={offer} />}
                 </div>
             </div>
-            <AppNavigation />
+            <AppNavigation accountType={userType} />
         </>
     );
 };
