@@ -1,4 +1,4 @@
-import { apiRequest } from './api';
+import { apiRequest, authRequest } from './api';
 
 interface AuthResponse {
   token: string;
@@ -22,7 +22,7 @@ interface LoginData {
 
 class AuthService {
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await apiRequest<AuthResponse>('/auth/register', {
+    const response = await authRequest<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -30,7 +30,7 @@ class AuthService {
   }
 
   async login(data: LoginData): Promise<AuthResponse> {
-    const response = await apiRequest<AuthResponse>('/auth/login', {
+    const response = await authRequest<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -41,10 +41,6 @@ class AuthService {
     const response = await apiRequest('/user/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-      },
     });
     return response;
   }
@@ -61,18 +57,12 @@ class AuthService {
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
-    localStorage.removeItem('accountType');
-    localStorage.removeItem('onboardingCompleted');
     localStorage.removeItem('onboardingProgress');
   }
 
   async getCurrentUser(): Promise<any> {
     const response = await apiRequest('/user/me', {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-        'Content-Type': 'application/json',
-      },
     });
     return response;
   }

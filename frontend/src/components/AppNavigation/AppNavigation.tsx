@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './AppNavigation.module.scss';
 import { Home, MessageCircle, Heart, User, PlusSquare, Briefcase, ClipboardList } from 'lucide-react';
+import { authService } from '../../services/authService';
 
 const candidateNav = [
   { label: 'Accueil', icon: Home, path: '/' },
@@ -11,7 +12,6 @@ const candidateNav = [
 ];
 
 const recruiterNav = [
-  // { label: 'Accueil', icon: Home, path: '/' },
   { label: 'Messagerie', icon: MessageCircle, path: '/messages' },
   { label: 'Ajouter offre', icon: PlusSquare, path: '/ajouter-offre' },
   { label: 'Mes offres', icon: ClipboardList, path: '/mes-offres' },
@@ -21,7 +21,16 @@ const recruiterNav = [
 const AppNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const accountType = localStorage.getItem('accountType');
+  const [accountType, setAccountType] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await authService.getCurrentUser();
+      console.log(user);
+      setAccountType(user?.role || null);
+    };
+    fetchUser();
+  }, []);
 
   const navItems = accountType === 'entreprise' ? recruiterNav : candidateNav;
 

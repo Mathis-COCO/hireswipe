@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 interface ProtectedOnboardingProps {
     children: React.ReactNode;
@@ -8,6 +9,23 @@ interface ProtectedOnboardingProps {
 const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) => {
     const navigate = useNavigate();
     const [isChecking, setIsChecking] = useState(true);
+    interface UserCheckOnboarding {
+        firstName?: string;
+        companyName?: string;
+        role?: string;
+    }
+    
+    const [user, setUser] = useState<UserCheckOnboarding | null>(null);
+    const [isCompleted, setIsCompleted] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await authService.getCurrentUser();
+            setUser(user);
+            setIsCompleted(!!(user?.firstName || user?.companyName));
+        };
+        fetchUser();
+    }, []);
 
     useEffect(() => {
         const checkAccess = async () => {
@@ -17,15 +35,13 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
                 return;
             }
 
-            const isCompleted = localStorage.getItem('onboardingCompleted');
-            if (isCompleted === 'true') {
+            if (isCompleted === true) {
                 setIsChecking(false);
                 navigate('/', { replace: true });
                 return;
             }
 
-            const accountType = localStorage.getItem('accountType');
-            if (!accountType) {
+            if (!user?.role) {
                 localStorage.removeItem('authToken');
                 navigate('/auth', { replace: true });
                 return;
@@ -35,7 +51,7 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
         };
 
         checkAccess();
-    }, [navigate]);
+    }, [navigate, isCompleted]);
 
     if (isChecking) {
         return (

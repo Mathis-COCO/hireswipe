@@ -13,8 +13,6 @@ export const useAuth = () => {
     try {
       const response = await authService.register(data);
       authService.saveAuthData(response);
-      
-      localStorage.setItem('accountType', data.role === 'candidat' ? 'candidat' : 'entreprise');
 
       return { success: true, data: response };
     } catch (err: any) {
@@ -34,11 +32,6 @@ export const useAuth = () => {
       const response = await authService.login(data);
       authService.saveAuthData(response);
       
-      if (response.user?.role) {
-        const accountType = response.user.role === 'candidat' ? 'candidat' : 'entreprise';
-        localStorage.setItem('accountType', accountType);
-      }
-      
       return { success: true, data: response };
     } catch (err: any) {
       const errorMessage = err.message || 'Erreur lors de la connexion';
@@ -51,8 +44,6 @@ export const useAuth = () => {
 
   const logout = () => {
     authService.logout();
-    localStorage.removeItem('accountType');
-    localStorage.removeItem('onboardingCompleted');
     localStorage.removeItem('onboardingProgress');
   };
 
@@ -69,4 +60,3 @@ export const useAuth = () => {
     clearError,
     isAuthenticated: authService.isAuthenticated(),
   };
-};

@@ -27,13 +27,21 @@ const Onboarding: React.FC = () => {
     const candidateSteps: number = 8;
     const companySteps: number = 6;
     const totalSteps = accountType === 'entreprise' ? companySteps : candidateSteps;
+    const [isCompleted, setIsCompleted] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await authService.getCurrentUser();
+            setAccountType(user?.role === 'candidat' ? 'candidat' : 'entreprise');
+            setIsCompleted(!!(user?.firstName || user?.companyName));
+        };
+        fetchUser();
+    }, []);
 
     useEffect(() => {
         authService.getCurrentUser().then(userData => {
             if (userData.firstName || userData.companyName) {
                 navigate('/');
-            } else {
-                navigate('/onboarding');
             }
         });
 
@@ -43,31 +51,22 @@ const Onboarding: React.FC = () => {
             return;
         }
 
-        const isCompleted = localStorage.getItem('onboardingCompleted');
-        if (isCompleted === 'true') {
+        if (isCompleted === true) {
             navigate('/');
             return;
         }
-
-        const storedAccountType = localStorage.getItem('accountType') as 'candidat' | 'entreprise' | null;
-        if (!storedAccountType) {
-            navigate('/auth');
-            return;
-        }
-
-        setAccountType(storedAccountType);
 
         const savedProgress = localStorage.getItem('onboardingProgress');
         if (savedProgress) {
             try {
                 const { step: savedStep, data } = JSON.parse(savedProgress);
                 setStep(savedStep || 1);
-                setProfileData({ ...data, accountType: storedAccountType });
+                setProfileData({ ...data, accountType: accountType });
             } catch (error) {
-                setProfileData({ accountType: storedAccountType });
+                setProfileData({ accountType: accountType });
             }
         } else {
-            setProfileData({ accountType: storedAccountType });
+            setProfileData({ accountType: accountType });
         }
     }, [navigate]);
 
@@ -181,7 +180,6 @@ const Onboarding: React.FC = () => {
     const completeOnboarding = async () => {
         try {
             await authService.updateProfile(profileData);
-            localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
 
             navigate('/');

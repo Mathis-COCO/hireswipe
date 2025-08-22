@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import styles from './App.module.scss';
 import AppNavigation from '../components/AppNavigation/AppNavigation';
@@ -14,16 +14,42 @@ import RecruiterProfile from './Profile/RecruiterProfile/RecruiterProfile';
 
 const App: React.FC = () => {
   const token = localStorage.getItem('authToken');
-  const accountType = localStorage.getItem('accountType');
   const location = useLocation();
-  authService.getCurrentUser().then(userData => {
-          if (userData.firstName || userData.companyName) {
-            return <Navigate to="/onboarding" replace />;
-          }
-        });
+  const [accountType, setAccountType] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await authService.getCurrentUser();
+        setAccountType(userData.role);
+        if (!userData.firstName || !userData.companyName) {
+          window.location.replace('/onboarding');
+        }
+      } catch {
+        localStorage.removeItem('authToken');
+        window.location.replace('/auth');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // The conditional logic is now inside the effect.
+    if (token) {
+      fetchUserData();
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
+
+  // The conditional redirection remains at the top level,
+  // outside of any hooks, which is correct.
   if (!token) {
     return <Navigate to="/auth" replace />;
+  }
+
+  if (loading || accountType === null) {
+    return <div>Chargement...</div>;
   }
 
   let content;
@@ -44,8 +70,7 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     case '/':
-      // content = accountType === 'candidat' ? <CandidateFeed /> : <RecruiterFeed />;
-      content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers/>;
+      content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers />;
       break;
   }
 

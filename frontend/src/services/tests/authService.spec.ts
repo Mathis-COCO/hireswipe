@@ -93,16 +93,12 @@ describe('AuthService', () => {
     it('should remove all auth-related items from localStorage', () => {
       localStorage.setItem('authToken', 'fake-token');
       localStorage.setItem('userData', '{}');
-      localStorage.setItem('accountType', 'candidat');
-      localStorage.setItem('onboardingCompleted', 'true');
       localStorage.setItem('onboardingProgress', '50');
 
       authService.logout();
 
       expect(localStorage.getItem('authToken')).toBeNull();
       expect(localStorage.getItem('userData')).toBeNull();
-      expect(localStorage.getItem('accountType')).toBeNull();
-      expect(localStorage.getItem('onboardingCompleted')).toBeNull();
       expect(localStorage.getItem('onboardingProgress')).toBeNull();
     });
   });
