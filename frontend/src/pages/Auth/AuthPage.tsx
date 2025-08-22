@@ -52,6 +52,8 @@ const AuthForm: React.FC = () => {
             </div>
             <div className={styles.logoText}>HireSwipe</div>
             <div className={styles.slogan}>La rencontre entre talent et opportunité</div>
+            <div className={styles.slogan}>Cette application est en cours de création pour la soutenance de septembre</div>
+            <div className={styles.slogan}>La dernière version stable est disponible sur le lien présent dans le fichier txt du dossier remis</div>
         </div>
 
         <div className={styles.tabs}>
