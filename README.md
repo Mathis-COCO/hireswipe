@@ -1,8 +1,10 @@
-# HireSwipe
-
-Plateforme de mise en relation candidats/entreprises pour le recrutement.
+# MESSAGE AU JURY D'YNOV :
+La version du code présente dans le Zip n'est pas la version finale du projet conformément au message d'Aurore DUGUET. 
+Veuillez effectuer un git pull sur la branche main pour avoir la dernière version stable du projet ou vous connecter à la version déployée sur le lien suivant :
 
 ## [Disponible ici !](https://hireswipe-neon.vercel.app/)
+
+# HireSwipe
 
 ## Sommaire
 
@@ -339,3 +341,4 @@ jobs:
 
 
 Pour toute question provenant du jury chargé de la notation du projet, vous pouvez me contacter via mail à sur mon adresse Ynov ou via Microsoft Teams.
+
