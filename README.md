@@ -1,6 +1,7 @@
 # MESSAGE AU JURY D'YNOV :
 La version du code présente dans le Zip n'est pas la version finale du projet conformément au message d'Aurore DUGUET. 
 Dans le cadre de la notation du bloc 2, veuillez effectuer un git pull sur la branche main pour avoir la dernière version stable du projet, ou, vous connecter à la version déployée sur le lien suivant :
+(attention : le premier appel au backend va prendre du temps car le serveur Render est en pause au bout de 15min d'inactivité et doit démarrer)
 
 ## [Disponible ici !](https://hireswipe-neon.vercel.app/)
 
