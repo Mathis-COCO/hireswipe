@@ -37,6 +37,7 @@ Dans le cadre de la notation du bloc 2, veuillez effectuer un git pull sur la br
 | **19 août**  | - Ajout de la fonctionnalité de matchs :<br> • Quand un recruteur valide la demande d'un utilisateur<br> • Mise à jour des statuts des candidatures <br>Ajout de la page de consultation des candidatures des offres <br>- Ajout du feed candidat<br>- Ajout de la réception des likes dans la page des offres <br>Ajout de la page de visualisation du profil du candidat<br> |
 | **21 août**  | - Visualisation du profil connecté<br>- Modification des champs du profil<br>- Refonte visuelle du feed utilisateur |
 | **23 août ~1:00AM**  | V1.0.0 <br> - Visualisation des matchs<br>- visualisation des profils utilisateurs avec lesquels l'utilisateur connecté a match<br>- Sécurisation du routing |
+| **26 août**  | V1.1.0 <br> - Swipes fonctionnels |
 
 ---
 
@@ -343,6 +344,7 @@ jobs:
 
 
 Pour toute question provenant du jury chargé de la notation du projet, vous pouvez me contacter via mail à sur mon adresse Ynov ou via Microsoft Teams.
+
 
 
 
