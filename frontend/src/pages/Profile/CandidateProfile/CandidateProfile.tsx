@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../Profile.module.scss';
 import { authService } from '../../../services/authService';
 import OfferCandidateMap from '../../../components/Maps/OfferCandidateMap.tsx/OfferCandidateMap';
@@ -61,6 +62,13 @@ const CandidateProfile: React.FC = () => {
 
     const handleEditClick = () => setIsEditing(true);
     const handleCancel = () => setIsEditing(false);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        authService.logout();
+        navigate('/');
+    };
 
     const handleChange = (field: string, value: any) => {
         setEditData((prev: any) => ({ ...prev, [field]: value }));
@@ -192,10 +200,20 @@ const CandidateProfile: React.FC = () => {
                         <p className={styles.sector}>{profile.jobTitle}</p>
                     </div>
                 </div>
-                <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+                <div style={{ textAlign: 'right', marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                     {!isEditing && (
-                        <button className={styles.editBtn} onClick={handleEditClick}>
-                            Modifier le profil
+                        <>
+                            <button className={styles.editBtn} onClick={handleEditClick}>
+                                Modifier le profil
+                            </button>
+                            <button className={styles.logoutBtn} onClick={handleLogout}>
+                                Se déconnecter
+                            </button>
+                        </>
+                    )}
+                    {isEditing && (
+                        <button className={styles.logoutBtn} onClick={handleLogout}>
+                            Se déconnecter
                         </button>
                     )}
                 </div>
