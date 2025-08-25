@@ -428,6 +428,21 @@
   }
 }
 
+.logoutBtn {
+  background: #fff;
+  color: $primary-color;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.06s;
+  &:hover {
+    background: #f8fafc;
+  }
+}
+
 .licenseIcon {
   font-size: 2rem;
   flex-shrink: 0;
