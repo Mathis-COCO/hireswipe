@@ -20,7 +20,7 @@ interface OfferFeedCardProps {
         longitude?: number;
         category: string;
         imageUrl?: string;
-        createdBy?: { firstName?: string; lastName?: string; email?: string };
+    createdBy?: { firstName?: string; lastName?: string; email?: string; companyName?: string; companyLogo?: string; sector?: string };
         candidates?: any[];
         createdAt?: Date | string;
         updatedAt?: Date | string;
@@ -47,6 +47,12 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart }
 
     const pointerDown = (e: React.PointerEvent) => {
         if (isAnimating) return;
+        // if the pointer started on an interactive element (button, link, input), don't start drag
+        const target = e.target as HTMLElement | null;
+        if (target) {
+            const interactive = target.closest && (target.closest('button, a, input, textarea, select, label') as HTMLElement | null);
+            if (interactive) return; // let the element handle the event (click)
+        }
         try {
             cardRef.current?.setPointerCapture(e.pointerId);
         } catch {
@@ -109,6 +115,21 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart }
         touchAction: 'none',
     };
 
+    // overlay color/opacity based on horizontal drag
+    const absX = Math.abs(drag.x);
+    const rawRatio = THRESHOLD > 0 ? absX / THRESHOLD : 0;
+    const clamped = Math.max(0, Math.min(1, rawRatio));
+    // slightly cap visual alpha so text remains readable
+    // use softer, less aggressive colors and cap opacity lower
+    const alpha = Math.min(0.6, clamped * 0.6);
+    // softer green: rgb(52,211,153) (#34d399), softer red: rgb(248,113,113) (#f87171)
+    const overlayColor = drag.x > 0 ? `rgba(52,211,153,${alpha})` : drag.x < 0 ? `rgba(248,113,113,${alpha})` : 'transparent';
+    const overlayStyle: React.CSSProperties = {
+        backgroundColor: overlayColor,
+        pointerEvents: 'none',
+        transition: startRef.current ? 'none' : 'background-color 120ms linear',
+    };
+
     return (
         <div
             className={styles.card}
@@ -119,12 +140,31 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart }
             onPointerCancel={pointerUp}
             style={transformStyle}
         >
+            {/* color overlay that tints the card while dragging left/right */}
+            <div className={styles.dragOverlay} style={overlayStyle} />
             <div className={styles.header}>
-                <h3 className={styles.title}>{offer.title}</h3>
-                <span className={styles.contract}>{offer.contract}</span>
-                <span className={offer.isAvailable ? styles.statusAvailable : styles.statusUnavailable}>
-                    {offer.isAvailable ? 'Disponible' : 'Indisponible'}
-                </span>
+                <div className={styles.companyInfo}>
+                    {offer.createdBy?.companyLogo ? (
+                        <img src={offer.createdBy.companyLogo} alt={offer.createdBy.companyName || 'Logo'} className={styles.companyLogo} />
+                    ) : (
+                        <div className={styles.companyAvatar} aria-hidden>
+                            {(offer.createdBy?.companyName || offer.createdBy?.firstName || 'U').charAt(0).toUpperCase()}
+                        </div>
+                    )}
+                    <div className={styles.companyMeta}>
+                        <div className={styles.companyNameInline}>{offer.createdBy?.companyName || `${offer.createdBy?.firstName || ''} ${offer.createdBy?.lastName || ''}`.trim()}</div>
+                        {offer.createdBy?.sector && <div className={styles.companySector}>{offer.createdBy.sector}</div>}
+                    </div>
+                </div>
+                <div className={styles.titleContainer}>
+                    <h3 className={styles.title}>{offer.title}</h3>
+                    <div className={styles.badgeRow}>
+                        <span className={styles.contract}>{offer.contract}</span>
+                        <span className={offer.isAvailable ? styles.statusAvailable : styles.statusUnavailable}>
+                            {offer.isAvailable ? 'Disponible' : 'Indisponible'}
+                        </span>
+                    </div>
+                </div>
             </div>
             {/* swipe indicators */}
             <div className={`${styles.swipeIndicator} ${drag.x > 50 ? styles.like : ''}`} style={{ opacity: Math.min(1, Math.abs(drag.x) / 120) }}>

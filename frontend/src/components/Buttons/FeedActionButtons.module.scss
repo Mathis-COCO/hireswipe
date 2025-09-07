@@ -27,12 +27,13 @@
   box-shadow: -9px 9px 17px #bebebe,
     9px -9px 17px #ffffff;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .crossBtn {
-  background: #e74c3c;
+  background: #ef6b67; /* softer red */
 }
 
 .heartBtn {
-  background: #27ae60;
+  background: #34b17a; /* softer green */
 }
