@@ -28,9 +28,10 @@ interface OfferFeedCardProps {
     };
     onCross?: () => void;
     onHeart?: () => void;
+    showActions?: boolean;
 }
 
-const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart }) => {
+const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, showActions = true }) => {
     const [currentUser, setCurrentUser] = React.useState<any>(null);
     const cardRef = React.useRef<HTMLDivElement | null>(null);
     const [drag, setDrag] = React.useState({ x: 0, y: 0, rot: 0 });
@@ -213,10 +214,12 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart }
                 </div>
             )}
 
-            <FeedActionButtons
-                onCross={onCross || (() => { })}
-                onHeart={onHeart || (() => { })}
-            />
+            {showActions && (
+                <FeedActionButtons
+                    onCross={onCross || (() => { })}
+                    onHeart={onHeart || (() => { })}
+                />
+            )}
             <div className={styles.footer}>
 
                 {offer.candidates && (
