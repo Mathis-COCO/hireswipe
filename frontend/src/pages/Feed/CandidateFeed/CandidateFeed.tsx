@@ -3,12 +3,14 @@ import { offerService } from '../../../services/offerService';
 import styles from './CandidateFeed.module.scss';
 import { authService } from '../../../services/authService';
 import OfferFeedCard from '../../../components/Cards/OfferFeedCard/OfferFeedCard';
+import SwipeTutorial from '../../../components/Onboarding/SwipeTutorial';
 
 const CandidateFeed: React.FC = () => {
   const [offer, setOffer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [noOffers, setNoOffers] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     authService.getCurrentUser().then(async (user) => {
@@ -63,9 +65,17 @@ const CandidateFeed: React.FC = () => {
   return (
     <div className={styles.candidateFeedContainer}>
       {!hasInteracted && (
-        <div>
-          <button onClick={() => handleInteractClick(false)}>Démarrer</button>
+        <div className={styles.startCard}>
+          <h2 className={styles.startTitle}>Découvrir des offres</h2>
+          <p className={styles.startText}>Parcourez rapidement les offres. Balaye à droite pour aimer, à gauche pour passer.</p>
+          <div className={styles.startActions}>
+            <button className={styles.primary} onClick={() => setShowTutorial(true)}>Démarrer</button>
+          </div>
         </div>
+      )}
+
+      {showTutorial && (
+        <SwipeTutorial onClose={() => { setShowTutorial(false); handleInteractClick(false); }} />
       )}
       {loading && hasInteracted && <div>Chargement...</div>}
       {hasInteracted && noOffers && <div>Aucune offre disponible.</div>}

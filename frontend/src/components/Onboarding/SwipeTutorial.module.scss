@@ -1,0 +1,84 @@
+@import '../../styles/variables.scss';
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,6,23,0.4);
+  z-index: 120;
+}
+
+.card {
+  width: min(760px, 94%);
+  background: $color-white;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.12);
+}
+
+.title {
+  margin: 0 0 6px 0;
+  font-size: 1.15rem;
+}
+
+.lead {
+  color: #475569;
+  margin: 0 0 12px 0;
+}
+
+.steps {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0 12px 0;
+}
+
+.steps li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  list-style: none;
+}
+
+.dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.stepTitle {
+  font-weight: 700;
+}
+
+.stepText {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.primary {
+  background: $color-primary;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid rgba(2,6,23,0.06);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
