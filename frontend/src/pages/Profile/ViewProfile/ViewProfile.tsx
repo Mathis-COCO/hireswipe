@@ -28,15 +28,15 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
         if (!id) return;
         const data = await userService.getUserById(id);
         if (mounted) setProfile(data);
-        // also fetch current user to know which nav to show
+        
         try {
           const me = await authService.getCurrentUser();
           if (mounted) setAccountType(me?.role === 'candidat' ? 'candidat' : 'entreprise');
         } catch (err) {
-          // ignore
+          
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
+        
         console.error('Failed to load profile', err);
       } finally {
         if (mounted) setLoading(false);
@@ -120,7 +120,7 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
           </div>
         )}
       </div>
-        {/* render app navigation at bottom */}
+        {}
         <AppNavigation accountType={accountType} />
     </div>
   );

@@ -41,23 +41,23 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
         authService.getCurrentUser().then(setCurrentUser);
     }, []);
 
-    // threshold in px to trigger like/refuse
+    
     const THRESHOLD = 120;
 
     const [isAnimating, setIsAnimating] = React.useState(false);
 
     const pointerDown = (e: React.PointerEvent) => {
         if (isAnimating) return;
-        // if the pointer started on an interactive element (button, link, input), don't start drag
+        
         const target = e.target as HTMLElement | null;
         if (target) {
             const interactive = target.closest && (target.closest('button, a, input, textarea, select, label') as HTMLElement | null);
-            if (interactive) return; // let the element handle the event (click)
+            if (interactive) return; 
         }
         try {
             cardRef.current?.setPointerCapture(e.pointerId);
         } catch {
-            // ignore if capture not available
+            
         }
         startRef.current = { x: e.clientX, y: e.clientY };
     };
@@ -97,15 +97,15 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
         try {
             cardRef.current?.releasePointerCapture(e.pointerId);
         } catch {
-            // ignore
+            
         }
-        // like -> right, refuse -> left
+        
         if (dx > THRESHOLD) {
             doAction('like');
         } else if (dx < -THRESHOLD) {
             doAction('dislike');
         } else {
-            // return to center
+            
             setDrag({ x: 0, y: 0, rot: 0 });
         }
     };
@@ -116,14 +116,14 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
         touchAction: 'none',
     };
 
-    // overlay color/opacity based on horizontal drag
+    
     const absX = Math.abs(drag.x);
     const rawRatio = THRESHOLD > 0 ? absX / THRESHOLD : 0;
     const clamped = Math.max(0, Math.min(1, rawRatio));
-    // slightly cap visual alpha so text remains readable
-    // use softer, less aggressive colors and cap opacity lower
+    
+    
     const alpha = Math.min(0.6, clamped * 0.6);
-    // softer green: rgb(52,211,153) (#34d399), softer red: rgb(248,113,113) (#f87171)
+    
     const overlayColor = drag.x > 0 ? `rgba(52,211,153,${alpha})` : drag.x < 0 ? `rgba(248,113,113,${alpha})` : 'transparent';
     const overlayStyle: React.CSSProperties = {
         backgroundColor: overlayColor,
@@ -141,7 +141,7 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
             onPointerCancel={pointerUp}
             style={transformStyle}
         >
-            {/* color overlay that tints the card while dragging left/right */}
+            {}
             <div className={styles.dragOverlay} style={overlayStyle} />
             <div className={styles.header}>
                 <div className={styles.companyInfo}>
@@ -167,7 +167,7 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
                     </div>
                 </div>
             </div>
-            {/* swipe indicators */}
+            {}
             <div className={`${styles.swipeIndicator} ${drag.x > 50 ? styles.like : ''}`} style={{ opacity: Math.min(1, Math.abs(drag.x) / 120) }}>
                 {drag.x > 0 ? 'J\'aime' : ''}
             </div>

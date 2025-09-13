@@ -17,7 +17,7 @@ const Likes: React.FC = () => {
       try {
         const res = await offerService.getCurrentUserWithInteractedOffers();
 
-        // res may be: array of offers, array of ids, or object { interactedOfferIds: [...] }
+        
         let offers: any[] = [];
 
         if (Array.isArray(res)) {
@@ -26,7 +26,7 @@ const Likes: React.FC = () => {
           } else if (typeof res[0] === 'object') {
             offers = res as any[];
           } else {
-            // assume ids
+            
             const ids = res as Array<string | number>;
             const fetched = await Promise.all(ids.map(id => offerService.getOfferById(Number(id)).catch(() => null)));
             offers = fetched.filter(Boolean) as any[];
@@ -98,7 +98,7 @@ const Likes: React.FC = () => {
         </div>
       </div>
 
-      {/* modal to show full offer */}
+      {}
       {selected && (
         <div className={styles.modal} role="dialog" aria-modal="true">
           <button className={styles.close} onClick={() => setSelected(null)} aria-label="Fermer">✕</button>

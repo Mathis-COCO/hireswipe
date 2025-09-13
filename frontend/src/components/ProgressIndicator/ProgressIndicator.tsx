@@ -19,7 +19,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                 <h3 className={styles.title}>Configuration du profil</h3>
                 <p className={styles.subtitle}>Étape {currentStep} sur {totalSteps}</p>
                 
-                {/* Barre de progression déplacée ici */}
+                {}
                 <div className={styles.progressBarWrapper}>
                     <div className={styles.progressBar} style={{ width: `${(currentStep / totalSteps) * 100}%` }}></div>
                 </div>

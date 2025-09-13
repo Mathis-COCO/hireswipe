@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './OfferList.module.scss';
-import { Eye, Pencil, Trash2, Users } from 'lucide-react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Eye, Pencil, Users, Play, Pause } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Offer {
   id: string;
@@ -23,6 +23,7 @@ interface Offer {
 interface OfferListProps {
   offers: Offer[];
   onDelete: (id: string) => void;
+  onToggleAvailability?: (id: string, isAvailable: boolean) => void;
 }
 
 const getCityFromLocation = (location: string) => {
@@ -30,11 +31,17 @@ const getCityFromLocation = (location: string) => {
   return location.split(',')[0].trim();
 };
 
-const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
+const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onToggleAvailability }) => {
   const navigate = useNavigate();
 
   const handleEditClick = (offer: Offer) => {
     navigate(`/mes-offres/${offer.id}/edit`);
+  };
+
+  const handleToggleAvailability = (offer: Offer) => {
+    if (typeof onToggleAvailability === 'function') {
+      onToggleAvailability(offer.id, !offer.isAvailable);
+    }
   };
 
   const handleViewCandidates = (offerId: string) => {
@@ -71,14 +78,19 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete }) => {
                 </div>
               </div>
               <div className={styles.offerActions}>
-                <button title="Voir" className={styles.iconBtn}>
+                <button title="Voir" onClick={() => navigate(`/mes-offres/${o.id}`)} className={styles.iconBtn}>
                   <Eye size={20} />
                 </button>
                 <button title="Modifier" onClick={() => handleEditClick(o)} className={styles.iconBtn}>
                   <Pencil size={20} />
                 </button>
-                <button title="Supprimer" onClick={() => onDelete(o.id)} className={styles.iconBtn}>
-                  <Trash2 size={20} />
+                <button
+                  aria-label={o.isAvailable ? 'Désactiver l\'annonce' : 'Réactiver l\'annonce'}
+                  title={o.isAvailable ? 'Désactiver l\'annonce' : 'Réactiver l\'annonce'}
+                  onClick={() => handleToggleAvailability(o)}
+                  className={styles.iconBtn}
+                >
+                  {o.isAvailable ? <Pause size={18} /> : <Play size={18} />}
                 </button>
               </div>
             </div>

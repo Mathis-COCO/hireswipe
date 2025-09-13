@@ -60,7 +60,7 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     default:
-      // handle dynamic user view route like /user/:id
+      
       if (location.pathname.startsWith('/user/')) {
         const parts = location.pathname.split('/');
         const userId = parts[2];

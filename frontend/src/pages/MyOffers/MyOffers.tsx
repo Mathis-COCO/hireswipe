@@ -59,6 +59,17 @@ const MyOffers: React.FC = () => {
     setOffers(offers.filter(o => o.id !== id));
   };
 
+  const handleToggleAvailability = async (id: string, isAvailable: boolean) => {
+    try {
+      const updated = await offerService.setAvailability(id, isAvailable);
+      // update local state for the single offer
+      setOffers(prev => prev.map(o => (o.id === updated.id ? updated : o)));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Erreur lors du changement de disponibilité', err);
+    }
+  };
+
   const filteredOffers = offers
     .filter(o =>
       (!filters.category || o.category === filters.category) &&
@@ -110,7 +121,8 @@ const MyOffers: React.FC = () => {
       />
       <OfferList
         offers={availableOffers}
-        onDelete={handleDelete}
+  onDelete={handleDelete}
+  onToggleAvailability={handleToggleAvailability}
       />
       {unavailableOffers.length > 0 && (
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: '2px dashed #d7263d' }}>
@@ -118,6 +130,7 @@ const MyOffers: React.FC = () => {
           <OfferList
             offers={unavailableOffers}
             onDelete={handleDelete}
+            onToggleAvailability={handleToggleAvailability}
           />
         </div>
       )}

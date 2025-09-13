@@ -137,8 +137,8 @@
 .modalContent {
 	width: min(920px, 96%);
 	max-height: 92vh;
-	overflow: visible; /* avoid tiny scrollbar inside modal */
-	/* let the OfferFeedCard provide its own white background and radius */
+	overflow: visible; 
+	
 	background: transparent;
 	border-radius: 0;
 	padding: 0;
@@ -149,7 +149,7 @@
 }
 
 .close {
-	position: fixed; /* keep button fixed relative to viewport */
+	position: fixed; 
 	right: 28px;
 	top: 28px;
 	background: $color-white;

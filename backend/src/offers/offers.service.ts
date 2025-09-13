@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { Offer } from './entities/offer.entity';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
@@ -46,6 +46,52 @@ export class OffersService {
     updateOfferDto: UpdateOfferDto,
   ): Promise<Offer | null> {
     await this.offerRepository.update(id, updateOfferDto);
+    return this.findOne(id);
+  }
+
+  /**
+   * Set an offer availability. When marking unavailable, remove its candidate entries
+   * and remove references from users' interactedOfferIds.
+   */
+  async setAvailability(
+    id: string,
+    isAvailable: boolean,
+  ): Promise<Offer | null> {
+    const offer = await this.findOne(id);
+    if (!offer) return null;
+
+    // If marking unavailable, delete offerCandidate relations and clean user interacted ids
+    if (!isAvailable) {
+      // delete all OfferCandidate rows for this offer using offerId column
+      await this.offerCandidateRepository
+        .createQueryBuilder()
+        .delete()
+        .where('"offerId" = :id', { id })
+        .execute();
+
+      // find users who have any interactedOfferIds (simple-array parsed by TypeORM)
+      // then filter in application code to avoid SQL array/ANY mismatches with simple-array storage
+      const usersWithInteraction = await this.userRepository.find({
+        where: { interactedOfferIds: Not(IsNull()) },
+      });
+
+      for (const u of usersWithInteraction) {
+        if (!u.interactedOfferIds || u.interactedOfferIds.length === 0) {
+          continue;
+        }
+
+        // interactedOfferIds is mapped to a string[] by TypeORM for simple-array columns
+        const filtered = u.interactedOfferIds.filter((x) => x !== String(id));
+
+        // If there are changes, persist the updated array (empty array is allowed)
+        if (filtered.length !== u.interactedOfferIds.length) {
+          u.interactedOfferIds = filtered;
+          await this.userRepository.save(u);
+        }
+      }
+    }
+
+    await this.offerRepository.update(id, { isAvailable });
     return this.findOne(id);
   }
 

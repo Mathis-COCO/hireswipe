@@ -20,11 +20,11 @@
 
 .dragOverlay {
   position: absolute;
-  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  inset: 0; 
   border-radius: 16px;
   z-index: 2;
   mix-blend-mode: multiply;
-  opacity: 1; /* actual alpha is in the RGBA color value */
+  opacity: 1; 
   pointer-events: none;
 }
 
@@ -52,8 +52,8 @@
 }
 
 .contract {
-  background: #f3f4f6; /* neutral light */
-  color: #374151; /* neutral dark */
+  background: #f3f4f6; 
+  color: #374151; 
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 0.9rem;
@@ -76,7 +76,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #34d399; /* softer green */
+  background: #34d399; 
 }
 
 .statusUnavailable {
@@ -93,7 +93,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #f87171; /* softer red */
+  background: #f87171; 
 }
 
 .meta {
@@ -202,7 +202,7 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 120ms ease, transform 120ms ease;
-  z-index: 5; /* above overlay */
+  z-index: 5; 
 }
 
 .swipeIndicator.like {

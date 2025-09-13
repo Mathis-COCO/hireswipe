@@ -17,11 +17,11 @@ const Messages: React.FC = () => {
         if (!mounted) return;
         const currentUser = await authService.getCurrentUser();
         const currentRole = currentUser?.role;
-        // show only opposite-role users
+        
         const filtered = (data || []).filter((u: any) => u.role && u.role !== currentRole);
         setMatches(filtered);
       } catch (e) {
-        // eslint-disable-next-line no-console
+        
         console.error('Failed to load matches', e);
       } finally {
         if (mounted) setLoading(false);
