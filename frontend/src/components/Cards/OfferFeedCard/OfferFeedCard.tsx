@@ -112,8 +112,9 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
 
     const transformStyle: React.CSSProperties = {
         transform: `translate3d(${drag.x}px, ${drag.y}px, 0) rotate(${drag.rot}deg)`,
-        transition: startRef.current ? 'none' : 'transform 180ms ease',
-        touchAction: 'none',
+    transition: startRef.current ? 'none' : 'transform 180ms ease',
+    // allow vertical scrolling while still allowing horizontal swipe handling
+    touchAction: 'pan-y',
     };
 
     
@@ -174,6 +175,15 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
             <div className={`${styles.swipeIndicator} ${drag.x < -50 ? styles.dislike : ''}`} style={{ opacity: Math.min(1, Math.abs(drag.x) / 120) }}>
                 {drag.x < 0 ? 'Refuser' : ''}
             </div>
+
+            {/* Central overlay large icon */}
+            <div className={styles.centerOverlay} style={{ opacity: Math.min(1, Math.abs(drag.x) / (THRESHOLD * 1.2)) }}>
+                {drag.x > 0 ? (
+                    <div className={styles.heartIcon} aria-hidden>❤</div>
+                ) : drag.x < 0 ? (
+                    <div className={styles.crossIcon} aria-hidden>✕</div>
+                ) : null}
+            </div>
             <div className={styles.meta}>
                 {offer.location && <span className={styles.location}>{offer.location}</span>}
                 {offer.salary && <span className={styles.salary}>€ {offer.salary}</span>}
@@ -214,11 +224,16 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
                 </div>
             )}
 
+            {/* spacer to avoid fixed action buttons overlapping content */}
+            <div className={styles.bottomSpacer} aria-hidden />
+
             {showActions && (
-                <FeedActionButtons
-                    onCross={onCross || (() => { })}
-                    onHeart={onHeart || (() => { })}
-                />
+                <div className={styles.actionsContainer}>
+                    <FeedActionButtons
+                        onCross={onCross || (() => { })}
+                        onHeart={onHeart || (() => { })}
+                    />
+                </div>
             )}
             <div className={styles.footer}>
 

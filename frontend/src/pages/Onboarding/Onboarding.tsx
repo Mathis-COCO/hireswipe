@@ -31,6 +31,7 @@ const Onboarding: React.FC = () => {
     useEffect(() => {
         const init = async () => {
             const token = localStorage.getItem('authToken');
+            console.debug('[Onboarding] init - token:', token);
             if (!token) {
                 navigate('/auth');
                 return;
@@ -128,6 +129,9 @@ const Onboarding: React.FC = () => {
                     return !!(profileData.companyAddress);
                 case 4:
                     return !!(profileData.pitch?.trim());
+                    case 5:
+                        // Company logo required at step 5 for entreprise
+                        return !!(profileData.companyLogo);
                 default:
                     return true;
             }
@@ -145,6 +149,8 @@ const Onboarding: React.FC = () => {
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:
                     return !!(profileData.contractTypes && profileData.contractTypes.length > 0);
+                case 7:
+                    return !!(profileData.profilePhoto);
                 default:
                     return true;
             }
@@ -181,7 +187,9 @@ const Onboarding: React.FC = () => {
 
     const completeOnboarding = async () => {
         try {
+            console.debug('[Onboarding] completeOnboarding - token before update:', localStorage.getItem('authToken'));
             await authService.updateProfile(profileData);
+            console.debug('[Onboarding] updateProfile succeeded, marking onboardingCompleted');
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
 
@@ -290,6 +298,7 @@ const Onboarding: React.FC = () => {
                 <footer className={styles.onboardingFooter}>
                     {step > 1 && (
                         <button
+                            type="button"
                             onClick={prevStep}
                             className={`${styles.navButton} ${styles.prev}`}
                             disabled={isTransitioning}
@@ -299,6 +308,7 @@ const Onboarding: React.FC = () => {
                     )}
                     {step < totalSteps && (
                         <button
+                            type="button"
                             onClick={handleNextButtonClick}
                             className={`${styles.navButton} ${styles.next} ${isNextButtonDisabled() ? styles.disabled : ''}`}
                             disabled={false}
@@ -308,6 +318,7 @@ const Onboarding: React.FC = () => {
                     )}
                     {step === totalSteps && (
                         <button
+                            type="button"
                             onClick={completeOnboarding}
                             className={`${styles.navButton} ${styles.finish}`}
                             disabled={isTransitioning}

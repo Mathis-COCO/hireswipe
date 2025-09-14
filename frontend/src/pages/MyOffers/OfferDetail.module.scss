@@ -148,6 +148,12 @@
   height: 320px;
   border-radius: 10px;
   overflow: hidden;
+  /* reserve space under the map so fixed buttons don't overlap */
+  margin-bottom: 140px;
+}
+
+.bottomSpacer {
+  height: 120px;
 }
 
 .contentRow {

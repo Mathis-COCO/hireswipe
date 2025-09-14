@@ -1,39 +1,36 @@
 @import '../../styles/variables.scss';
 
 .actionsWrapper {
-  position: sticky;
-  bottom: 50px;
-  left: 0;
-  width: 100%;
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
   display: flex;
-  gap: 100px;
-  justify-content: space-evenly;
-  z-index: 1000;
+  gap: 28px;
+  justify-content: center;
+  z-index: 1400;
+  pointer-events: auto;
 }
 
 .crossBtn,
 .heartBtn {
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 28px;
-  color: $color-white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50px;
-  background: #e0e0e0;
-  box-shadow: -9px 9px 17px #bebebe,
-    9px -9px 17px #ffffff;
-  cursor: pointer;
-  touch-action: manipulation;
+  align-items:center;
+  background:#e0e0e0;
+  border:none;
+  border-radius:50%;
+  border-radius:50px;
+  box-shadow:-9px 9px 17px #bebebe,9px -9px 17px #fff;
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  font-size:28px;
+  height:60px;
+  justify-content:center;
+  touch-action:manipulation;
+  width:60px;
 }
 
-.crossBtn {
-  background: #ef6b67; 
-}
+.crossBtn { background:#ef6b67; }
 
-.heartBtn {
-  background: #34b17a; 
-}
+.heartBtn { background:#34b17a; }

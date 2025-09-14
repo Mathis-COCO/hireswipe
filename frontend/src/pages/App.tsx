@@ -60,15 +60,14 @@ const App: React.FC = () => {
       content = accountType === 'candidat' ? <CandidateProfile /> : <RecruiterProfile />;
       break;
     default:
-      
       if (location.pathname.startsWith('/user/')) {
         const parts = location.pathname.split('/');
         const userId = parts[2];
         content = <ViewProfile userId={userId} />;
+      } else {
+        // root and any other unmatched routes should render the main feed
+        content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers />;
       }
-      break;
-    case '/':
-      content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers/>;
       break;
   }
 

@@ -75,6 +75,8 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(59, 130, 246, 0.1);
+  /* leave extra bottom space so fixed action buttons don't cover the map */
+  margin-bottom: 160px;
 }
 
 .candidate-marker {
@@ -102,6 +104,11 @@
   width: 100% !important;
   height: 320px !important;
   border-radius: 16px;
+}
+
+/* helper spacer used by cards/pages when a fixed footer is present */
+.bottomSpacer {
+  height: 120px;
 }
 
 .listSection {

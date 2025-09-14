@@ -11,6 +11,7 @@ interface StepProfilePhotoProps {
 const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, updateData }) => {
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(data.profilePhoto || data.companyLogo || null);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const isCompany = data.accountType === 'entreprise';
   
@@ -53,6 +54,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
       reader.onload = (e) => {
         const imageUrl = e.target?.result as string;
         setPreviewImage(imageUrl);
+        setShowError(false);
         updateData({ [fieldName]: imageUrl });
       };
       reader.readAsDataURL(file);
@@ -64,9 +66,24 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
     updateData({ [fieldName]: null });
   };
 
-  const handleSkip = () => {
-    updateData({ [fieldName]: null });
-  };
+  // (intentionally removed unused handleSkip)
+
+  // expose a validation callback to the parent to trigger UI feedback
+  React.useEffect(() => {
+    const onValidationError = () => {
+      if (!previewImage) {
+        setShowError(true);
+        const el = document.querySelector(`.${styles.stepContainer}`);
+        if (el && typeof (el as HTMLElement).scrollIntoView === 'function') {
+          (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    };
+    // set callback on parent-held data object
+    updateData({ _onValidationError: onValidationError });
+    // also expose current showError flag (parent may read this)
+    updateData({ _showValidationError: showError });
+  }, [previewImage, showError, updateData]);
 
   return (
     <div className={styles.stepContainer}>
@@ -96,7 +113,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
           </div>
         ) : (
           <div 
-            className={`${styles.uploadZone} ${dragActive ? styles.dragActive : ''}`}
+            className={`${styles.uploadZone} ${dragActive ? styles.dragActive : ''} ${showError ? styles.error : ''}`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -135,6 +152,10 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
         )}
       </div>
 
+      {showError && (
+        <p className={styles.validationError} role="alert">Veuillez ajouter {isCompany ? 'un logo' : 'une photo'} pour continuer.</p>
+      )}
+
       <div className={styles.formatInfo}>
         <h4>Formats acceptés</h4>
         <p>JPG, PNG, GIF - Maximum 5MB</p>
@@ -144,14 +165,6 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
           </p>
         )}
       </div>
-
-      <button 
-        type="button" 
-        className={styles.skipButton}
-        onClick={handleSkip}
-      >
-        {isCompany ? 'Ajouter le logo plus tard' : 'Ajouter la photo plus tard'}
-      </button>
     </div>
   );
 };
