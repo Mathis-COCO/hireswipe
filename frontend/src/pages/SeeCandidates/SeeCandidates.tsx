@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './SeeCandidates.module.scss';
 import { offerService } from '../../services/offerService';
+import { authService } from '../../services/authService';
 import SmallCandidateCard from '../../components/Cards/CandidateSmallCard/CandidateSmallCard';
 import AppNavigation from '../../components/AppNavigation/AppNavigation';
 import 'leaflet/dist/leaflet.css';
@@ -19,7 +20,8 @@ const SeeCandidates: React.FC = () => {
         if (!offerId) return;
         offerService.getOfferById(Number(offerId)).then(offerData => {
             setOffer(offerData);
-            setUserType(offerData?.recruiter?.role ?? null);
+            // Use the logged-in user's role for navigation, not the offer's recruiter
+            authService.getCurrentUser().then(u => setUserType(u?.role === 'candidat' ? 'candidat' : 'entreprise')).catch(() => setUserType(null));
 
             const users = (offerData.candidates || [])
                 .map((c: any) => ({ ...c.user, status: c.status }))

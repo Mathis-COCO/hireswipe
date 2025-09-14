@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { userService } from '../../../services/userService';
 import styles from '../Profile.module.scss';
 import OfferCandidateMap from '../../../components/Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 import AppNavigation from '../../../components/AppNavigation/AppNavigation';
 import { authService } from '../../../services/authService';
+import { offerService } from '../../../services/offerService';
 
 const ListRow: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div>
@@ -18,8 +19,10 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
   const id = propId ?? (params as any).id;
   const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [offer, setOffer] = useState<any | null>(null);
   const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     let mounted = true;
@@ -47,6 +50,22 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
     };
   }, [id]);
 
+  // fetch offer if passed in navigation state
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const maybeOfferId = (location && (location as any).state && (location as any).state.offerId) || null;
+        if (!maybeOfferId) return;
+        const data = await offerService.getOfferById(Number(maybeOfferId));
+        if (mounted) setOffer(data);
+      } catch (err) {
+        // ignore
+      }
+    })();
+    return () => { mounted = false; };
+  }, [location]);
+
   if (loading) return <div className={styles.loading}>Chargement...</div>;
   if (!profile) return <div className={styles.loading}>Profil introuvable</div>;
 
@@ -58,15 +77,33 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
   return (
     <div className={styles.profileWrapper}>
       <div className={styles.profileCard}>
-        <div style={{ marginBottom: 12 }}>
-          <button
-            type="button"
-            onClick={() => navigate('/messages')}
-            className={styles.backBtn}
-            aria-label="Retour aux matchs"
-          >
-            ← Retour
-          </button>
+        <div className={styles.topBar}>
+          <div className={styles.leftAction}>
+            <button
+              type="button"
+              onClick={() => navigate('/messages')}
+              className={`${styles.backBtn} ${styles.topActionBtn} ${styles.primary}`}
+              aria-label="Retour aux matchs"
+            >
+              ← Retour
+            </button>
+          </div>
+          <div className={styles.actions}>
+            {profile.email && (
+              <a
+                href={`mailto:${encodeURIComponent(profile.email)}?subject=${encodeURIComponent('Match Hireswipe !')}`}
+                className={`${styles.contactBtn} ${styles.topActionBtn} ${styles.primary}`}
+                aria-label={`Contacter ${profile.email}`}
+              >
+                Contacter
+              </a>
+            )}
+            {offer && offer.id && (
+              <button type="button" className={`${styles.offerLink} ${styles.topActionBtn} ${styles.ghost}`} onClick={() => navigate(`/mes-offres/${offer.id}`)}>
+                Voir l'annonce
+              </button>
+            )}
+          </div>
         </div>
         <div className={styles.header}>
           <img
@@ -81,6 +118,18 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
             <p className={styles.sector}>{isCandidate ? profile.jobTitle : profile.sector}</p>
           </div>
         </div>
+        
+        {/* If we have an offer related to this match, show a small summary */}
+        {offer && (
+          <div className={styles.offerSummary}>
+            <h3 className={styles.offerTitle}>{offer.title || offer.name || 'Annonce'}</h3>
+            <div className={styles.offerMeta}>
+              <span>{offer.contractType || offer.type || ''}</span>
+              {offer.salary && <span> • {offer.salary}</span>}
+            </div>
+            <p className={styles.offerExcerpt}>{offer.description ? (offer.description.length > 160 ? offer.description.slice(0, 157) + '...' : offer.description) : ''}</p>
+          </div>
+        )}
 
         <div className={styles.infoGrid}>
           <ListRow label="Email :">{profile.email}</ListRow>
