@@ -122,6 +122,22 @@ const RecruiterProfile: React.FC = () => {
         }));
     };
 
+    const handleLogoFile = (file?: File) => {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const url = e.target?.result as string;
+            setEditData((prev: any) => ({ ...prev, companyLogo: url }));
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const triggerLogoInput = () => {
+        const el = document.getElementById('companyLogoInput') as HTMLInputElement | null;
+        el?.click();
+    };
+
     if (!profile) {
         return (
             <div className={styles.loading}>
@@ -144,6 +160,12 @@ const RecruiterProfile: React.FC = () => {
                         <p className={styles.sector}>{profile.sector}</p>
                     </div>
                 </div>
+                {isEditing && (
+                    <div style={{ display: 'flex', gap: 8, marginBottom: '1rem', alignItems: 'center' }}>
+                        <input id="companyLogoInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files && e.target.files[0]) handleLogoFile(e.target.files[0]); }} />
+                        <button type="button" className={styles.editBtn} onClick={triggerLogoInput}>Changer le logo</button>
+                    </div>
+                )}
                 <div style={{ textAlign: 'right', marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                     {!isEditing && (
                         <>

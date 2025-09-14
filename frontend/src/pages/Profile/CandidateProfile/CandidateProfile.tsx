@@ -139,6 +139,22 @@ const CandidateProfile: React.FC = () => {
         }));
     };
 
+    const handlePhotoFile = (file?: File) => {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const url = e.target?.result as string;
+            setEditData((prev: any) => ({ ...prev, profilePhoto: url }));
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const triggerPhotoInput = () => {
+        const el = document.getElementById('candidatePhotoInput') as HTMLInputElement | null;
+        el?.click();
+    };
+
     const handleToggleContractType = (type: string) => {
         setEditData((prev: any) => {
             const currentTypes = prev.contractTypes || [];
@@ -200,6 +216,12 @@ const CandidateProfile: React.FC = () => {
                         <p className={styles.sector}>{profile.jobTitle}</p>
                     </div>
                 </div>
+                {isEditing && (
+                    <div style={{ display: 'flex', gap: 8, marginBottom: '1rem', alignItems: 'center' }}>
+                        <input id="candidatePhotoInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files && e.target.files[0]) handlePhotoFile(e.target.files[0]); }} />
+                        <button type="button" className={styles.editBtn} onClick={triggerPhotoInput}>Changer la photo</button>
+                    </div>
+                )}
                 <div style={{ textAlign: 'right', marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                     {!isEditing && (
                         <>

@@ -657,6 +657,50 @@
       }
     }
   }
+  /* Make the info grid single column for small screens */
+  .infoGrid, .editForm .infoGrid {
+    grid-template-columns: 1fr;
+  }
+  /* Stack list input groups vertically */
+  .listInputGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .listInputGroup .addBtn {
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 8px;
+    height: 44px;
+  }
+  /* Make tag lists wrap better and allow horizontal scroll when needed */
+  .tagList {
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+  .tagItem { flex: none; }
+  /* License grid: single column or horizontally scrollable */
+  .licenseGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .licenseItem {
+    padding: 0.75rem 1rem;
+    align-items: flex-start;
+  }
+  /* Edit actions stack and buttons become full width */
+  .editActions {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+    margin-top: 1rem;
+  }
+  .saveBtn, .cancelBtn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
   .profileWrapper {
     padding: 8px 0;
     padding-bottom: 90px;

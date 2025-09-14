@@ -159,9 +159,7 @@ const Onboarding: React.FC = () => {
 
     const isNextButtonDisabled = (): boolean => {
         const valid = validateCurrentStep();
-        if (profileData && typeof profileData === 'object') {
-            profileData._showValidationError = !valid;
-        }
+        // Do not mutate profileData here; parent components may rely on stable refs.
         return isTransitioning || !valid;
     };
 
@@ -181,15 +179,23 @@ const Onboarding: React.FC = () => {
     };
 
     const updateProfileData = (stepData: any) => {
-        const newData = { ...profileData, ...stepData, accountType };
-        setProfileData(newData);
+        // Use functional update to avoid lost updates when children call updateData
+        // multiple times in rapid succession (e.g. file input + validation hooks).
+        setProfileData((prev: any) => ({ ...prev, ...stepData, accountType }));
     };
 
     const completeOnboarding = async () => {
         try {
             console.debug('[Onboarding] completeOnboarding - token before update:', localStorage.getItem('authToken'));
-            await authService.updateProfile(profileData);
+            // Clean transient helper keys (those added by steps for validation or UI)
+            const cleaned = { ...profileData } as Record<string, any>;
+            Object.keys(cleaned).forEach(k => {
+                if (k.startsWith('_')) delete cleaned[k];
+            });
+
+            await authService.updateProfile(cleaned);
             console.debug('[Onboarding] updateProfile succeeded, marking onboardingCompleted');
+            // mark onboarding complete and remove saved progress
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
 
@@ -311,7 +317,7 @@ const Onboarding: React.FC = () => {
                             type="button"
                             onClick={handleNextButtonClick}
                             className={`${styles.navButton} ${styles.next} ${isNextButtonDisabled() ? styles.disabled : ''}`}
-                            disabled={false}
+                            disabled={isNextButtonDisabled()}
                         >
                             Suivant →
                         </button>

@@ -22,6 +22,7 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
             if (isCompleted === 'true') {
                 setIsChecking(false);
                 navigate('/', { replace: true });
+                localStorage.removeItem('onboardingCompleted');
                 return;
             }
 
