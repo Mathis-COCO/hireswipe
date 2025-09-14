@@ -21,7 +21,6 @@ const SeeOfferCandidate: React.FC = () => {
             setCandidate(data);
             const offerData = await offerService.getOfferById(Number(offerId));
             setOffer(offerData);
-            // use current logged-in user's role for navigation
             try {
                 const me = await authService.getCurrentUser();
                 setUserType(me?.role ?? null);

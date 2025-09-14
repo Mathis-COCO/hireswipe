@@ -20,7 +20,6 @@ const SeeCandidates: React.FC = () => {
         if (!offerId) return;
         offerService.getOfferById(Number(offerId)).then(offerData => {
             setOffer(offerData);
-            // Use the logged-in user's role for navigation, not the offer's recruiter
             authService.getCurrentUser().then(u => setUserType(u?.role === 'candidat' ? 'candidat' : 'entreprise')).catch(() => setUserType(null));
 
             const users = (offerData.candidates || [])

@@ -113,7 +113,6 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
     const transformStyle: React.CSSProperties = {
         transform: `translate3d(${drag.x}px, ${drag.y}px, 0) rotate(${drag.rot}deg)`,
     transition: startRef.current ? 'none' : 'transform 180ms ease',
-    // allow vertical scrolling while still allowing horizontal swipe handling
     touchAction: 'pan-y',
     };
 
@@ -176,7 +175,7 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
                 {drag.x < 0 ? 'Refuser' : ''}
             </div>
 
-            {/* Central overlay large icon */}
+            
             <div className={styles.centerOverlay} style={{ opacity: Math.min(1, Math.abs(drag.x) / (THRESHOLD * 1.2)) }}>
                 {drag.x > 0 ? (
                     <div className={styles.heartIcon} aria-hidden>❤</div>
@@ -224,7 +223,7 @@ const OfferFeedCard: React.FC<OfferFeedCardProps> = ({ offer, onCross, onHeart, 
                 </div>
             )}
 
-            {/* spacer to avoid fixed action buttons overlapping content */}
+            
             <div className={styles.bottomSpacer} aria-hidden />
 
             {showActions && (

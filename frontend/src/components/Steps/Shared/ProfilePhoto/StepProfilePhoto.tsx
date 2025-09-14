@@ -51,8 +51,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
         const imageUrl = e.target?.result as string;
         setPreviewImage(imageUrl);
         setShowError(false);
-        // merge the image into parent's data
-        updateData({ [fieldName]: imageUrl });
+  updateData({ [fieldName]: imageUrl });
       };
       reader.readAsDataURL(file);
     }
@@ -74,8 +73,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
       }
     };
 
-    // Merge helper callbacks/flags into parent data in a single update to avoid clobbering
-    updateData({ _onValidationError: onValidationError, _showValidationError: showError });
+  updateData({ _onValidationError: onValidationError, _showValidationError: showError });
   }, [previewImage, showError, updateData]);
 
   return (
@@ -86,7 +84,7 @@ const StepProfilePhoto: React.FC<StepProfilePhotoProps> = ({ icon: Icon, data, u
       <p>{subtitle}</p>
 
       <div className={styles.uploadSection}>
-        {/* keep file input mounted so the Changer button can always open it */}
+        
         <input type="file" id="fileInput" className={styles.fileInput} accept="image/*" onChange={handleFileChange} />
         {previewImage ? (
           <div className={styles.previewContainer}>

@@ -55,7 +55,7 @@ const Onboarding: React.FC = () => {
                     return;
                 }
                 const savedProgress = localStorage.getItem('onboardingProgress');
-                if (savedProgress) {
+            if (savedProgress) {
                     try {
                         const { step: savedStep, data } = JSON.parse(savedProgress);
                         setStep(savedStep || 1);
@@ -89,7 +89,7 @@ const Onboarding: React.FC = () => {
                 profileData._onValidationError();
             }
             return;
-        }
+    }
 
         if (step < totalSteps && !isTransitioning) {
             setIsTransitioning(true);
@@ -127,10 +127,9 @@ const Onboarding: React.FC = () => {
                     return !!(profileData.sector);
                 case 3:
                     return !!(profileData.companyAddress);
-                case 4:
+                    case 4:
                     return !!(profileData.pitch?.trim());
                     case 5:
-                        // Company logo required at step 5 for entreprise
                         return !!(profileData.companyLogo);
                 default:
                     return true;
@@ -159,8 +158,7 @@ const Onboarding: React.FC = () => {
 
     const isNextButtonDisabled = (): boolean => {
         const valid = validateCurrentStep();
-        // Do not mutate profileData here; parent components may rely on stable refs.
-        return isTransitioning || !valid;
+    return isTransitioning || !valid;
     };
 
     const prevStep = (): void => {
@@ -179,15 +177,14 @@ const Onboarding: React.FC = () => {
     };
 
     const updateProfileData = (stepData: any) => {
-        // Use functional update to avoid lost updates when children call updateData
-        // multiple times in rapid succession (e.g. file input + validation hooks).
+    
         setProfileData((prev: any) => ({ ...prev, ...stepData, accountType }));
     };
 
     const completeOnboarding = async () => {
         try {
             console.debug('[Onboarding] completeOnboarding - token before update:', localStorage.getItem('authToken'));
-            // Clean transient helper keys (those added by steps for validation or UI)
+            
             const cleaned = { ...profileData } as Record<string, any>;
             Object.keys(cleaned).forEach(k => {
                 if (k.startsWith('_')) delete cleaned[k];
@@ -195,7 +192,7 @@ const Onboarding: React.FC = () => {
 
             await authService.updateProfile(cleaned);
             console.debug('[Onboarding] updateProfile succeeded, marking onboardingCompleted');
-            // mark onboarding complete and remove saved progress
+            
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
 

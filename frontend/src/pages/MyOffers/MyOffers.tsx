@@ -62,10 +62,8 @@ const MyOffers: React.FC = () => {
   const handleToggleAvailability = async (id: string, isAvailable: boolean) => {
     try {
       const updated = await offerService.setAvailability(id, isAvailable);
-      // update local state for the single offer
-      setOffers(prev => prev.map(o => (o.id === updated.id ? updated : o)));
+  setOffers(prev => prev.map(o => (o.id === updated.id ? updated : o)));
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error('Erreur lors du changement de disponibilité', err);
     }
   };

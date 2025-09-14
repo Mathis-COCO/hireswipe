@@ -21,8 +21,7 @@ const OfferDetail: React.FC = () => {
         const me = await authService.getCurrentUser();
         setIsOwner(Boolean(me && data && data.createdBy && me.id && String(me.id) === String(data.createdBy.id)));
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Erreur en chargeant l\'offre', err);
+  console.error('Erreur en chargeant l\'offre', err);
       } finally {
         setLoading(false);
       }
@@ -43,8 +42,7 @@ const OfferDetail: React.FC = () => {
             {!isOwner && (
               <div className={localStyles.companySection}>
                 {offer.createdBy?.companyLogo ? (
-                  // eslint-disable-next-line jsx-a11y/img-redundant-alt
-                  <img src={offer.createdBy.companyLogo} alt="Company logo" className={localStyles.companyLogo} />
+                  <img src={offer.createdBy.companyLogo} alt={offer.createdBy.companyName ? `${offer.createdBy.companyName} logo` : 'Company logo'} className={localStyles.companyLogo} />
                 ) : null}
                 <div>
                   <div className={localStyles.companyName}>{offer.createdBy?.companyName || `${offer.createdBy?.firstName || ''} ${offer.createdBy?.lastName || ''}`.trim()}</div>

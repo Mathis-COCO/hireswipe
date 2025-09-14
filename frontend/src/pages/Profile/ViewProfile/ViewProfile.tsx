@@ -50,7 +50,6 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
     };
   }, [id]);
 
-  // fetch offer if passed in navigation state
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -59,9 +58,8 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
         if (!maybeOfferId) return;
         const data = await offerService.getOfferById(Number(maybeOfferId));
         if (mounted) setOffer(data);
-      } catch (err) {
-        // ignore
-      }
+  } catch (err) {
+  }
     })();
     return () => { mounted = false; };
   }, [location]);
@@ -119,7 +117,7 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
           </div>
         </div>
         
-        {/* If we have an offer related to this match, show a small summary */}
+        
         {offer && (
           <div className={styles.offerSummary}>
             <h3 className={styles.offerTitle}>{offer.title || offer.name || 'Annonce'}</h3>

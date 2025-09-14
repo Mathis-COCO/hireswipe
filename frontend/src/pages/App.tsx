@@ -65,7 +65,6 @@ const App: React.FC = () => {
         const userId = parts[2];
         content = <ViewProfile userId={userId} />;
       } else {
-        // root and any other unmatched routes should render the main feed
         content = accountType === 'candidat' ? <CandidateFeed /> : <MyOffers />;
       }
       break;
