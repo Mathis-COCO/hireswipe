@@ -59,9 +59,20 @@ export class UsersService {
   }
 
   async findInteractedOffers(userId: string): Promise<any[]> {
-    const user = await this.findById(userId);
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: [
+        'appliedOffers',
+        'appliedOffers.offer',
+        'appliedOffers.offer.createdBy',
+      ],
+    });
     if (!user) throw new NotFoundException(`User with ID ${userId} not found.`);
-    return user.interactedOfferIds ?? [];
+
+    const appliedOffers = (user.appliedOffers ?? [])
+      .map((oc) => oc.offer)
+      .filter(Boolean);
+    return appliedOffers;
   }
 
   async createMatchBetweenUsers(
@@ -81,44 +92,47 @@ export class UsersService {
         });
         const savedCandidateMatch = await manager.save(matchForCandidate);
         const savedRecruiterMatch = await manager.save(matchForRecruiter);
-        // small debug log to ensure saves happened
-        // eslint-disable-next-line no-console
-        console.log('[UsersService] saved matches', {
+  console.log('[UsersService] saved matches', {
           candidateMatchId: savedCandidateMatch.id,
           recruiterMatchId: savedRecruiterMatch.id,
         });
         return [savedCandidateMatch, savedRecruiterMatch];
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('[UsersService] createMatchBetweenUsers error', err);
+  console.error('[UsersService] createMatchBetweenUsers error', err);
         throw err;
       }
     });
   }
 
-  /**
-   * Return the list of users the given user has matches with.
-   * For each Match where user = userId, we try to find the counterpart user
-   * either via offer.createdBy or another Match for the same offer.
-   */
   async getMatchesForUser(userId: string) {
-    // 1) find offers this user has matches for
     const userMatches = await this.matchRepository.find({
       where: { user: { id: userId } },
       relations: ['offer'],
     });
 
-    const offerIds = userMatches.map((m) => (m.offer as unknown as { id: any }).id).filter(Boolean);
+    const offerIds = userMatches
+      .map((m) => (m.offer as unknown as { id?: any }).id)
+      .filter(Boolean);
     if (offerIds.length === 0) return [];
 
-    // 2) find all matches for those offers and include user + offer.createdBy
     const matchesForOffers = await this.matchRepository.find({
       where: { offer: { id: In(offerIds) } },
       relations: ['user', 'offer', 'offer.createdBy'],
     });
 
     // 3) collect counterpart users (user.id !== userId)
-    const usersMap = new Map<string, any>();
+    const usersMap = new Map<
+      string,
+      {
+        id: string;
+        email: string;
+        firstName: string | null;
+        lastName: string | null;
+        role: string;
+        profilePhoto: string | null;
+        offerId: any;
+      }
+    >();
     for (const match of matchesForOffers) {
       const u = match.user;
       if (!u || u.id === userId) continue;
@@ -126,15 +140,14 @@ export class UsersService {
         usersMap.set(u.id, {
           id: u.id,
           email: u.email,
-          firstName: (u as any).firstName ?? null,
-          lastName: (u as any).lastName ?? null,
+          firstName: (u as unknown as { firstName?: string }).firstName ?? null,
+          lastName: (u as unknown as { lastName?: string }).lastName ?? null,
           role: u.role,
-          profilePhoto: (u as any).profilePhoto ?? null,
-          offerId: (match.offer as any).id,
+          profilePhoto: (u as unknown as { profilePhoto?: string }).profilePhoto ?? null,
+          offerId: (match.offer as unknown as { id?: any }).id,
         });
       }
     }
-
     return Array.from(usersMap.values());
   }
 }

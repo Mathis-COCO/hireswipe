@@ -7,6 +7,7 @@ import './styles/global.scss';
 import AuthForm from './pages/Auth/AuthPage';
 import Onboarding from './pages/Onboarding/Onboarding';
 import EditOffer from './pages/EditOffer/EditOffer';
+import OfferDetail from './pages/MyOffers/OfferDetail';
 import SeeCandidates from './pages/SeeCandidates/SeeCandidates';
 import SeeOfferCandidate from './pages/SeeOfferCandidate/SeeOfferCandidate';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
@@ -78,6 +79,14 @@ root.render(
           }
         />
         <Route
+          path="/mes-offres/:offerId"
+          element={
+            <ProtectedRoute>
+              <OfferDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/mes-offres/:offerId/candidats"
           element={
             <ProtectedRoute>
@@ -107,7 +116,7 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
+
+
 reportWebVitals();

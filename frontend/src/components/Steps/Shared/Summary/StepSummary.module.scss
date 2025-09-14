@@ -43,3 +43,56 @@
     color: #555;
   }
 }
+
+.photoContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 18px 0;
+
+  img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+}
+
+.summarySection h4 + p {
+  margin-top: 6px;
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.label {
+  color: #666;
+  font-size: 0.95rem;
+  flex: 0 0 40%;
+}
+
+.value {
+  color: #222;
+  text-align: right;
+  flex: 1 1 auto;
+}
+
+@media (max-width: 700px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+  .label { text-align: left; }
+  .value { text-align: left; }
+}

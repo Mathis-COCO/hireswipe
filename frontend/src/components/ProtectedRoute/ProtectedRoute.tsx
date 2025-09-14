@@ -12,6 +12,7 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
     useEffect(() => {
         const checkAccess = async () => {
             const token = localStorage.getItem('authToken');
+            console.debug('[ProtectedOnboarding] checkAccess - token:', token);
             if (!token) {
                 navigate('/auth', { replace: true });
                 return;
@@ -21,17 +22,20 @@ const ProtectedOnboarding: React.FC<ProtectedOnboardingProps> = ({ children }) =
             if (isCompleted === 'true') {
                 setIsChecking(false);
                 navigate('/', { replace: true });
+                localStorage.removeItem('onboardingCompleted');
                 return;
             }
 
             try {
                 const user = await import('../../services/authService').then(m => m.authService.getCurrentUser());
                 if (!user || !user.role) {
+                    console.debug('[ProtectedOnboarding] getCurrentUser failed or returned no role, removing token');
                     localStorage.removeItem('authToken');
                     navigate('/auth', { replace: true });
                     return;
                 }
-            } catch {
+            } catch (e) {
+                console.debug('[ProtectedOnboarding] getCurrentUser threw:', e);
                 localStorage.removeItem('authToken');
                 navigate('/auth', { replace: true });
                 return;

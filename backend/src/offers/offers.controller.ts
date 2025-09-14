@@ -110,4 +110,13 @@ export class OffersController {
       status,
     );
   }
+
+  @Put(':id/availability')
+  @UseGuards(AuthGuard('jwt'))
+  async setAvailability(
+    @Param('id') id: string,
+    @Body('isAvailable') isAvailable: boolean,
+  ): Promise<Offer | null> {
+    return this.offersService.setAvailability(id, isAvailable);
+  }
 }

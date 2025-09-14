@@ -142,6 +142,18 @@ class OfferService {
     });
     return response as any[];
   }
+
+  async setAvailability(id: string, isAvailable: boolean): Promise<any> {
+    const response = await apiRequest(`/offers/${id}/availability`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+      body: JSON.stringify({ isAvailable }),
+    });
+    return response;
+  }
 }
 
 export const offerService = new OfferService();

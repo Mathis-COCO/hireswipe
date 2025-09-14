@@ -17,29 +17,54 @@ const Likes: React.FC = () => {
       try {
         const res = await offerService.getCurrentUserWithInteractedOffers();
 
-        // res may be: array of offers, array of ids, or object { interactedOfferIds: [...] }
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('[Likes] /user/me/interacted-offers response:', res);
+        }
+
         let offers: any[] = [];
 
+        
         if (Array.isArray(res)) {
           if (res.length === 0) {
             offers = [];
           } else if (typeof res[0] === 'object') {
-            offers = res as any[];
+            
+            if ((res[0] as any).offer) {
+              offers = (res as any[]).map((r) => r.offer).filter(Boolean);
+            } else {
+              offers = res as any[];
+            }
           } else {
-            // assume ids
-            const ids = res as Array<string | number>;
-            const fetched = await Promise.all(ids.map(id => offerService.getOfferById(Number(id)).catch(() => null)));
-            offers = fetched.filter(Boolean) as any[];
-
+            
+            try {
+              const ids = (res as any[]).map((x) => String(x));
+              const fetched = await Promise.all(
+                ids.map((id) =>
+                  offerService
+                    .getOfferById((Number.isNaN(Number(id)) ? id : Number(id)) as any)
+                      .catch((e) => {
+                        
+                        console.warn('[Likes] failed to fetch offer', id, e);
+                        return null;
+                      }),
+                ),
+              );
+              offers = fetched.filter(Boolean) as any[];
+            } catch (e) {
+              offers = [];
+            }
           }
-
-        } else if (res && Array.isArray((res as any).interactedOfferIds)) {
-          const ids = (res as any).interactedOfferIds as Array<string | number>;
-          const fetched = await Promise.all(ids.map((id: any) => offerService.getOfferById(Number(id)).catch(() => null)));
-          offers = fetched.filter(Boolean) as any[];
-
-        } else if (res && Array.isArray((res as any).offers)) {
-          offers = (res as any).offers;
+        } else if (res && typeof res === 'object') {
+          if (Array.isArray((res as any).appliedOffers)) {
+            offers = (res as any).appliedOffers.map((r: any) => (r.offer ? r.offer : r)).filter(Boolean);
+          } else if (Array.isArray((res as any).offers)) {
+            offers = (res as any).offers;
+          } else if (Array.isArray((res as any).interactedOfferIds)) {
+            
+            offers = [];
+          } else {
+            offers = [];
+          }
         } else {
           offers = [];
         }
@@ -98,12 +123,14 @@ const Likes: React.FC = () => {
         </div>
       </div>
 
-      {/* modal to show full offer */}
+      {}
       {selected && (
         <div className={styles.modal} role="dialog" aria-modal="true">
           <button className={styles.close} onClick={() => setSelected(null)} aria-label="Fermer">✕</button>
           <div className={styles.modalContent}>
-            <OfferFeedCard offer={selected} onCross={() => { setSelected(null) }} onHeart={() => { setSelected(null) }} showActions={false} />
+            <div className={styles.modalInner}>
+              <OfferFeedCard offer={selected} onCross={() => { setSelected(null) }} onHeart={() => { setSelected(null) }} showActions={false} />
+            </div>
           </div>
         </div>
       )}

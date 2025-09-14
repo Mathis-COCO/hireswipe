@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CandidateFullCard from '../../components/Cards/CandidateFullCard/CandidateFullCard';
 import { userService } from '../../services/userService';
 import { offerService } from '../../services/offerService';
+import { authService } from '../../services/authService';
 import AppNavigation from '../../components/AppNavigation/AppNavigation';
 
 const SeeOfferCandidate: React.FC = () => {
@@ -18,9 +19,14 @@ const SeeOfferCandidate: React.FC = () => {
         const fetchCandidate = async () => {
             const data = await userService.getUserById(candidateId);
             setCandidate(data);
-            setUserType(data?.role ?? null);
             const offerData = await offerService.getOfferById(Number(offerId));
             setOffer(offerData);
+            try {
+                const me = await authService.getCurrentUser();
+                setUserType(me?.role ?? null);
+            } catch (e) {
+                setUserType(null);
+            }
         };
         fetchCandidate();
     }, [candidateId, offerId]);

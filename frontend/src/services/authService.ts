@@ -67,13 +67,16 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<any> {
+    const token = localStorage.getItem('authToken');
+    console.debug('[authService] getCurrentUser - token:', token);
     const response = await apiRequest('/user/me', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
+    console.debug('[authService] getCurrentUser - success');
     return response;
   }
 }

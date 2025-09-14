@@ -196,6 +196,25 @@
   margin-bottom: 2rem;
 }
 
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.leftAction {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .logo {
   width: 90px;
   height: 90px;
@@ -309,6 +328,101 @@
   }
 }
 
+.contactBtn {
+  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, $primary-color, $color-primary-dark);
+  color: $color-white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(2,6,23,0.14);
+    opacity: 0.98;
+  }
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+  }
+}
+
+.offerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: $primary-color;
+  border: 1px solid $border-color;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.08s;
+  text-decoration: none;
+  margin-top: 0;
+  &:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+}
+
+ 
+.topActionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  box-shadow: $box-shadow-sm;
+  line-height: 1;
+  min-width: auto;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.topActionBtn.primary {
+  background: linear-gradient(135deg, $primary-color, $color-primary-dark);
+  color: $color-white;
+}
+
+.topActionBtn.ghost {
+  background: transparent;
+  color: $primary-color;
+  border: 1px solid $border-color;
+}
+
+@media (max-width: 700px) {
+  .contactBtn, .offerLink, .backBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .topActionBtn {
+    min-width: auto;
+    height: 48px;
+    padding: 0 16px;
+  }
+  .topBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .actions {
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+
 .editActions {
   display: flex;
   gap: 1rem;
@@ -332,18 +446,18 @@
 }
 
 .cancelBtn {
-  background: #f8fafc;
-  color: $primary-color;
-  border: 1px solid $primary-color;
-  border-radius: 8px;
-  padding: 10px 28px;
-  font-size: 1rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
-  &:hover {
-    background: #e0e7ef;
-  }
+  border: none;
+  box-shadow: $box-shadow-sm;
+  transition: background 0.12s, transform 0.08s;
+  background: $primary-color;
+  color: $color-white;
 }
 
 .toggleOptions {
@@ -542,6 +656,50 @@
         z-index: 0;
       }
     }
+  }
+  
+  .infoGrid, .editForm .infoGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .listInputGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .listInputGroup .addBtn {
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 8px;
+    height: 44px;
+  }
+  
+  .tagList {
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+  .tagItem { flex: none; }
+  
+  .licenseGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .licenseItem {
+    padding: 0.75rem 1rem;
+    align-items: flex-start;
+  }
+  
+  .editActions {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+    margin-top: 1rem;
+  }
+  .saveBtn, .cancelBtn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
   }
   .profileWrapper {
     padding: 8px 0;

@@ -17,11 +17,11 @@ const Messages: React.FC = () => {
         if (!mounted) return;
         const currentUser = await authService.getCurrentUser();
         const currentRole = currentUser?.role;
-        // show only opposite-role users
+        
         const filtered = (data || []).filter((u: any) => u.role && u.role !== currentRole);
         setMatches(filtered);
       } catch (e) {
-        // eslint-disable-next-line no-console
+        
         console.error('Failed to load matches', e);
       } finally {
         if (mounted) setLoading(false);
@@ -34,8 +34,8 @@ const Messages: React.FC = () => {
 
   if (loading) return <h2>Messagerie — Chargement...</h2>;
 
-  const handleClick = (userId: string) => {
-    navigate(`/user/${userId}`);
+  const handleClick = (userId: string, offerId?: number) => {
+    navigate(`/user/${userId}`, { state: { offerId } });
   };
 
   return (
@@ -46,7 +46,7 @@ const Messages: React.FC = () => {
       ) : (
         <ul className={styles.matchList}>
           {matches.map((m) => (
-            <li key={m.id} className={styles.matchItem} onClick={() => handleClick(m.id)} role="button" tabIndex={0}>
+            <li key={m.id} className={styles.matchItem} onClick={() => handleClick(m.id, m.offerId)} role="button" tabIndex={0}>
               <img src={m.profilePhoto || '/logo192.png'} alt={`${m.firstName || ''} ${m.lastName || ''}`} className={styles.avatar} />
               <div>
                 <div className={styles.name}>{`${m.firstName || ''} ${m.lastName || ''}`.trim() || m.email}</div>

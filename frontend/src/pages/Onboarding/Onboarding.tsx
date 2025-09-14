@@ -31,6 +31,7 @@ const Onboarding: React.FC = () => {
     useEffect(() => {
         const init = async () => {
             const token = localStorage.getItem('authToken');
+            console.debug('[Onboarding] init - token:', token);
             if (!token) {
                 navigate('/auth');
                 return;
@@ -54,7 +55,7 @@ const Onboarding: React.FC = () => {
                     return;
                 }
                 const savedProgress = localStorage.getItem('onboardingProgress');
-                if (savedProgress) {
+            if (savedProgress) {
                     try {
                         const { step: savedStep, data } = JSON.parse(savedProgress);
                         setStep(savedStep || 1);
@@ -88,7 +89,7 @@ const Onboarding: React.FC = () => {
                 profileData._onValidationError();
             }
             return;
-        }
+    }
 
         if (step < totalSteps && !isTransitioning) {
             setIsTransitioning(true);
@@ -126,8 +127,10 @@ const Onboarding: React.FC = () => {
                     return !!(profileData.sector);
                 case 3:
                     return !!(profileData.companyAddress);
-                case 4:
+                    case 4:
                     return !!(profileData.pitch?.trim());
+                    case 5:
+                        return !!(profileData.companyLogo);
                 default:
                     return true;
             }
@@ -145,6 +148,8 @@ const Onboarding: React.FC = () => {
                     return !!(profileData.softSkills && profileData.softSkills.length > 0);
                 case 6:
                     return !!(profileData.contractTypes && profileData.contractTypes.length > 0);
+                case 7:
+                    return !!(profileData.profilePhoto);
                 default:
                     return true;
             }
@@ -153,10 +158,7 @@ const Onboarding: React.FC = () => {
 
     const isNextButtonDisabled = (): boolean => {
         const valid = validateCurrentStep();
-        if (profileData && typeof profileData === 'object') {
-            profileData._showValidationError = !valid;
-        }
-        return isTransitioning || !valid;
+    return isTransitioning || !valid;
     };
 
     const prevStep = (): void => {
@@ -175,13 +177,22 @@ const Onboarding: React.FC = () => {
     };
 
     const updateProfileData = (stepData: any) => {
-        const newData = { ...profileData, ...stepData, accountType };
-        setProfileData(newData);
+    
+        setProfileData((prev: any) => ({ ...prev, ...stepData, accountType }));
     };
 
     const completeOnboarding = async () => {
         try {
-            await authService.updateProfile(profileData);
+            console.debug('[Onboarding] completeOnboarding - token before update:', localStorage.getItem('authToken'));
+            
+            const cleaned = { ...profileData } as Record<string, any>;
+            Object.keys(cleaned).forEach(k => {
+                if (k.startsWith('_')) delete cleaned[k];
+            });
+
+            await authService.updateProfile(cleaned);
+            console.debug('[Onboarding] updateProfile succeeded, marking onboardingCompleted');
+            
             localStorage.setItem('onboardingCompleted', 'true');
             localStorage.removeItem('onboardingProgress');
 
@@ -290,6 +301,7 @@ const Onboarding: React.FC = () => {
                 <footer className={styles.onboardingFooter}>
                     {step > 1 && (
                         <button
+                            type="button"
                             onClick={prevStep}
                             className={`${styles.navButton} ${styles.prev}`}
                             disabled={isTransitioning}
@@ -299,15 +311,17 @@ const Onboarding: React.FC = () => {
                     )}
                     {step < totalSteps && (
                         <button
+                            type="button"
                             onClick={handleNextButtonClick}
                             className={`${styles.navButton} ${styles.next} ${isNextButtonDisabled() ? styles.disabled : ''}`}
-                            disabled={false}
+                            disabled={isNextButtonDisabled()}
                         >
                             Suivant →
                         </button>
                     )}
                     {step === totalSteps && (
                         <button
+                            type="button"
                             onClick={completeOnboarding}
                             className={`${styles.navButton} ${styles.finish}`}
                             disabled={isTransitioning}
