@@ -292,6 +292,15 @@ const CandidateProfile: React.FC = () => {
                                 />
                             </div>
                             <div>
+                                <span className={styles.label}>LinkedIn (optionnel) :</span>
+                                <input
+                                    type="url"
+                                    value={editData.linkedinUrl || ''}
+                                    onChange={e => handleChange('linkedinUrl', e.target.value)}
+                                    placeholder="https://www.linkedin.com/in/username"
+                                />
+                            </div>
+                            <div>
                                 <span className={styles.label}>Expériences professionnelles :</span>
                                 <textarea
                                     value={editData.workExperiences || ''}
@@ -563,6 +572,12 @@ const CandidateProfile: React.FC = () => {
                                 <div>
                                     <span className={styles.label}>Bio :</span>
                                     <span>{profile.bio}</span>
+                                </div>
+                            )}
+                            {profile.linkedinUrl && (
+                                <div>
+                                    <span className={styles.label}>LinkedIn :</span>
+                                    <span className={styles.linkBox}><a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a></span>
                                 </div>
                             )}
                             {profile.workExperiences && (

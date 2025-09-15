@@ -70,6 +70,25 @@ const StepPersonal: React.FC<StepProps> = ({ icon: Icon, data, updateData }) => 
                     onChange={(e) => updateData({ jobTitle: e.target.value })}
                 />
             </div>
+            <div className={styles.formGroup}>
+                <label htmlFor="bio">Bio (optionnel)</label>
+                <textarea
+                    id="bio"
+                    placeholder="Parlez-nous de vous en quelques lignes"
+                    defaultValue={data.bio || ''}
+                    onChange={(e) => updateData({ bio: e.target.value })}
+                />
+            </div>
+            <div className={styles.formGroup}>
+                <label htmlFor="linkedinUrl">LinkedIn (optionnel)</label>
+                <input
+                    id="linkedinUrl"
+                    type="url"
+                    placeholder="https://www.linkedin.com/in/username"
+                    defaultValue={data.linkedinUrl || ''}
+                    onChange={(e) => updateData({ linkedinUrl: e.target.value })}
+                />
+            </div>
         </form>
     </>
 );

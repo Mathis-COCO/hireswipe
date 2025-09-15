@@ -89,5 +89,9 @@ export class UpdateCandidateOnboardingDto {
 
   @IsOptional()
   @IsString()
+  linkedinUrl?: string;
+
+  @IsOptional()
+  @IsString()
   experience?: string;
 }
