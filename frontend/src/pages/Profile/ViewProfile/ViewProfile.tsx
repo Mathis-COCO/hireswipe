@@ -6,6 +6,7 @@ import OfferCandidateMap from '../../../components/Maps/OfferCandidateMap.tsx/Of
 import AppNavigation from '../../../components/AppNavigation/AppNavigation';
 import { authService } from '../../../services/authService';
 import { offerService } from '../../../services/offerService';
+import { Mail } from 'lucide-react';
 
 const ListRow: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div>
@@ -93,7 +94,8 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
                 className={`${styles.contactBtn} ${styles.topActionBtn} ${styles.primary}`}
                 aria-label={`Contacter ${profile.email}`}
               >
-                Contacter
+                <Mail size={16} />
+                Contacter par email
               </a>
             )}
             {offer && offer.id && (
@@ -135,8 +137,9 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
           <ListRow label={isCandidate ? 'Localisation :' : 'Adresse :'}>{profile.candidateLocationAddress || profile.companyAddress || '—'}</ListRow>
           <ListRow label="Bio / Pitch :">{profile.bio || profile.pitch || '—'}</ListRow>
           {!isCandidate && <ListRow label="Taille de l'entreprise :">{profile.companySize || '—'}</ListRow>}
-          {!isCandidate && <ListRow label="Site web :">{profile.website ? <a href={profile.website} target="_blank" rel="noreferrer">{profile.website}</a> : '—'}</ListRow>}
-          {!isCandidate && <ListRow label="LinkedIn :">{profile.linkedinUrl ? <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a> : '—'}</ListRow>}
+          {!isCandidate && <ListRow label="Site web :">{profile.website ? <span className={styles.linkBox}><a href={profile.website} target="_blank" rel="noreferrer">{profile.website}</a></span> : '—'}</ListRow>}
+          {/* Show LinkedIn for companies and candidates when present */}
+          <ListRow label="LinkedIn :">{profile.linkedinUrl ? <span className={styles.linkBox}><a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a></span> : '—'}</ListRow>
 
           {isCandidate && (
             <>

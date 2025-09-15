@@ -39,9 +39,16 @@ const OfferList: React.FC<OfferListProps> = ({ offers, onDelete, onToggleAvailab
   };
 
   const handleToggleAvailability = (offer: Offer) => {
-    if (typeof onToggleAvailability === 'function') {
-      onToggleAvailability(offer.id, !offer.isAvailable);
+    if (typeof onToggleAvailability !== 'function') return;
+
+    // If we're pausing the offer (making it unavailable) and there are candidates,
+    // warn the user that candidates will be deleted.
+    if (offer.isAvailable && offer.candidates && offer.candidates.length > 0) {
+      const ok = window.confirm('Mettre cette annonce en pause supprimera toutes les candidatures associées. Voulez-vous continuer ?');
+      if (!ok) return;
     }
+
+    onToggleAvailability(offer.id, !offer.isAvailable);
   };
 
   const handleViewCandidates = (offerId: string) => {

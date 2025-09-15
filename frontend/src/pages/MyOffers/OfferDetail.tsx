@@ -4,6 +4,7 @@ import { offerService } from '../../services/offerService';
 import localStyles from './OfferDetail.module.scss';
 import OfferCandidateMap from '../../components/Maps/OfferCandidateMap.tsx/OfferCandidateMap';
 import { authService } from '../../services/authService';
+import AppNavigation from '../../components/AppNavigation/AppNavigation';
 
 const OfferDetail: React.FC = () => {
   const { offerId } = useParams<{ offerId: string }>();
@@ -11,6 +12,7 @@ const OfferDetail: React.FC = () => {
   const [offer, setOffer] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [accountType, setAccountType] = useState<'candidat' | 'entreprise' | null>(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -20,6 +22,7 @@ const OfferDetail: React.FC = () => {
         setOffer(data);
         const me = await authService.getCurrentUser();
         setIsOwner(Boolean(me && data && data.createdBy && me.id && String(me.id) === String(data.createdBy.id)));
+  setAccountType(me?.role === 'candidat' ? 'candidat' : 'entreprise');
       } catch (err) {
   console.error('Erreur en chargeant l\'offre', err);
       } finally {
@@ -128,6 +131,7 @@ const OfferDetail: React.FC = () => {
           </div>
         )}
       </div>
+    <AppNavigation accountType={accountType} />
     </div>
   );
 };

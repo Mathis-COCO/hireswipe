@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './OfferForm.module.scss';
 import InteractiveMap from '../../Maps/InteractiveMap/InteractiveMap';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
+import { setHasUnsavedChanges } from '../../../utils/unsavedChanges';
 import { categories } from '../../../constants/categories';
 
 const contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance'];
@@ -18,6 +19,7 @@ interface OfferFormProps {
   onRemoveTag: (type: 'skills' | 'avantages', tag: string) => void;
   onImageChange: (file: File | null, url?: string) => void;
   onSubmit: (e: React.FormEvent) => void;
+  onCancel?: () => void;
 }
 
 const OfferForm: React.FC<OfferFormProps> = ({
@@ -43,6 +45,13 @@ const OfferForm: React.FC<OfferFormProps> = ({
     navigate('/mes-offres');
   };
 
+  useEffect(() => {
+    setHasUnsavedChanges(false);
+    return () => {
+      setHasUnsavedChanges(false);
+    };
+  }, []);
+
   const handleCloseCancelPopup = () => {
     setShowCancelPopup(false);
   };
@@ -56,14 +65,14 @@ const OfferForm: React.FC<OfferFormProps> = ({
         <div className={styles.row}>
           <label>
             Titre du poste <span className={styles.required}>*</span>
-            <input
-              name="title"
-              type="text"
-              placeholder="Ex: Développeur Full Stack"
-              value={form.title || ''}
-              onChange={e => onChange('title', e.target.value)}
-              className={errors.title ? styles.errorInput : ''}
-            />
+              <input
+                name="title"
+                type="text"
+                placeholder="Ex: Développeur Full Stack"
+                value={form.title || ''}
+                onChange={e => { onChange('title', e.target.value); setHasUnsavedChanges(true); }}
+                className={errors.title ? styles.errorInput : ''}
+              />
             {errors.title && <span className={styles.errorText}>{errors.title}</span>}
           </label>
         </div>
@@ -78,7 +87,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
                 type="checkbox"
                 name="teletravail"
                 checked={form.teletravail}
-                onChange={e => onChange('teletravail', e.target.checked)}
+                onChange={e => { onChange('teletravail', e.target.checked); setHasUnsavedChanges(true); }}
                 className={styles.switch}
               />
             </div>
@@ -102,13 +111,13 @@ const OfferForm: React.FC<OfferFormProps> = ({
         <div className={styles.rowDouble}>
           <label>
             Salaire
-            <input
-              name="salary"
-              type="text"
-              placeholder="45-60k€, Selon profil..."
-              value={form.salary || ''}
-              onChange={e => onChange('salary', e.target.value)}
-            />
+              <input
+                name="salary"
+                type="text"
+                placeholder="45-60k€, Selon profil..."
+                value={form.salary || ''}
+                onChange={e => { onChange('salary', e.target.value); setHasUnsavedChanges(true); }}
+              />
           </label>
         </div>
 
@@ -118,7 +127,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
             <select
               name="category"
               value={form.category || ''}
-              onChange={e => onChange('category', e.target.value)}
+              onChange={e => { onChange('category', e.target.value); setHasUnsavedChanges(true); }}
               className={errors.category ? styles.errorInput : ''}
             >
               <option value="">Choisissez une catégorie</option>
@@ -133,7 +142,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
             <select
               name="experience"
               value={form.experience || ''}
-              onChange={e => onChange('experience', e.target.value)}
+              onChange={e => { onChange('experience', e.target.value); setHasUnsavedChanges(true); }}
               className={errors.experience ? styles.errorInput : ''}
             >
               <option value="">Niveau d'expérience</option>
@@ -146,7 +155,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
             <select
               name="contract"
               value={form.contract || ''}
-              onChange={e => onChange('contract', e.target.value)}
+              onChange={e => { onChange('contract', e.target.value); setHasUnsavedChanges(true); }}
               className={errors.contract ? styles.errorInput : ''}
             >
               <option value="">Choisissez un contrat</option>
@@ -163,7 +172,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
               name="description"
               placeholder="Décrivez le poste, les missions, l'environnement de travail..."
               value={form.description || ''}
-              onChange={e => onChange('description', e.target.value)}
+              onChange={e => { onChange('description', e.target.value); setHasUnsavedChanges(true); }}
               className={errors.description ? styles.errorInput : ''}
             />
             {errors.description && <span className={styles.errorText}>{errors.description}</span>}
@@ -178,7 +187,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
                 type="text"
                 placeholder="Ajouter une compétence"
                 value={form.skillInput || ''}
-                onChange={e => onChange('skillInput', e.target.value)}
+                onChange={e => { onChange('skillInput', e.target.value); setHasUnsavedChanges(true); }}
               />
               <button type="button" className={styles.addBtn} onClick={onAddSkill}>+</button>
             </div>
@@ -201,7 +210,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
                 type="text"
                 placeholder="Ajouter un avantage"
                 value={form.avantageInput || ''}
-                onChange={e => onChange('avantageInput', e.target.value)}
+                onChange={e => { onChange('avantageInput', e.target.value); setHasUnsavedChanges(true); }}
               />
               <button type="button" className={styles.addBtn} onClick={onAddAvantage}>+</button>
             </div>
@@ -222,7 +231,7 @@ const OfferForm: React.FC<OfferFormProps> = ({
             <ImageUpload
               label="Ajouter une photo"
               imageUrl={form.imageUrl || undefined}
-              onChange={onImageChange}
+              onChange={(file, url) => { onImageChange(file, url); setHasUnsavedChanges(true); }}
             />
             {errors.imageUrl && <span className={styles.errorText}>{errors.imageUrl}</span>}
           </label>
@@ -230,8 +239,8 @@ const OfferForm: React.FC<OfferFormProps> = ({
       </fieldset>
 
       <div className={styles.actionsRow}>
-        <button type="button" className={styles.submitBtn} onClick={handleCancelClick}>Annuler les modifications</button>
-        <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
+      <button type="button" className={styles.submitBtn} onClick={handleCancelClick}>Annuler les modifications</button>
+      <button type="submit" className={styles.submitBtn} onClick={() => setHasUnsavedChanges(false)}>Publier l'annonce</button>
       </div>
 
       {showCancelPopup && (

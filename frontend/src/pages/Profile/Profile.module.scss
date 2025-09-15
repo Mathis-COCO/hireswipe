@@ -260,6 +260,14 @@
   font-size: 0.95rem;
 }
 
+.linkBox {
+  max-width: 360px;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
 .mapSection {
   margin-top: 2rem;
   width: 100%;

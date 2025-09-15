@@ -207,7 +207,7 @@ const CandidateProfile: React.FC = () => {
             <div className={styles.profileCard}>
                 <div className={styles.header}>
                     <img
-                        src={profile.profilePhotoUrl || profile.profilePhoto || ''}
+                        src={(isEditing ? (editData.profilePhotoUrl || editData.profilePhoto) : null) || profile.profilePhotoUrl || profile.profilePhoto || ''}
                         alt="Profil"
                         className={styles.logo}
                     />
@@ -292,6 +292,15 @@ const CandidateProfile: React.FC = () => {
                                 />
                             </div>
                             <div>
+                                <span className={styles.label}>LinkedIn (optionnel) :</span>
+                                <input
+                                    type="url"
+                                    value={editData.linkedinUrl || ''}
+                                    onChange={e => handleChange('linkedinUrl', e.target.value)}
+                                    placeholder="https://www.linkedin.com/in/username"
+                                />
+                            </div>
+                            <div>
                                 <span className={styles.label}>Expériences professionnelles :</span>
                                 <textarea
                                     value={editData.workExperiences || ''}
@@ -314,12 +323,23 @@ const CandidateProfile: React.FC = () => {
                                     type="number"
                                     min="0"
                                     step="1"
-                                    value={editData.desiredSalary || ''}
+                                    value={editData.salary ?? ''}
                                     onChange={e => {
                                         const val = e.target.value.replace(/\D/g, '');
-                                        handleChange('desiredSalary', val);
+                                        handleChange('salary', val ? Number(val) : undefined);
                                     }}
                                     placeholder="Salaire souhaité"
+                                />
+                            </div>
+                            <div>
+                                <span className={styles.label}>Âge :</span>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    value={editData.age ?? ''}
+                                    onChange={e => handleChange('age', e.target.value ? Number(e.target.value) : undefined)}
+                                    placeholder="Âge"
                                 />
                             </div>
                             <div>
@@ -554,6 +574,12 @@ const CandidateProfile: React.FC = () => {
                                     <span>{profile.bio}</span>
                                 </div>
                             )}
+                            {profile.linkedinUrl && (
+                                <div>
+                                    <span className={styles.label}>LinkedIn :</span>
+                                    <span className={styles.linkBox}><a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a></span>
+                                </div>
+                            )}
                             {profile.workExperiences && (
                                 <div>
                                     <span className={styles.label}>Expériences professionnelles :</span>
@@ -566,10 +592,22 @@ const CandidateProfile: React.FC = () => {
                                     <span>{profile.education}</span>
                                 </div>
                             )}
-                            {profile.desiredSalary && (
+                            {profile.candidateLocationAddress && (
+                                <div>
+                                    <span className={styles.label}>Localisation :</span>
+                                    <span>{profile.candidateLocationAddress}</span>
+                                </div>
+                            )}
+                            {profile.salary !== undefined && profile.salary !== null && (
                                 <div>
                                     <span className={styles.label}>Salaire souhaité :</span>
-                                    <span>{profile.desiredSalary}</span>
+                                    <span>{profile.salary}</span>
+                                </div>
+                            )}
+                            {profile.age !== undefined && profile.age !== null && (
+                                <div>
+                                    <span className={styles.label}>Âge :</span>
+                                    <span>{profile.age}</span>
                                 </div>
                             )}
                             {profile.mobility && (
