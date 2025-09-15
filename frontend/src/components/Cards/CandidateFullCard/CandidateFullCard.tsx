@@ -113,9 +113,6 @@ const CandidateFullCard: React.FC<CandidateFullCardProps> = ({ candidate, offer 
                         <div className={styles.bio}><span className={styles.label}>Bio :</span> {candidate.bio}</div>
                     )}
                     <div className={styles.flexRow}>
-                        {candidate.experience && (
-                            <div className={styles.experience}><span className={styles.label}>Résumé :</span> {candidate.workExperiences}</div>
-                        )}
                         {candidate.education && (
                             <div className={styles.education}><span className={styles.label}>Formation :</span> {candidate.education}</div>
                         )}
