@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { hasUnsavedChanges } from '../../utils/unsavedChanges';
 import styles from './AppNavigation.module.scss';
 import { Home, MessageCircle, Heart, User, PlusSquare, Briefcase, ClipboardList } from 'lucide-react';
 
@@ -36,7 +37,13 @@ const AppNavigation: React.FC<AppNavigationProps> = ({ accountType }) => {
           <button
             key={item.path}
             className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+              if (hasUnsavedChanges()) {
+                const ok = window.confirm('Vous avez des modifications en cours. Si vous changez de page vous perdrez votre progression. Continuer ?');
+                if (!ok) return;
+              }
+              navigate(item.path);
+            }}
             type="button"
           >
             <Icon size={24} />

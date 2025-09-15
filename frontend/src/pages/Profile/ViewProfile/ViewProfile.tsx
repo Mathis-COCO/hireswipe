@@ -135,8 +135,8 @@ const ViewProfile: React.FC<{ userId?: string }> = ({ userId: propId }) => {
           <ListRow label={isCandidate ? 'Localisation :' : 'Adresse :'}>{profile.candidateLocationAddress || profile.companyAddress || '—'}</ListRow>
           <ListRow label="Bio / Pitch :">{profile.bio || profile.pitch || '—'}</ListRow>
           {!isCandidate && <ListRow label="Taille de l'entreprise :">{profile.companySize || '—'}</ListRow>}
-          {!isCandidate && <ListRow label="Site web :">{profile.website ? <a href={profile.website} target="_blank" rel="noreferrer">{profile.website}</a> : '—'}</ListRow>}
-          {!isCandidate && <ListRow label="LinkedIn :">{profile.linkedinUrl ? <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a> : '—'}</ListRow>}
+          {!isCandidate && <ListRow label="Site web :">{profile.website ? <span className={styles.linkBox}><a href={profile.website} target="_blank" rel="noreferrer">{profile.website}</a></span> : '—'}</ListRow>}
+          {!isCandidate && <ListRow label="LinkedIn :">{profile.linkedinUrl ? <span className={styles.linkBox}><a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a></span> : '—'}</ListRow>}
 
           {isCandidate && (
             <>

@@ -344,11 +344,11 @@ const RecruiterProfile: React.FC = () => {
                             </div>
                             <div>
                                 <span className={styles.label}>Site web :</span>
-                                <span>{profile.website}</span>
+                                <span className={styles.linkBox}>{profile.website}</span>
                             </div>
                             <div>
                                 <span className={styles.label}>LinkedIn :</span>
-                                <span>{profile.linkedinUrl}</span>
+                                <span className={styles.linkBox}>{profile.linkedinUrl}</span>
                             </div>
                             <div>
                                 <span className={styles.label}>Pitch :</span>
